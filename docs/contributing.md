@@ -63,7 +63,7 @@ $ git clone https://github.com/your-username/zpa-ansible.git ansible_collections
 
    Adding our top level directory to `ansible.cfg` will interpret the directory
    `ansible_collections/willguibr/zpa` as the collection
-   `willguibr.zpa` without us having to build and install the collection each
+   `willguibr.zpacollection` without us having to build and install the collection each
    time!
 
    You can add any test playbooks to the `playbooks/` directory.  Any

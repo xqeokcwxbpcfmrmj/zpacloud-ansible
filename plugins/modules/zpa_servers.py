@@ -58,8 +58,3 @@ EXAMPLES = """
 RETURN = """
 # Default return values
 """
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.zscaler.zpa.plugins.module_utils.zpa import (
-    get_connection,
-)

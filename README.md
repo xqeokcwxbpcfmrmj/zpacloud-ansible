@@ -24,7 +24,7 @@ Installation
 Install this collection using the Ansible Galaxy CLI:
 
 ```bash
-ansible-galaxy collection install willguibr.zpa
+ansible-galaxy collection install willguibr.zpacollection
 ```
 
 Usage
@@ -35,7 +35,7 @@ specification in your playbooks:
 
 ```yaml
   collections:
-    - willguibr.zpa
+    - willguibr.zpacollection
 
   tasks:
   - name: Get the system info
