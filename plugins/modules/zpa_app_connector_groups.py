@@ -21,4 +21,28 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-from ansible.module_utils.basic import AnsibleModule
+DOCUMENTATION = '''
+---
+module: zpa_app_connector_groups
+short_description: Create an app connector group
+description:
+    - This module will create, retrieve, update or delete a specific app connector group
+author:
+    - William Guilherme (@willguibr)
+version_added: '1.0.0'
+'''
+
+EXAMPLES = '''
+- name: Create an app connector group
+  zpa_app_connector_groups:
+    provider: '{{ zpa }}'
+  register: auth
+
+- debug:
+    msg: '{{ auth.api_key }}'
+'''
+
+RETURN = '''
+
+'''
+

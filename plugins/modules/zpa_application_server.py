@@ -58,3 +58,22 @@ EXAMPLES = """
 RETURN = """
 # Default return values
 """
+
+def zpa_application_server(module, connection):
+    address = module.params["address"]
+    config_space = module.params["config_space"]
+    description = module.params["description"]
+    enabled = module.params["enabled"]
+    name = module.params["name"]
+
+    payload = {
+        "address": address,
+        "config_space": config_space,
+        "description": description,
+        "enabled": enabled,
+        "name": name,
+    }
+
+    code, response = connection.send_request("/server", payload)
+
+    return code, response
