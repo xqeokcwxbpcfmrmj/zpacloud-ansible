@@ -232,7 +232,8 @@ def core(module):
             module.exit_json(changed=False, data=app)
     elif state == "absent":
         if existing_app is not None:
-            # TODO: detach from segment group once the segment group service is created 
+            # first detach it from the segment group
+            service.detach_from_segment_group(existing_app["id"], existing_app["segment_group_id"])
             service.delete(existing_app["id"])
             module.exit_json(changed=False, data=existing_app)
     module.exit_json(changed=False, data={})

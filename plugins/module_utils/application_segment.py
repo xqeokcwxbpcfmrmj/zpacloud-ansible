@@ -134,6 +134,21 @@ class ApplicationSegmentService:
             return None
         return app
 
+    def detach_from_segment_group(self, app_id, seg_group_id):
+        seg_group = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id))
+        if seg_group.status_code > 299:
+            return None
+        data = seg_group.json
+        apps = data.get("applications", [])
+        addaptedApps = []
+        for app in apps:
+            if app.get("id") != app_id:
+                addaptedApps.append(app)
+        data["applications"] = addaptedApps
+        self.rest.put(
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id), data=data)
+
     def delete(self, id):
         """delete the application"""
         response = self.rest.delete(
