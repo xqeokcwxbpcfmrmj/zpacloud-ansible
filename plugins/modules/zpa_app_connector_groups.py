@@ -28,7 +28,7 @@ __metaclass__ = type
 DOCUMENTATION = '''
 ---
 module: zpa_app_connector_groups
-short_description: Create an app connector group
+short_description: Create/ an app connector group
 description:
     - This module will create, retrieve, update or delete a specific app connector group
 author:
@@ -193,7 +193,9 @@ def core(module):
         app[param_name] = module.params.get(param_name, None)
     existing_app = service.getByIDOrName(app["id"], app["name"])
     if existing_app is not None:
-        existing_app.update({key: val for key, val in app.items() if val is not None})
+        id = existing_app.get("id")
+        existing_app.update(app)
+        existing_app["id"] = id
     if state == "present":
         if existing_app is not None:
             """Update"""

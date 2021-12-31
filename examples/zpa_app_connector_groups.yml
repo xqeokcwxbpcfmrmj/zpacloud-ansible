@@ -13,7 +13,7 @@
         state: "absent"
         #id: "216196257331292046"
         name: "Example"
-        description: "Example"
+        description: "Example2"
         enabled: true
         city_country: "California, US"
         country_code: "US"

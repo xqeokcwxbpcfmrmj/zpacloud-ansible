@@ -24,10 +24,10 @@ def retry_with_backoff(retries=5, backoff_in_seconds=1):
             x = 0
             while True:
                 resp = f(*args)
-                if resp.status_code < 299:
+                if resp.status_code < 299 or resp.status_code == 400:
                     return resp
                 if x == retries:
-                    raise Exception("Reached max retries")
+                    raise Exception("Reached max retries: %s" % (resp.json))
                 else:
                     sleep = (backoff_in_seconds * 2 ** x +
                              random.uniform(0, 1))
@@ -144,6 +144,9 @@ class ZPAClientHelper:
         resp = Response(resp, info)
         print("[INFO] calling: %s %s %s\n response: %s" %
               (method, url, str(data), str("" if resp == None else resp.json)))
+        if resp.status_code == 400:
+            self.module.fail_json(
+                msg="Operation failed. API response: %s\n" % (resp.json))
         return resp
 
     def get(self, path, data=None):
