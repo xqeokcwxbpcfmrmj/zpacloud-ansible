@@ -30,58 +30,60 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: zpa_application_segment_info
-short_description: Gather information about an application segment
-description:
-  - This module can be used to gather information about an application segment.
-author:
-  - William Guilherme (@willguibr)
+short_description: "Gather information about an application segment"
+description: "This module can be used to gather information about an application segment."
+author: "William Guilherme (@willguibr)"
 version_added: "1.0.0"
 options:
   name:
-    description:
-      - Name of the application segment.
-    required: false
+    description: "Name of the application segment."
+    required: False
     type: str
   id:
-    description:
-      - ID of the application segment.
-    required: false
+    description: "ID of the application segment."
+    required: False
     type: str
-
 """
 
-EXAMPLES = '''
-- name: App segment
+EXAMPLES = r""""
+- name: "App segment"
   hosts: localhost
   tasks:
-    - name: Gather information about all App segment
-      willguibr.zpa.zpa_application_segment_info:
-        #name: "Browser Access Apps"
+    - name: "Gather information about all App segment"
+      willguibr.zpa.zpa_application_segment_info: 
       register: app
-    - name: app segment
+    - name: "app segment"
       debug:
         msg: "{{ app }}"
-'''
+"""
 
 RETURN = r"""
 data:
-    description: application segment information
+    description: "application segment information"
     returned: success
     elements: dict
     type: list
     sample: [
-        {
-        name             : "CRM Application"
-        description      : "CRM Application"
-        enabled          : True
-        health_reporting : "ON_ACCESS"
-        bypass_type      : "NEVER"
-        is_cname_enabled : True
-        tcp_port_range   : [{from:"80", to:"80"}]
-        domain_names     : ["crm.example.com"]
-        segment_group_id : ["827727262"]
-        server_groups    : ["37363336"]
-        }
+      {
+        name             : "CRM Application",
+        description      : "CRM Application",
+        enabled          : True,
+        health_reporting : "ON_ACCESS",
+        bypass_type      : "NEVER",
+        is_cname_enabled : True,
+        tcp_port_range   : [
+          {from:"80", to:"80"}
+        ],
+        domain_names     : [
+          "crm.example.com"
+        ],
+        segment_group_id : [
+          "827727262"
+        ],
+        server_groups    : [
+          "37363336"
+        ]
+      },
     ]
 """
 

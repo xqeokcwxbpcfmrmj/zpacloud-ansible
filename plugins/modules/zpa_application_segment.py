@@ -38,124 +38,125 @@ options:
   creation_time:
     type: str
     required: False
+    description: "creation_time"
   modified_time:
     type: str
     required: False
+    description: "modified_time"
   default_max_age:
     type: str
     required: False
     default: ""
+    description: "default_max_age"
   ip_anchored:
     type: bool
     required: False
+    description: "ip_anchored"
   udp_port_range:
     type: list
     elements: dict
     required: False
-    description:
-      - udp port range
+    description: "udp port range"
   id:
     type: str
+    description: "Unique ID."
   double_encrypt:
     type: bool
     required: False
-    description:
-      - Whether Double Encryption is enabled or disabled for the app.
+    description: "Whether Double Encryption is enabled or disabled for the app."
   icmp_access_type:
     type: str
     required: False
     default: "NONE"
     choices: ["PING_TRACEROUTING", "PING", "NONE"]
+    description: "icmp access type."
   default_idle_timeout:
     type: str
     required: False
     default: ""
+    description: "default idle timeout."
   modifiedby:
     type: str
     required: False
+    description: "modified by."
   passive_health_enabled:
     type: bool
     required: False
+    description: "passive health enabled."
   bypass_type:
     type: str
     required: False
-    description:
-      - Indicates whether users can bypass ZPA to access applications.
+    description: "Indicates whether users can bypass ZPA to access applications."
     choices: ["ALWAYS", "NEVER", "ON_NET"]
   is_cname_enabled:
     type: bool
     required: False
-    description:
-      - Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors.
+    description: "Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors."
   name:
     type: str
     required: True
-    description:
-      - Name of the application.
+    description: "Name of the application."
   config_space:
     type: str
     required: False
     default: "DEFAULT"
     choices: ["DEFAULT", "SIEM"]
+    description: "config space."
   health_reporting:
     type: str
     required: False
-    description:
-      - Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS.
+    description: "Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS."
     default: "NONE"
     choices: ["NONE", "ON_ACCESS", "CONTINUOUS"]
   log_features:
     type: str
     required: False
     choices: ["skip_discovery", "full_wildcard"]
+    description: "log features."
   server_groups:
     type: list
     elements: str
     required: True
-    description:
-      - List of the server group IDs.
+    description: "List of the server group IDs."
   segment_group_id:
     type: str
     required: True
+    description: "segment group id."
   description:
     type: str
     required: False
-    description:
-      - Description of the application.
+    description: "Description of the application."
   health_check_type:
     type: str
+    description: "health check type."
   segment_group_name:
     type: str
     required: False
+    description: "segment group name."
   tcp_port_range:
     type: list
     elements: dict
     required: False
-    description:
-      - tcp port range
+    description: "tcp port range"
   udp_port_ranges:
     type: list
     elements: str
     required: False
-    description:
-      - UDP port ranges used to access the app.
+    description: "UDP port ranges used to access the app."
   tcp_port_ranges:
     type: list
     elements: str
     required: False
-    description:
-      - TCP port ranges used to access the app.
+    description: "TCP port ranges used to access the app."
   enabled:
     type: bool
     required: False
-    description:
-      - Whether this application is enabled or not.
+    description: "Whether this application is enabled or not."
   domain_names:
     type: list
     elements: str
     required: True
-    description:
-      - List of domains and IPs.
+    description: "List of domains and IPs."
 
 """
 

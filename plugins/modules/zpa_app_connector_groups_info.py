@@ -50,7 +50,7 @@ options:
 
 """
 
-EXAMPLES = '''
+EXAMPLES = r'''
 - name: App Connector Groups
   hosts: localhost
   tasks:
