@@ -191,7 +191,7 @@ def core(module):
     ]
     for param_name in params:
         app[param_name] = module.params.get(param_name, None)
-    existing_app = service.getByIDOrName(app["id"], app["name"])
+    existing_app = service.getByIDOrName(app.get("id"), app.get("name"))
     if existing_app is not None:
         id = existing_app.get("id")
         existing_app.update(app)
@@ -203,11 +203,11 @@ def core(module):
             module.exit_json(changed=True, data=existing_app)
         else:
             """Create"""
-            app=service.create(app)
+            app = service.create(app)
             module.exit_json(changed=False, data=app)
     elif state == "absent":
         if existing_app is not None:
-            service.delete(existing_app["id"])
+            service.delete(existing_app.get("id"))
             module.exit_json(changed=False, data=existing_app)
     module.exit_json(changed=False, data={})
 

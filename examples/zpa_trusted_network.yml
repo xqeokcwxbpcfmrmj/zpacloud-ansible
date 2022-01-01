@@ -1,0 +1,10 @@
+- name: trusted network
+  hosts: localhost
+  tasks:
+    - name: Gather information about all trusted network
+      willguibr.zpa.zpa_trusted_network_info:
+        name: Corp-Trusted-Networks
+      register: networks
+    - name: networks
+      debug:
+        msg: "{{ networks }}"

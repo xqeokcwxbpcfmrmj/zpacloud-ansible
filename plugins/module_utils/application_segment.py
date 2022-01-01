@@ -36,7 +36,7 @@ class ApplicationSegmentService:
     def getByName(self, name):
         apps = self.getAll()
         for app in apps:
-            if app["name"] == name:
+            if app.get("name") == name:
                 return app
         return None
 
@@ -81,10 +81,6 @@ class ApplicationSegmentService:
             "server_groups": self.mapServerGroupsRespJSONToListID(resp_json.get("serverGroups")),
             "segment_group_name": resp_json.get("segmentGroupName"),
             "domain_names": resp_json.get("domainNames"),
-            # "default_idle_timeout": resp_json["default_idle_timeout"],
-            # "log_features": resp_json["log_features"],
-            # "modified_time": resp_json["modified_time"],
-            # "default_max_age": resp_json["default_max_age"],
         }
 
     def mapAppToJSON(self, app):
@@ -128,7 +124,7 @@ class ApplicationSegmentService:
         """update the application"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, appJSON["id"]), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
         status_code = response.status_code
         if status_code > 299:
             return None

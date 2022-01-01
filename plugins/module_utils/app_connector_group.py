@@ -2,6 +2,7 @@ from ansible_collections.willguibr.zpa.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
 
+
 class AppConnectorGroupService:
     def __init__(self, module, customer_id):
         self.module = module
@@ -35,44 +36,48 @@ class AppConnectorGroupService:
     def getByName(self, name):
         apps = self.getAll()
         for app in apps:
-            if app["name"] == name:
+            if app.get("name") == name:
                 return app
         return None
 
     def mapRespJSONToApp(self, resp_json):
+        if resp_json is not None:
+            return {}
         return {
-            "id": resp_json["id"],
-            "name": resp_json["name"],
-            "description": resp_json["description"],
-            "enabled": resp_json["enabled"],
-            "city_country": resp_json["cityCountry"],
-            "country_code": resp_json["countryCode"],
-            "latitude": resp_json["latitude"],
-            "longitude": resp_json["longitude"],
-            "location": resp_json["location"],
-            "upgrade_day": resp_json["upgradeDay"],
-            "upgrade_time_in_secs": resp_json["upgradeTimeInSecs"],
-            "override_version_profile": resp_json["overrideVersionProfile"],
-            "version_profile_id": resp_json["versionProfileId"],
-            "dns_query_type": resp_json["dnsQueryType"],
+            "id": resp_json.get("id"),
+            "name": resp_json.get("name"),
+            "description": resp_json.get("description"),
+            "enabled": resp_json.get("enabled"),
+            "city_country": resp_json.get("cityCountry"),
+            "country_code": resp_json.get("countryCode"),
+            "latitude": resp_json.get("latitude"),
+            "longitude": resp_json.get("longitude"),
+            "location": resp_json.get("location"),
+            "upgrade_day": resp_json.get("upgradeDay"),
+            "upgrade_time_in_secs": resp_json.get("upgradeTimeInSecs"),
+            "override_version_profile": resp_json.get("overrideVersionProfile"),
+            "version_profile_id": resp_json.get("versionProfileId"),
+            "dns_query_type": resp_json.get("dnsQueryType"),
         }
 
     def mapAppToJSON(self, app):
+        if app is not None:
+            return {}
         return {
-            "id": app["id"],
-            "name": app["name"],
-            "description": app["description"],
-            "enabled": app["enabled"],
-            "cityCountry": app["city_country"],
-            "countryCode": app["country_code"],
-            "latitude": app["latitude"],
-            "longitude": app["longitude"],
-            "location": app["location"],
-            "upgradeDay": app["upgrade_day"],
-            "upgradeTimeInSecs": app["upgrade_time_in_secs"],
-            "overrideVersionProfile": app["override_version_profile"],
-            "versionProfileId": app["version_profile_id"],
-            "dnsQueryType": app["dns_query_type"],
+            "id": app.get("id"),
+            "name": app.get("name"),
+            "description": app.get("description"),
+            "enabled": app.get("enabled"),
+            "cityCountry": app.get("city_country"),
+            "countryCode": app.get("country_code"),
+            "latitude": app.get("latitude"),
+            "longitude": app.get("longitude"),
+            "location": app.get("location"),
+            "upgradeDay": app.get("upgrade_day"),
+            "upgradeTimeInSecs": app.get("upgrade_time_in_secs"),
+            "overrideVersionProfile": app.get("override_version_profile"),
+            "versionProfileId": app.get("version_profile_id"),
+            "dnsQueryType": app.get("dns_query_type"),
         }
 
     def create(self, app):
@@ -89,7 +94,7 @@ class AppConnectorGroupService:
         """update the AppConnectorGroup"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s" % (self.customer_id, appJSON["id"]), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
         status_code = response.status_code
         if status_code > 299:
             return None

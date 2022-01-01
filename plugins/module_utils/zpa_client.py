@@ -50,7 +50,7 @@ class Response(object):
     def json(self):
         if not self.body:
             if "body" in self.info:
-                return json.loads(to_text(self.info["body"]))
+                return json.loads(to_text(self.info.get("body")))
             return None
         try:
             return json.loads(to_text(self.body))
@@ -59,7 +59,7 @@ class Response(object):
 
     @property
     def status_code(self):
-        return self.info["status"]
+        return self.info.get("status")
 
 
 class ZPAClientHelper:
@@ -80,7 +80,7 @@ class ZPAClientHelper:
                 msg="Failed to login using provided credentials, please verify validity of API ZPA_CLIENT_ID & ZPA_CLIENT_SECRET."
             )
         resp_json = response.json
-        self.access_token = resp_json["access_token"]
+        self.access_token = resp_json.get("access_token")
         print("[INFO] access_token: '%s'" % (self.access_token))
         self.headers = {  # 'referer': self.baseurl,
             'Content-Type': 'application/json',
@@ -224,7 +224,7 @@ class ZPAClientHelper:
             page += 1
             ret_data.extend(response.json[data_key_name])
             try:
-                has_next = response.json["totalPages"] is not None and int(
+                has_next = response.json.get("totalPages") is not None and int(
                     response.json["totalPages"]) < page
             except KeyError:
                 # There's a bug in the API docs: GET v2/cdn/endpoints doesn't return a "links" key
@@ -233,7 +233,7 @@ class ZPAClientHelper:
         if status_code != expected_status_code:
             msg = "Failed to fetch %s from %s" % (data_key_name, base_url)
             if response:
-                msg += " due to error : %s" % response.json["message"]
+                msg += " due to error : %s" % response.json.get("message")
             self.module.fail_json(msg=msg)
 
         return ret_data
