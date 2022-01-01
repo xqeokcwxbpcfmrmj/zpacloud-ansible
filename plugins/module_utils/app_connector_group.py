@@ -41,7 +41,7 @@ class AppConnectorGroupService:
         return None
 
     def mapRespJSONToApp(self, resp_json):
-        if resp_json is not None:
+        if resp_json is None:
             return {}
         return {
             "id": resp_json.get("id"),
@@ -61,7 +61,7 @@ class AppConnectorGroupService:
         }
 
     def mapAppToJSON(self, app):
-        if app is not None:
+        if app is None:
             return {}
         return {
             "id": app.get("id"),

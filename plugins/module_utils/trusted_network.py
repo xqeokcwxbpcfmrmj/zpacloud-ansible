@@ -41,7 +41,7 @@ class TrustedNetworkService:
         return None
 
     def mapRespJSONToApp(self, resp_json):
-        if resp_json is not None:
+        if resp_json is None:
             return {}
         return {
             "creation_time": resp_json.get("creationTime"),
@@ -56,16 +56,16 @@ class TrustedNetworkService:
         }
 
     def mapAppToJSON(self, network):
-        if network is not None:
+        if network is None:
             return {}
         return {
-            "creationTime": network("creation_time"),
-            "domain": network("domain"),
-            "id": network("id"),
-            "masterCustomerId": network("master_customer_id"),
-            "modifiedBy": network("modified_by"),
-            "modifiedTime": network("modified_time"),
-            "name": network("name"),
-            "networkId": network("network_id"),
-            "zscalerCloud": network("zscaler_cloud"),
+            "creationTime": network.get("creation_time"),
+            "domain": network.get("domain"),
+            "id": network.get("id"),
+            "masterCustomerId": network.get("master_customer_id"),
+            "modifiedBy": network.get("modified_by"),
+            "modifiedTime": network.get("modified_time"),
+            "name": network.get("name"),
+            "networkId": network.get("network_id"),
+            "zscalerCloud": network.get("zscaler_cloud"),
         }
