@@ -32,39 +32,45 @@ DOCUMENTATION = r"""
 module: zpa_app_connector_groups_info
 short_description: Gather information about an app connector group
 description:
-    - This module can be used to gather information about an app connector group.
+  - This module can be used to gather information about an app connector group.
 author:
-    - William Guilherme (@willguibr)
-version_added: '1.0.0'
+  - William Guilherme (@willguibr)
+version_added: "1.0.0"
 options:
   name:
     description:
-     - Name of the App Connector Group.
+      - Name of the App Connector Group.
     required: false
     type: str
   id:
     description:
-     - ID of the App Connector Group.
+      - ID of the App Connector Group.
     required: false
     type: str
+
 """
 
 EXAMPLES = '''
-- name: Gather information about all App Connector Groups
-  willguibr.zpa.zpa_app_connector_groups_info:
+- name: App Connector Groups
+  hosts: localhost
+  tasks:
+    - name: Gather information about all App Connector Groups
+      willguibr.zpa.zpa_app_connector_groups_info:
+        #name: "USA App Connector Group"
+    - name: Gather information about all App Connector Groups
+      willguibr.zpa.zpa_app_connector_groups_info:
 
-- name: Gather information about App Connector Group with given ID
-  willguibr.zpa.zpa_app_connector_groups_info:
-    id: "198288282"
-  register: resp_out
+    - name: Gather information about App Connector Group with given ID
+      willguibr.zpa.zpa_app_connector_groups_info:
+        id: "198288282"
+      register: resp_out
 
-- name: Gather information about App Connector Group with given name
-  willguibr.zpa.zpa_app_connector_groups_info:
-    name: "example"
-  register: resp_out
-
-- debug:
-    msg: '{{ resp_out.name }}'
+    - name: Gather information about App Connector Group with given name
+      willguibr.zpa.zpa_app_connector_groups_info:
+        name: "example"
+      register: resp_out
+  - debug:
+      msg: "{{ resp_out.name }}"
 '''
 
 RETURN = r"""

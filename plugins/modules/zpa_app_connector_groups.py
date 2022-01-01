@@ -30,37 +30,37 @@ DOCUMENTATION = '''
 module: zpa_app_connector_groups
 short_description: Create/ an app connector group
 description:
-    - This module will create, retrieve, update or delete a specific app connector group
+  - This module will create, retrieve, update or delete a specific app connector group
 author:
-    - William Guilherme (@willguibr)
-version_added: '1.0.0'
+  - William Guilherme (@willguibr)
+version_added: "1.0.0"
 options:
   name:
     description:
-     - Name of the App Connector Group.
+      - Name of the App Connector Group.
     required: True
     type: str
   id:
     description:
-     - ID of the App Connector Group.
+      - ID of the App Connector Group.
     type: str
   city_country:
     description:
-     - City Country of the App Connector Group.
+      - City Country of the App Connector Group.
     type: str
   country_code:
     description:
-     - Country code of the App Connector Group.
+      - Country code of the App Connector Group.
     type: str
   description:
     description:
-     - Description of the App Connector Group.
+      - Description of the App Connector Group.
     type: str
   dns_query_type:
     description:
-     - Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the App Connector Group.
+      - Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the App Connector Group.
     default: IPV4_IPV6
-    choices: ['IPV4_IPV6', 'IPV4', 'IPV6']
+    choices: ["IPV4_IPV6", "IPV4", "IPV6"]
     type: str
   enabled:
     description:
@@ -105,7 +105,7 @@ options:
     description:
       - ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true.
     default: 0
-    choices: ['0', '1', '2']
+    choices: ["0", "1", "2"]
     type: str
   version_profile_name:
     description:
@@ -113,33 +113,39 @@ options:
     type: str
   state:
     description:
-     - Whether the app connector group should be present or absent.
+      - Whether the app connector group should be present or absent.
     default: present
-    choices: ['present', 'absent']
+    choices: ["present", "absent"]
     type: str
+
 '''
 
 EXAMPLES = '''
-- name: Create an app connector group
-  willguibr.zpa.zpa_app_connector_groups:
-    state: present
-    name                    : Example
-    description             : Example
-    enabled                 : true
-    city_country            : California, US
-    country_code            : US
-    latitude                : 37.3382082
-    longitude               : -121.8863286
-    location                : San Jose, CA, USA
-    upgrade_day             : SUNDAY
-    upgrade_time_in_secs    : 66600
-    override_version_profile: true
-    version_profile_id      : 0
-    dns_query_type          : IPV4
-  register: app_connector_g
+- name: App Connector Groups
+  hosts: localhost
+  tasks:
+    - name: Create/update/delete an app connector group
+      willguibr.zpa.zpa_app_connector_groups:
+        state: "absent"
+        #id: "216196257331292046"
+        name: "Example"
+        description: "Example2"
+        enabled: true
+        city_country: "California, US"
+        country_code: "US"
+        latitude: "37.3382082"
+        longitude: "-121.8863286"
+        location: "San Jose, CA, USA"
+        upgrade_day: "SUNDAY"
+        upgrade_time_in_secs: "66600"
+        override_version_profile: true
+        version_profile_id: "0"
+        dns_query_type: "IPV4"
+      register: appconnectorg
+    - name: created appconnector group
+      debug:
+        msg: "{{ appconnectorg }}"
 
-- debug:
-    msg: '{{ app_connector_g.name }}'
 '''
 
 RETURN = r"""

@@ -26,5 +26,6 @@
         version_profile_id: "0"
         dns_query_type: "IPV4"
       register: appconnectorg
-    - debug:
+    - name: created appconnector group
+      debug:
         msg: "{{ appconnectorg }}"

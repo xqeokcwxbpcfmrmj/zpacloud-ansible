@@ -31,29 +31,39 @@ DOCUMENTATION = r"""
 ---
 author: William Guilherme (@willguibr)
 description:
-- Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
 module: zpa_trusted_network_info
 short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
-version_added: '1.0.0'
+version_added: "1.0.0"
 requirements:
-- supported starting from zpa_api >= 1.0
+  - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-     - Name of the trusted network.
+      - Name of the trusted network.
     required: false
     type: str
   id:
     description:
-     - ID of the trusted network.
+      - ID of the trusted network.
     required: false
     type: str
+
 """
 
 EXAMPLES = """
-- name: Retrieving the network_id for the Trusted Network
-  zpa_trusted_network_info:
-    name: "Corp-Trusted-Networks"
+- name: trusted network
+  hosts: localhost
+  tasks:
+    - name: Gather information about all trusted network
+      willguibr.zpa.zpa_trusted_network_info:
+        #name: Corp-Trusted-Networks
+        id: 216196257331282234
+      register: networks
+    - name: networks
+      debug:
+        msg: "{{ networks }}"
+
 """
 
 RETURN = r"""

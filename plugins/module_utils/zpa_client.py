@@ -227,7 +227,6 @@ class ZPAClientHelper:
                 has_next = response.json.get("totalPages") is not None and int(
                     response.json["totalPages"]) < page
             except KeyError:
-                # There's a bug in the API docs: GET v2/cdn/endpoints doesn't return a "links" key
                 has_next = False
 
         if status_code != expected_status_code:

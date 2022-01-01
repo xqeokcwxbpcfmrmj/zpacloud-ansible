@@ -30,10 +30,10 @@ DOCUMENTATION = r"""
 module: zpa_application_segment
 short_description: Create an application segment
 description:
-    - This module will create, retrieve, update or delete a specific application segment
+  - This module will create, retrieve, update or delete a specific application segment
 author:
-    - William Guilherme (@willguibr)
-version_added: '1.0.0'
+  - William Guilherme (@willguibr)
+version_added: "1.0.0"
 options:
   creation_time:
     type: str
@@ -96,7 +96,7 @@ options:
     type: str
     required: False
     default: "DEFAULT"
-    choices: ["DEFAULT","SIEM"]
+    choices: ["DEFAULT", "SIEM"]
   health_reporting:
     type: str
     required: False
@@ -107,7 +107,7 @@ options:
   log_features:
     type: str
     required: False
-    choices: ["skip_discovery","full_wildcard"]
+    choices: ["skip_discovery", "full_wildcard"]
   server_groups:
     type: list
     elements: str
@@ -156,30 +156,38 @@ options:
     required: True
     description:
       - List of domains and IPs.
+
 """
 
 
 EXAMPLES = '''
-- name: Create an app segment
-  willguibr.zpa.zpa_application_segment:
-    state: present
-    name: CRM Application
-    description: CRM Application
-    enabled: true
-    health_reporting: ON_ACCESS
-    bypass_type: NEVER
-    is_cname_enabled: true
-    tcp_port_range:
-    - from: '80'
-      to: '80'
-    domain_names:
-    - crm.example.com
-    segment_group_id: '2827727282'
-    server_groups:
-    - '2827727282'
-
+- name: App segment
+  hosts: localhost
+  tasks:
+    - name: Create an app segment
+      willguibr.zpa.zpa_application_segment:
+        state: absent
+        name: Example Application
+        description: Example Application Test
+        enabled: true
+        health_reporting: ON_ACCESS
+        bypass_type: NEVER
+        is_cname_enabled: true
+        tcp_port_range:
+          - from: "80"
+            to: "80"
+        domain_names:
+          - crm.example.com
+        segment_group_id: "216196257331291896"
+        server_groups:
+          #- "216196257331291969"
+      register: app_segment
+    - name: created/updated app segment
+      debug:
+        msg: "{{ app_segment }}"
 '''
-RETURN = r""""""
+RETURN = r"""
+"""
 
 
 def core(module):
@@ -233,8 +241,9 @@ def core(module):
     elif state == "absent":
         if existing_app is not None:
             # first detach it from the segment group
-            service.detach_from_segment_group(existing_app["id"], existing_app["segment_group_id"])
-            service.delete(existing_app["id"])
+            service.detach_from_segment_group(existing_app.get(
+                "id"), existing_app.get("segment_group_id"))
+            service.delete(existing_app.get("id"))
             module.exit_json(changed=False, data=existing_app)
     module.exit_json(changed=False, data={})
 

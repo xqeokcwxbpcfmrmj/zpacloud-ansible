@@ -30,10 +30,10 @@ DOCUMENTATION = '''
 module: zpa_server_group
 short_description: Create/ an server group
 description:
-    - This module will create, retrieve, update or delete a specific server group
+  - This module will create, retrieve, update or delete a specific server group
 author:
-    - William Guilherme (@willguibr)
-version_added: '1.0.0'
+  - William Guilherme (@willguibr)
+version_added: "1.0.0"
 options:
   applications:
     type: list
@@ -85,30 +85,35 @@ options:
     required: False
   state:
     description:
-     - Whether the server group should be present or absent.
+      - Whether the server group should be present or absent.
     default: present
-    choices: ['present', 'absent']
+    choices: ["present", "absent"]
     type: str
+
 '''
 
 EXAMPLES = '''
-- name: Create an server group
-  willguibr.zpa.zpa_server_group:
-    state: present
-    name: "Example"
-    description: "Example"
-    enabled: false
-    dynamic_discovery: false
-    app_connector_groups:
-        - "216196257331291924"
-    servers:
-        - "216196257331291921"
-    applications:
-        - "216196257331291981"
-  register: server_g
+- name: server group
+  hosts: localhost
+  tasks:
+    - name: Create an server group
+      willguibr.zpa.zpa_server_group:
+        state: absent
+        name: "Example Test amazzal"
+        description: "Example  Test amazzal"
+        enabled: false
+        dynamic_discovery: false
+        app_connector_groups:
+          - "216196257331291924"
+        servers:
+          - "216196257331291921"
+        applications:
+          - "216196257331291981"
+      register: server_g
+    - name: server group
+      debug:
+        msg: "{{ server_g }}"
 
-- debug:
-    msg: '{{ server_g.name }}'
 '''
 
 RETURN = r"""

@@ -50,21 +50,17 @@ options:
 """
 
 EXAMPLES = '''
-- name: Gather information about all server group
-  willguibr.zpa.zpa_server_group_info:
-
-- name: Gather information about server group with given ID
-  willguibr.zpa.zpa_server_group_info:
-    id: "198288282"
-  register: resp_out
-
-- name: Gather information about server group with given name
-  willguibr.zpa.zpa_server_group_info:
-    name: "example"
-  register: resp_out
-
-- debug:
-    msg: '{{ resp_out.name }}'
+- name: server group
+  hosts: localhost
+  tasks:
+    - name: Gather information about all server group
+      willguibr.zpa.zpa_server_group_info:
+        name: Browser Access Apps
+        #id: 216196257331291969
+      register: servers
+    - name: servers
+      debug:
+        msg: "{{ servers }}"
 '''
 
 RETURN = r"""
