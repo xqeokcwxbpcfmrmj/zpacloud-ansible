@@ -97,3 +97,4 @@ tests/integration/inventory
 tests/integration/*.log
 
 *.tar.gz
+examples/script.sh
