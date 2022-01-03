@@ -107,7 +107,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Create/update/delete an app connector group
-      willguibr.zpa.zpa_app_connector_groups:
+      willguibr.zpacloud_ansible.zpa_app_connector_groups:
         state: "absent"
         #id: "216196257331292046"
         name: "Example"

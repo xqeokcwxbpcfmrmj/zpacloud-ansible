@@ -54,7 +54,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Gather information about all server group
-      willguibr.zpa.zpa_server_group_info:
+      willguibr.zpacloud_ansible.zpa_server_group_info:
         name: Browser Access Apps
         #id: 216196257331291969
       register: servers

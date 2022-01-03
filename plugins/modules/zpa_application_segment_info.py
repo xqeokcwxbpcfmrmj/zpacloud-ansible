@@ -50,7 +50,7 @@ EXAMPLES = r""""
   hosts: localhost
   tasks:
     - name: "Gather information about all App segment"
-      willguibr.zpa.zpa_application_segment_info: 
+      willguibr.zpacloud_ansible.zpa_application_segment_info: 
       register: app
     - name: "app segment"
       debug:

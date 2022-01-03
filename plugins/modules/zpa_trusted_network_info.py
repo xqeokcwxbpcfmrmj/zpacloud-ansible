@@ -56,7 +56,7 @@ EXAMPLES = """
   hosts: localhost
   tasks:
     - name: Gather information about all trusted network
-      willguibr.zpa.zpa_trusted_network_info:
+      willguibr.zpacloud_ansible.zpa_trusted_network_info:
         #name: Corp-Trusted-Networks
         id: 216196257331282234
       register: networks

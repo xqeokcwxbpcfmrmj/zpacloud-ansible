@@ -166,7 +166,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Create an app segment
-      willguibr.zpa.zpa_application_segment:
+      willguibr.zpacloud_ansible.zpa_application_segment:
         state: absent
         name: Example Application
         description: Example Application Test

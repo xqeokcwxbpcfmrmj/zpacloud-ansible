@@ -92,7 +92,7 @@ EXAMPLES = r'''
   hosts: localhost
   tasks:
     - name: Create an server group
-      willguibr.zpa.zpa_server_group:
+      willguibr.zpacloud_ansible.zpa_server_group:
         state: absent
         name: "Example Test amazzal"
         description: "Example  Test amazzal"

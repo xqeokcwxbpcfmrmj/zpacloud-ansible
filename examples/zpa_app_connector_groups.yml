@@ -2,14 +2,14 @@
   hosts: localhost
   tasks:
     - name: Gather information about all App Connector Groups
-      willguibr.zpa.zpa_app_connector_groups_info:
+      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
         #name: "USA App Connector Group"
       register: app
     - name: app connector
       debug:
         msg: "{{ app }}"
     - name: Create/update/delete an app connector group
-      willguibr.zpa.zpa_app_connector_groups:
+      willguibr.zpacloud_ansible.zpa_app_connector_groups:
         state: "absent"
         #id: "216196257331292046"
         name: "Example"
