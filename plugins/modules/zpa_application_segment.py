@@ -21,8 +21,8 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpa.plugins.module_utils.application_segment import ApplicationSegmentService
-from ansible_collections.willguibr.zpa.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.application_segment import ApplicationSegmentService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
 DOCUMENTATION = r"""

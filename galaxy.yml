@@ -6,7 +6,7 @@
 namespace: 'willguibr'
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: 'zpa'
+name: 'zpacloud_ansible'
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 2.9.0
@@ -38,6 +38,7 @@ license_file: 'LICENSE'
 # requirements as 'namespace' and 'name'
 tags:
     - zpa
+    - zpacloud
     - zscaler
     - zero trust
     - security
