@@ -99,3 +99,5 @@ tests/integration/*.log
 *.tar.gz
 examples/script.sh
 collections_test/
+zpa_all_together/
+zpa_all_together/*
