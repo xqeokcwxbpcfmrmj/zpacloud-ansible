@@ -3,7 +3,7 @@
   tasks:
     - name: Gather information about all App Connector Groups
       willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
+        name: "USA App Connector Group"
       register: app
     - name: app connector
       debug:
