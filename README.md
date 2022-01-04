@@ -1,7 +1,7 @@
 (Unofficial) Zscaler Private Access (ZPA) Ansible Collection
 =========================
 
-![Version on Galaxy]<https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud_ansible/&query=latest_version.version>
+![Version on Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud_ansible/&query=latest_version.version)
 
 Ansible collection that automates the configuration and operational tasks on
 Zscaler Private Access, using the the ZPA API.
