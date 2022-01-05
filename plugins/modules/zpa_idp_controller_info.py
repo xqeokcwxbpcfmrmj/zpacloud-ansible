@@ -19,7 +19,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_trusted_network import TrustedNetworkService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_idp_controller import IDPControllerService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -40,73 +40,84 @@ requirements:
 options:
   name:
     description:
-      - Name of the trusted network.
+      - Name of the browser certificate.
     required: false
     type: str
   id:
     description:
-      - ID of the trusted network.
+      - ID of the browser certificate.
     required: false
     type: str
 
 """
 
 EXAMPLES = """
-- name: trusted network
+- name: browser certificate
   hosts: localhost
   tasks:
-    - name: Gather information about all trusted network
-      willguibr.zpacloud_ansible.zpa_trusted_network_info:
+    - name: Gather information about all browser certificate
+      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
         #name: Corp-Trusted-Networks
         id: 216196257331282234
-      register: networks
-    - name: networks
+      register: certificates
+    - name: certificates
       debug:
-        msg: "{{ networks }}"
+        msg: "{{ certificates }}"
 
 """
 
 RETURN = r"""
 data:
-    description: Trusted Network information
+    description: Browser Certificate information
     returned: success
     elements: dict
     type: list
-    sample: [
-      {
-          "id": "216196257331282234",
-          "modified_time": "1631935891",
-          "creation_time": "1625992655",
-          "modified_by": "72057594037928115",
-          "name": "Corp-Trusted-Networks",
-          "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
-          "zscaler_cloud": "zscalerthree"
-      }
+    data: [
+            {
+              "id": "12345",
+              "name": "Root",
+            },
+            {
+              "id": "12345",
+              "name": "Client",
+            },
+            {
+              "id": "1234567890",
+              "name": "Connector",
+            },
+            {
+              "id": "6574",
+              "name": "Service Edge",
+            },
+            {
+                "id": "10242",
+                "name": "Isolation Client",
+            }
     ]
 """
 
 
 def core(module):
-    app_name = module.params.get("name", None)
-    app_id = module.params.get("id", None)
+    idp_name = module.params.get("name", None)
+    idp_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = TrustedNetworkService(module, customer_id)
-    apps = []
-    if app_id is not None:
-        app = service.getByID(app_id)
-        if app is None:
+    service = IDPControllerService(module, customer_id)
+    idp_controllers = []
+    if idp_id is not None:
+        idp_controller = service.getByID(idp_id)
+        if idp_controller is None:
             module.fail_json(
-                msg="Failed to retrieve Trusted Network ID: '%s'" % (id))
-        apps = [app]
-    elif app_name is not None:
-        app = service.getByName(app_name)
-        if app is None:
+                msg="Failed to retrieve IDP Controller ID: '%s'" % (id))
+        idp_controllers = [idp_controller]
+    elif idp_name is not None:
+        idp_controller = service.getByName(idp_name)
+        if idp_controller is None:
             module.fail_json(
-                msg="Failed to retrieve Trusted Network Name: '%s'" % (app_name))
-        apps = [app]
+                msg="Failed to retrieve IDP Controller Name: '%s'" % (idp_name))
+        idp_controllers = [idp_controller]
     else:
-        apps = service.getAll()
-    module.exit_json(changed=False, data=apps)
+        idp_controller = service.getAll()
+    module.exit_json(changed=False, data=idp_controllers)
 
 
 def main():

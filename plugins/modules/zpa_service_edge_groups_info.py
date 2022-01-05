@@ -19,7 +19,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_app_connector_group import AppConnectorGroupService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -101,26 +101,26 @@ data:
 
 
 def core(module):
-    app_name = module.params.get("name", None)
-    app_id = module.params.get("id", None)
+    service_edge_name = module.params.get("name", None)
+    service_edge_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = AppConnectorGroupService(module, customer_id)
-    apps = []
-    if app_id is not None:
-        app = service.getByID(app_id)
-        if app is None:
+    service = ServiceEdgeGroupService(module, customer_id)
+    service_edges = []
+    if service_edge_id is not None:
+        service_edge = service.getByID(service_edge_id)
+        if service_edge is None:
             module.fail_json(
-                msg="Failed to retrieve App Connector Group ID: '%s'" % (id))
-        apps = [app]
-    elif app_name is not None:
-        app = service.getByName(app_name)
-        if app is None:
+                msg="Failed to retrieve Service Edge Group ID: '%s'" % (id))
+        service_edges = [service_edge]
+    elif service_edge_name is not None:
+        service_edge = service.getByName(service_edge_name)
+        if service_edge is None:
             module.fail_json(
-                msg="Failed to retrieve App Connector Group Name: '%s'" % (app_name))
-        apps = [app]
+                msg="Failed to retrieve Service Edge Group Name: '%s'" % (service_edge_name))
+        service_edges = [service_edge]
     else:
-        apps = service.getAll()
-    module.exit_json(changed=False, data=apps)
+        service_edges = service.getAll()
+    module.exit_json(changed=False, data=service_edges)
 
 
 def main():
