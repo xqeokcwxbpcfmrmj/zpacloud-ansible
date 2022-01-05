@@ -2,14 +2,14 @@
   hosts: localhost
   tasks:
     - name: Gather information about all App segment
-      willguibr.zpacloud_ansible.zpa_application_segment_info:
+      willguibr.zpacloud_ansible.zpa_browser_access_info:
         #name: "Browser Access Apps"
       register: app
     - name: app segment
       debug:
         msg: "{{ app }}"
     - name: Create an app segment
-      willguibr.zpacloud_ansible.zpa_application_segment:
+      willguibr.zpacloud_ansible.zpa_browser_access:
         state: absent
         name: Example Application
         description: Example Application Test
