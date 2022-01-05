@@ -84,9 +84,10 @@ class ZPAClientHelper:
         self.tries = 0
         # login
         response = self.login()
-        if response.status_code > 299:
+        if response is None or response.status_code > 299 or response.json is None:
             self.module.fail_json(
-                msg="Failed to login using provided credentials, please verify validity of API ZPA_CLIENT_ID & ZPA_CLIENT_SECRET."
+                msg="Failed to login using provided credentials, please verify validity of API ZPA_CLIENT_ID & ZPA_CLIENT_SECRET. response: %s" % (
+                    response)
             )
         resp_json = response.json
         self.access_token = resp_json.get("access_token")

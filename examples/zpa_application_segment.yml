@@ -3,7 +3,7 @@
   tasks:
     - name: Gather information about all App segment
       willguibr.zpacloud_ansible.zpa_application_segment_info:
-        #name: "Browser Access Apps"
+        #id: "216196257331291981"
       register: app
     - name: app segment
       debug:
@@ -24,7 +24,8 @@
           - crm.example.com
         segment_group_id: "216196257331291896"
         server_groups:
-          #- "216196257331291969"
+          - id: "216196257331291969"
+          #- id: "216196257331291962"
       register: app_segment
     - name: created/updated app segment
       debug:

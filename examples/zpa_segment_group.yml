@@ -17,6 +17,8 @@
         enabled: true
         policy_migrated: true
         tcp_keep_alive_enabled: "1"
+        applications:
+          #- id: "216196257331291980"
       register: segment_group
     - name: created/updated segment group
       debug:

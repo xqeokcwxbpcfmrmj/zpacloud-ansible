@@ -1,6 +1,7 @@
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
+import re
 
 
 class SegmentGroupService:
@@ -33,6 +34,14 @@ class SegmentGroupService:
             segment_groups.append(self.mapRespJSONToApp(segment_group))
         return segment_groups
 
+    @staticmethod
+    def camelcaseToSnakeCase(obj):
+        new_obj = dict()
+        for key, value in obj.items():
+            if value is not None:
+                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
+        return new_obj
+
     def getByName(self, name):
         segment_groups = self.getAll()
         for segment_group in segment_groups:
@@ -40,27 +49,27 @@ class SegmentGroupService:
                 return segment_group
         return None
 
-    def mapListIDsJSONToListID(self, entities):
+    def mapListJSONToList(self, entities):
         if entities is None:
             return []
         l = []
         for s in entities:
-            l.append(s.get("id"))
+            l.append(self.camelcaseToSnakeCase(s))
         return l
 
-    def mapListIDsToJSONObjList(self, entities):
+    def mapListToJSONObjList(self, entities):
         if entities is None:
             return []
         l = []
-        for id in entities:
-            l.append(dict(id=id))
+        for e in entities:
+            l.append(dict(id=e.get("id")))
         return l
 
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
             return {}
         return {
-            "applications": self.mapListIDsJSONToListID(resp_json.get("applications")),
+            "applications": self.mapListJSONToList(resp_json.get("applications")),
             "config_space": resp_json.get("configSpace"),
             "description": resp_json.get("description"),
             "enabled": resp_json.get("enabled"),
@@ -74,7 +83,7 @@ class SegmentGroupService:
         if segment_group is None:
             return {}
         return {
-            "applications": self.mapListIDsToJSONObjList(segment_group.get("applications")),
+            "applications": self.mapListToJSONObjList(segment_group.get("applications")),
             "configSpace": segment_group.get("config_space"),
             "description": segment_group.get("description"),
             "enabled": segment_group.get("enabled"),
@@ -92,7 +101,7 @@ class SegmentGroupService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.mapRespJSONToApp(response.json)
+        return self.getByID(response.json.get("id"))
 
     def update(self, segment_group):
         """update the Segment Group"""
@@ -102,7 +111,7 @@ class SegmentGroupService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return segment_group
+        return self.getByID(segmentGroupJson.get("id"))
 
     def delete(self, id):
         """delete the Segment Group"""

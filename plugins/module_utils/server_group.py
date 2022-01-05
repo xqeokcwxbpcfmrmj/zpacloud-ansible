@@ -1,6 +1,7 @@
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
+import re
 
 
 class ServerGroupService:
@@ -40,20 +41,28 @@ class ServerGroupService:
                 return server_group
         return None
 
-    def mapListIDsJSONToListID(self, entities):
+    @staticmethod
+    def camelcaseToSnakeCase(obj):
+        new_obj = dict()
+        for key, value in obj.items():
+            if value is not None:
+                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
+        return new_obj
+
+    def mapListJSONToList(self, entities):
         if entities is None:
             return []
         l = []
         for s in entities:
-            l.append(s.get("id"))
+            l.append(self.camelcaseToSnakeCase(s))
         return l
 
-    def mapListIDsToJSONObjList(self, entities):
+    def mapListToJSONList(self, entities):
         if entities is None:
             return []
         l = []
-        for id in entities:
-            l.append(dict(id=id))
+        for e in entities:
+            l.append(dict(id=e.get("id")))
         return l
 
     def mapRespJSONToApp(self, resp_json):
@@ -67,9 +76,9 @@ class ServerGroupService:
             "ip_anchored": resp_json.get("ipAnchored"),
             "config_space": resp_json.get("configSpace"),
             "dynamic_discovery": resp_json.get("dynamicDiscovery"),
-            "servers": self.mapListIDsJSONToListID(resp_json.get("servers")),
-            "applications": self.mapListIDsJSONToListID(resp_json.get("applications")),
-            "app_connector_groups": self.mapListIDsJSONToListID(resp_json.get("appConnectorGroups")),
+            "servers": self.mapListJSONToList(resp_json.get("servers")),
+            "applications": self.mapListJSONToList(resp_json.get("applications")),
+            "app_connector_groups": self.mapListJSONToList(resp_json.get("appConnectorGroups")),
         }
 
     def mapAppToJSON(self, server_group):
@@ -83,9 +92,9 @@ class ServerGroupService:
             "ipAnchored": server_group.get("ip_anchored"),
             "configSpace": server_group.get("config_space"),
             "dynamicDiscovery": server_group.get("dynamic_discovery"),
-            "servers": self.mapListIDsToJSONObjList(server_group.get("servers")),
-            "applications": self.mapListIDsToJSONObjList(server_group.get("applications")),
-            "appConnectorGroups": self.mapListIDsToJSONObjList(server_group.get("app_connector_groups")),
+            "servers": self.mapListToJSONList(server_group.get("servers")),
+            "applications": self.mapListToJSONList(server_group.get("applications")),
+            "appConnectorGroups": self.mapListToJSONList(server_group.get("app_connector_groups")),
         }
 
     def create(self, server_group):
@@ -96,7 +105,7 @@ class ServerGroupService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.mapRespJSONToApp(response.json)
+        return self.getByID(response.json.get("id"))
 
     def update(self, server_group):
         """update the Server Group"""
@@ -106,7 +115,7 @@ class ServerGroupService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return server_group
+        return self.getByID(serverGroupJson.get("id"))
 
     def delete(self, id):
         """delete the Server Group"""

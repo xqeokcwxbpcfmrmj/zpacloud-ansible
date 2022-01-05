@@ -39,7 +39,7 @@ options:
     type: list
     elements: str
     required: False
-    description: "This field is a json array of segment_group-connector-id only.
+    description: "This field is a json array of segment_group-connector-id objects only.
   config_space:
     type: str
     required: False
@@ -85,6 +85,8 @@ EXAMPLES = r'''
         name: "Example Test"
         description: "Example Test"
         enabled: false
+        applications:
+          - id: 827277282
       register: segment_group
     - name: segment group
       debug:
@@ -98,11 +100,11 @@ data:
     returned: success
     type: dict
     sample: {
-                "app_connector_groups": [
-                    "216196257331291924"
-                ],
                 "applications": [
-                    "216196257331291981"
+                    {
+                      "id": "216196257331291981",
+                      "name" : "88788"
+                    }
                 ],
                 "config_space": "DEFAULT",
                 "description": "Browser Access Apps",
@@ -116,6 +118,7 @@ data:
                 ]
             }
 """
+
 
 def core(module):
     state = module.params.get("state", None)
@@ -143,8 +146,8 @@ def core(module):
     if state == "present":
         if existing_segment_group is not None:
             """Update"""
-            service.update(existing_segment_group)
-            module.exit_json(changed=True, data=existing_segment_group)
+            segment_group = service.update(existing_segment_group)
+            module.exit_json(changed=True, data=segment_group)
         else:
             """Create"""
             segment_group = service.create(segment_group)
@@ -154,11 +157,13 @@ def core(module):
             service.delete(existing_segment_group.get("id"))
             module.exit_json(changed=False, data=existing_segment_group)
     module.exit_json(changed=False, data={})
-    
+
+
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
-        applications=dict(type='list', elements='str', required=False),
+        applications=dict(type='list', elements='dict', options=dict(id=dict(
+            type='str', required=True), name=dict(type='str', required=False)), required=False),
         config_space=dict(type='str', required=False,
                           default="DEFAULT", choices=["DEFAULT", "SIEM"]),
         description=dict(type='str', required=False),
@@ -167,6 +172,8 @@ def main():
         name=dict(type='str', required=True),
         policy_migrated=dict(type='bool', required=False),
         tcp_keep_alive_enabled=dict(type='str', required=False),
+        state=dict(type="str", choices=[
+                   "present", "absent"], default="present"),
 
     )
     module = AnsibleModule(argument_spec=argument_spec,

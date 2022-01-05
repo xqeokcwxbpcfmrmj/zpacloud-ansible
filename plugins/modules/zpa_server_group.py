@@ -39,7 +39,7 @@ options:
     type: list
     elements: str
     required: False
-    description: "This field is a json array of server_group-connector-id only."
+    description: "This field is a json array of server_group-connector-id objects only."
   enabled:
     type: bool
     required: False
@@ -56,12 +56,12 @@ options:
     type: list
     elements: str
     required: False
-    description: "This field is a list of servers that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId."
+    description: "This field is a list of servers objects that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId."
   app_connector_groups:
     type: list
     elements: str
     required: False
-    description: "List of server_group-connector IDs."
+    description: "List of server_group-connector ID objects."
   config_space:
     type: str
     required: False
@@ -99,11 +99,14 @@ EXAMPLES = r'''
         enabled: false
         dynamic_discovery: false
         app_connector_groups:
-          - "216196257331291924"
+          - id: "216196257331291921"
+            name: "sks"
         servers:
-          - "216196257331291921"
+          - id: "216196257331291921"
+            name: "sks"
         applications:
-          - "216196257331291981"
+          - id: "216196257331291921"
+            name: "sks"
       register: server_g
     - name: server group
       debug:
@@ -118,10 +121,10 @@ data:
     type: dict
     sample: {
                 "app_connector_groups": [
-                    "216196257331291924"
+                    {"id": "216196257331291924", "name":"XXX"}
                 ],
                 "applications": [
-                    "216196257331291981"
+                    {"id": "216196257331291924", "name":"XXX"}
                 ],
                 "config_space": "DEFAULT",
                 "description": "Browser Access Apps",
@@ -131,7 +134,7 @@ data:
                 "ip_anchored": false,
                 "name": "Browser Access Apps",
                 "servers": [
-                    "216196257331291921"
+                    {"id": "216196257331291924", "name":"XXX"}
                 ]
             }
 """
@@ -165,8 +168,8 @@ def core(module):
     if state == "present":
         if existing_server_group is not None:
             """Update"""
-            service.update(existing_server_group)
-            module.exit_json(changed=True, data=existing_server_group)
+            server_group = service.update(existing_server_group)
+            module.exit_json(changed=True, data=server_group)
         else:
             """Create"""
             server_group = service.create(server_group)
@@ -180,6 +183,8 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
+    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+        type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
         id=dict(type='str'),
         ip_anchored=dict(type='bool', required=False),
@@ -189,9 +194,9 @@ def main():
         enabled=dict(type='bool', required=False),
         description=dict(type='str', required=False),
         dynamic_discovery=dict(type='bool', required=False),
-        servers=dict(type='list', elements='str', required=False),
-        applications=dict(type='list', elements='str', required=False),
-        app_connector_groups=dict(type='list', elements='str', required=False),
+        servers=id_name_spec,
+        applications=id_name_spec,
+        app_connector_groups=id_name_spec,
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

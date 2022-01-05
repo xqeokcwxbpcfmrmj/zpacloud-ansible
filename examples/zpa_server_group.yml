@@ -12,16 +12,16 @@
     - name: Create an server group
       willguibr.zpacloud_ansible.zpa_server_group:
         state: absent
-        name: "Example Test amazzal"
-        description: "Example  Test amazzal"
+        name: "Example Test"
+        description: "Example  Test"
         enabled: false
         dynamic_discovery: false
         app_connector_groups:
-          - "216196257331291924"
+          - id: "216196257331291924"
         servers:
-          - "216196257331291921"
+          - id: "216196257331291921"
         applications:
-          - "216196257331291981"
+          - id: "216196257331291981"
       register: server_g
     - name: server group
       debug:
