@@ -21,7 +21,7 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_browser_access import BrowserAccessService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
@@ -190,37 +190,39 @@ EXAMPLES = '''
 RETURN = r"""
 """
 
-
 def core(module):
     state = module.params.get("state", None)
     customer_id = module.params.get("customer_id", None)
-    service = ApplicationSegmentService(module, customer_id)
+    service = BrowserAccessService(module, customer_id)
     app = dict()
     params = [
-        "tcp_port_range",
-        "enabled",
-        "default_idle_timeout",
-        "bypass_type",
-        "udp_port_range",
-        "config_space",
-        "health_reporting",
         "segment_group_id",
-        "double_encrypt",
-        "health_check_type",
-        "default_max_age",
-        "is_cname_enabled",
-        "passive_health_enabled",
-        "ip_anchored",
-        "name",
-        "description",
-        "icmp_access_type",
+        "segment_group_name",
+        "bypass_type",
+        "clientless_apps",
+        "config_space",
         "creation_time",
+        "default_idle_timeout",
+        "default_max_age",
+        "description",
+        "domain_names",
+        "double_encrypt",
+        "enabled",
+        "health_check_type",
+        "health_reporting",
+        "icmp_access_type",
+        "id",
+        "ip_anchored",
+        "is_cname_enabled",
         "modifiedby",
         "modified_time",
-        "id",
+        "name",
+        "passive_health_enabled",
+        "tcp_port_range",
+        "udp_port_range",
         "server_groups",
-        "segment_group_name",
-        "domain_names",
+
+
     ]
     for param_name in params:
         app[param_name] = module.params.get(param_name)

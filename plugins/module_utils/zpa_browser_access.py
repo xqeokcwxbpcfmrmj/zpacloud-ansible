@@ -3,7 +3,7 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_cli
 )
 
 
-class ApplicationSegmentService:
+class BrowserAccessService:
     def __init__(self, module, customer_id):
         self.module = module
         self.customer_id = customer_id
@@ -60,57 +60,64 @@ class ApplicationSegmentService:
         if resp_json is None:
             return {}
         return {
-            "tcp_port_range": resp_json.get("tcpPortRange"),
-            "enabled": resp_json.get("enabled"),
-            "bypass_type": resp_json.get("bypassType"),
-            "udp_port_range": resp_json.get("udpPortRange"),
-            "config_space": resp_json.get("configSpace"),
-            "health_reporting": resp_json.get("healthReporting"),
             "segment_group_id": resp_json.get("segmentGroupId"),
-            "double_encrypt": resp_json.get("doubleEncrypt"),
-            "health_check_type": resp_json.get("healthCheckType"),
-            "is_cname_enabled": resp_json.get("isCnameEnabled"),
-            "passive_health_enabled": resp_json.get("passiveHealthEnabled"),
-            "ip_anchored": resp_json.get("ipAnchored"),
-            "name": resp_json.get("name"),
-            "description": resp_json.get("description"),
-            "icmp_access_type": resp_json.get("icmpAccessType"),
-            "creation_time": resp_json.get("creationTime"),
-            "modifiedby": resp_json.get("modifiedBy"),
-            "id": resp_json.get("id"),
-            "server_groups": self.mapServerGroupsRespJSONToListID(resp_json.get("serverGroups")),
             "segment_group_name": resp_json.get("segmentGroupName"),
+            "bypass_type": resp_json.get("bypassType"),
+            "clientless_apps": resp_json.get("clientlessApps"),
+            "config_space": resp_json.get("configSpace"),
+            "creation_time": resp_json.get("creationTime"),
+            "default_idle_timeout": resp_json.get("defaultIdleTimeout"),
+            "default_max_age": resp_json.get("defaultMaxAge"),
+            "description": resp_json.get("description"),
             "domain_names": resp_json.get("domainNames"),
+            "double_encrypt": resp_json.get("doubleEncrypt"),
+            "enabled": resp_json.get("enabled"),
+            "health_check_type": resp_json.get("healthCheckType"),
+            "health_reporting": resp_json.get("healthReporting"),
+            "icmp_access_type": resp_json.get("icmpAccessType"),
+            "id": resp_json.get("id"),
+            "ip_anchored": resp_json.get("ipAnchored"),
+            "is_cname_enabled": resp_json.get("isCnameEnabled"),
+            "modified_by": resp_json.get("modifiedBy"),
+            "modified_time": resp_json.get("modifiedTime"),
+            "name": resp_json.get("name"),
+            "passive_health_enabled": resp_json.get("passiveHealthEnabled"),
+            "tcp_port_range": resp_json.get("tcpPortRange"),
+            "udp_port_range": resp_json.get("udpPortRange"),
+            "server_groups": self.mapServerGroupsRespJSONToListID(resp_json.get("serverGroups")),
+
+
         }
 
     def mapAppToJSON(self, app):
         if app is None:
             return {}
         return {
-            "tcpPortRange": app.get("tcp_port_range"),
-            "enabled": app.get("enabled"),
-            "bypassType": app.get("bypass_type"),
-            "udpPortRange": app.get("udp_port_range"),
-            "configSpace": app.get("config_space"),
-            "healthReporting": app.get("health_reporting"),
             "segmentGroupId": app.get("segment_group_id"),
-            "doubleEncrypt": app.get("double_encrypt"),
-            "healthCheckType": app.get("health_check_type"),
-            "isCnameEnabled": app.get("is_cname_enabled"),
-            "passiveHealthEnabled": app.get("passive_health_enabled"),
-            "ipAnchored": app.get("ip_anchored"),
-            "name": app.get("name"),
-            "description": app.get("description"),
-            "icmpAccessType": app.get("icmp_access_type"),
-            "creationTime": app.get("creation_time"),
-            "modifiedBy": app.get("modifiedby"),
-            "modified_time": app.get("modifiedTime"),
-            "id": app.get("id"),
-            "serverGroups": self.mapServerGroupsToJSON(app.get("server_groups")),
             "segmentGroupName": app.get("segment_group_name"),
-            "domainNames": app.get("domain_names"),
+            "bypassType": app.get("bypass_type"),
+            "clientlessApps": app.get("clientless_apps"),
+            "configSpace": app.get("config_space"),
+            "creationTime": app.get("creation_time"),
             "defaultIdleTimeout": app.get("default_idle_timeout"),
             "defaultMaxAge": app.get("default_max_age"),
+            "description": app.get("description"),
+            "domainNames": app.get("domain_names"),
+            "doubleEncrypt": app.get("double_encrypt"),
+            "enabled": app.get("enabled"),
+            "healthCheckType": app.get("health_check_type"),
+            "healthReporting": app.get("health_reporting"),
+            "icmpAccessType": app.get("icmp_access_type"),
+            "id": app.get("id"),
+            "ipAnchored": app.get("ip_anchored"),
+            "isCnameEnabled": app.get("is_cname_enabled"),
+            "modifiedBy": app.get("modified_by"),
+            "modifiedTime": app.get("modified_time"),
+            "name": app.get("name"),
+            "passiveHealthEnabled": app.get("passive_health_enabled"),
+            "tcpPortRange": app.get("tcp_port_range"),
+            "udpPortRange": app.get("udp_port_range"),
+            "serverGroups": self.mapServerGroupsToJSON(app.get("server_groups")),
         }
 
     def create(self, app):
