@@ -1,6 +1,7 @@
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
+import re
 
 
 class ApplicationSegmentService:
@@ -40,20 +41,39 @@ class ApplicationSegmentService:
                 return app
         return None
 
-    def mapServerGroupsRespJSONToListID(self, serverGroups):
+    def mapServerGroupsJSONToList(self, serverGroups):
         if serverGroups is None:
             return []
         l = []
         for s in serverGroups:
-            l.append(s.get("id"))
+            d = self.camelcaseToSnakeCase(s)
+            l.append(d)
         return l
 
-    def mapServerGroupsToJSON(self, serverGroups):
+    @staticmethod
+    def camelcaseToSnakeCase(obj):
+        new_obj = dict()
+        for key, value in obj.items():
+            if value is not None:
+                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
+        return new_obj
+
+    def mapServerGroupsListToJSON(self, serverGroups):
         if serverGroups is None:
             return []
         l = []
-        for id in serverGroups:
-            l.append(dict(id=id))
+        for s in serverGroups:
+            d = dict(id=s.get("id"))
+            l.append(d)
+        return l
+
+    def mapClientlessAppsJSONToList(self, apps):
+        if apps is None:
+            return []
+        l = []
+        for app in apps:
+            d = self.camelcaseToSnakeCase(app)
+            l.append(d)
         return l
 
     def mapRespJSONToApp(self, resp_json):
@@ -78,9 +98,10 @@ class ApplicationSegmentService:
             "creation_time": resp_json.get("creationTime"),
             "modifiedby": resp_json.get("modifiedBy"),
             "id": resp_json.get("id"),
-            "server_groups": self.mapServerGroupsRespJSONToListID(resp_json.get("serverGroups")),
+            "server_groups": self.mapServerGroupsJSONToList(resp_json.get("serverGroups")),
             "segment_group_name": resp_json.get("segmentGroupName"),
             "domain_names": resp_json.get("domainNames"),
+            "clientless_apps": self.mapClientlessAppsJSONToList(resp_json.get("clientlessApps"))
         }
 
     def mapAppToJSON(self, app):
@@ -105,7 +126,7 @@ class ApplicationSegmentService:
             "creationTime": app.get("creation_time"),
             "modifiedBy": app.get("modifiedby"),
             "id": app.get("id"),
-            "serverGroups": self.mapServerGroupsToJSON(app.get("server_groups")),
+            "serverGroups": self.mapServerGroupsListToJSON(app.get("server_groups")),
             "segmentGroupName": app.get("segment_group_name"),
             "domainNames": app.get("domain_names"),
         }
@@ -118,7 +139,7 @@ class ApplicationSegmentService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.mapRespJSONToApp(response.json)
+        return self.getByID(response.json.get("id"))
 
     def update(self, app):
         """update the application"""
@@ -128,7 +149,7 @@ class ApplicationSegmentService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return app
+        return self.getByID(app.get("id"))
 
     def detach_from_segment_group(self, app_id, seg_group_id):
         seg_group = self.rest.get(
