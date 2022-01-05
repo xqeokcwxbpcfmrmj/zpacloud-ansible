@@ -2,14 +2,14 @@
   hosts: localhost
   tasks:
     - name: Gather information about all App segment
-      willguibr.zpacloud_ansible.zpa_application_segment_info:
-        #id: "216196257331291981"
+      willguibr.zpacloud_ansible.zpa_browser_access_info:
+        #name: "Browser Access Apps"
       register: app
     - name: app segment
       debug:
         msg: "{{ app }}"
     - name: Create an app segment
-      willguibr.zpacloud_ansible.zpa_application_segment:
+      willguibr.zpacloud_ansible.zpa_browser_access:
         state: absent
         name: Example Application
         description: Example Application Test
@@ -25,8 +25,7 @@
           - crm2.example.com
         segment_group_id: "216196257331291896"
         server_groups:
-          - id: "216196257331291969"
-          #- id: "216196257331291962"
+          #- "216196257331291969"
       register: app_segment
     - name: created/updated app segment
       debug:

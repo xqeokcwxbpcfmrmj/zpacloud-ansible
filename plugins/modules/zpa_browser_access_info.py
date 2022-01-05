@@ -19,7 +19,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_app_connector_group import AppConnectorGroupService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_browser_access import BrowserAccessService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -104,19 +104,19 @@ def core(module):
     app_name = module.params.get("name", None)
     app_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = AppConnectorGroupService(module, customer_id)
+    service = BrowserAccessService(module, customer_id)
     apps = []
     if app_id is not None:
         app = service.getByID(app_id)
         if app is None:
             module.fail_json(
-                msg="Failed to retrieve App Connector Group ID: '%s'" % (id))
+                msg="Failed to retrieve Browser Access ID: '%s'" % (id))
         apps = [app]
     elif app_name is not None:
         app = service.getByName(app_name)
         if app is None:
             module.fail_json(
-                msg="Failed to retrieve App Connector Group Name: '%s'" % (app_name))
+                msg="Failed to retrieve Browser Access Name: '%s'" % (app_name))
         apps = [app]
     else:
         apps = service.getAll()

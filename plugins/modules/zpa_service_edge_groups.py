@@ -21,7 +21,7 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_app_connector_group import AppConnectorGroupService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
@@ -155,73 +155,77 @@ data:
     ]
 """
 
-
 def core(module):
     state = module.params.get("state", None)
     customer_id = module.params.get("customer_id", None)
-    service = AppConnectorGroupService(module, customer_id)
-    app = dict()
+    service = ServiceEdgeGroupService(module, customer_id)
+    service_edge = dict()
     params = [
-        "id",
-        "name",
-        "description",
-        "enabled",
         "city_country",
         "country_code",
+        "description",
+        "enabled",
+        "gelocation_id",
+        "id",
+        "is_public",
         "latitude",
-        "longitude",
         "location",
+        "longitude",
+        "name",
+        "override_version_profile",
         "upgrade_day",
         "upgrade_time_in_secs",
-        "override_version_profile",
         "version_profile_id",
-        "dns_query_type",
+        "version_profile_name",
+        "version_profile_visibility_scope",
     ]
     for param_name in params:
-        app[param_name] = module.params.get(param_name, None)
-    existing_app = service.getByIDOrName(app.get("id"), app.get("name"))
-    if existing_app is not None:
-        id = existing_app.get("id")
-        existing_app.update(app)
-        existing_app["id"] = id
+        service_edge[param_name] = module.params.get(param_name, None)
+    existing_edge = service.getByIDOrName(service_edge.get("id"), service_edge.get("name"))
+    if existing_edge is not None:
+        id = existing_edge.get("id")
+        existing_edge.update(service_edge)
+        existing_edge["id"] = id
     if state == "present":
-        if existing_app is not None:
+        if existing_edge is not None:
             """Update"""
-            service.update(existing_app)
-            module.exit_json(changed=True, data=existing_app)
+            service.update(existing_edge)
+            module.exit_json(changed=True, data=existing_edge)
         else:
             """Create"""
-            app = service.create(app)
-            module.exit_json(changed=False, data=app)
+            service_edge = service.create(service_edge)
+            module.exit_json(changed=False, data=service_edge)
     elif state == "absent":
-        if existing_app is not None:
-            service.delete(existing_app.get("id"))
-            module.exit_json(changed=False, data=existing_app)
+        if existing_edge is not None:
+            service.delete(existing_edge.get("id"))
+            module.exit_json(changed=False, data=existing_edge)
     module.exit_json(changed=False, data={})
 
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
-        name=dict(type="str", required=True),
-        id=dict(type="str", required=False),
         city_country=dict(type="str", required=False),
         country_code=dict(type="str", required=False),
         description=dict(type="str", required=False),
-        dns_query_type=dict(type="str", choices=[
-                            'IPV4_IPV6', 'IPV4', 'IPV6'], required=False, default="IPV4_IPV6"),
         enabled=dict(type="bool", default=True, required=False),
+        geolocation_id=dict(type="str", required=False),
+        id=dict(type="str", required=False),
+        is_public=dict(type="str", required=False),
         latitude=dict(type="str", required=False),
         location=dict(type="str", required=False),
         longitude=dict(type="str", required=False),
-        lss_app_connector_group=dict(type="str", required=False),
-        upgrade_day=dict(type="str", default="SUNDAY", required=False),
-        upgrade_time_in_secs=dict(type="str", default=66600, required=False),
+        name=dict(type="str", required=True),
         override_version_profile=dict(
             type="bool", default=False, required=False),
-        version_profile_id=dict(type="str", default="0", choices=[
-                                '0', '1', '2'], required=False),
+        upgrade_day=dict(type="str", default="SUNDAY", required=False),
+        upgrade_time_in_secs=dict(type="str", default=66600, required=False),
+        version_profile_id=dict(type="str", required=False),
         version_profile_name=dict(type="str", required=False),
+        version_profile_visibility_scope=dict(type="str", default="NONE", choices=[
+                                'ALL', 'NONE', 'CUSTOM'], required=False),
+        service_edges=dict(type='list', elements='str', required=False),
+        trusted_networks=dict(type='list', elements='str', required=False),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

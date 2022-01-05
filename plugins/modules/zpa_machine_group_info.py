@@ -19,7 +19,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_trusted_network import TrustedNetworkService
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_machine_group import MachineGroupService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -87,26 +87,26 @@ data:
 
 
 def core(module):
-    app_name = module.params.get("name", None)
-    app_id = module.params.get("id", None)
+    machine_group_name = module.params.get("name", None)
+    machine_group_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = TrustedNetworkService(module, customer_id)
-    apps = []
-    if app_id is not None:
-        app = service.getByID(app_id)
-        if app is None:
+    service = MachineGroupService(module, customer_id)
+    machine_groups = []
+    if machine_group_id is not None:
+        machine_group = service.getByID(machine_group_id)
+        if machine_group is None:
             module.fail_json(
-                msg="Failed to retrieve Trusted Network ID: '%s'" % (id))
-        apps = [app]
-    elif app_name is not None:
-        app = service.getByName(app_name)
-        if app is None:
+                msg="Failed to retrieve Machine Group ID: '%s'" % (id))
+        machine_groups = [machine_group]
+    elif machine_group_name is not None:
+        machine_group = service.getByName(machine_group_name)
+        if machine_group is None:
             module.fail_json(
-                msg="Failed to retrieve Trusted Network Name: '%s'" % (app_name))
-        apps = [app]
+                msg="Failed to retrieve Machine Group Name: '%s'" % (machine_group_name))
+        machine_groups = [machine_groups]
     else:
-        apps = service.getAll()
-    module.exit_json(changed=False, data=apps)
+        machine_groups = service.getAll()
+    module.exit_json(changed=False, data=machine_groups)
 
 
 def main():
