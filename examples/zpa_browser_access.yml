@@ -3,7 +3,7 @@
   tasks:
     - name: Gather information about all App segment
       willguibr.zpacloud_ansible.zpa_browser_access_info:
-        #name: "Browser Access Apps"
+        name: "Browser Access Apps"
       register: app
     - name: app segment
       debug:

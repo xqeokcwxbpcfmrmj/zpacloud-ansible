@@ -1,3 +1,4 @@
+import re
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
@@ -40,10 +41,37 @@ class AppConnectorGroupService:
                 return app
         return None
 
+    def mapConnectorsJSONToList(self, connectors):
+        if connectors is None:
+            return []
+        l = []
+        for s in connectors:
+            d = self.camelcaseToSnakeCase(s)
+            l.append(d)
+        return l
+
+    @staticmethod
+    def camelcaseToSnakeCase(obj):
+        new_obj = dict()
+        for key, value in obj.items():
+            if value is not None:
+                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
+        return new_obj
+
+    def mapConnectorsListToJSON(self, connectors):
+        if connectors is None:
+            return []
+        l = []
+        for s in connectors:
+            d = dict(id=s.get("id"))
+            l.append(d)
+        return l
+
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
             return {}
         return {
+            "connectors": self.mapConnectorsJSONToList(resp_json.get("connectors")),
             "id": resp_json.get("id"),
             "name": resp_json.get("name"),
             "description": resp_json.get("description"),
@@ -64,6 +92,7 @@ class AppConnectorGroupService:
         if app is None:
             return {}
         return {
+            "connectors": self.mapConnectorsListToJSON(app.get("connectors")),
             "id": app.get("id"),
             "name": app.get("name"),
             "description": app.get("description"),

@@ -1,3 +1,4 @@
+import re
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
@@ -40,22 +41,50 @@ class ServiceEdgeGroupService:
                 return app
         return None
     
-    def mapServiceEdgeGroupsRespJSONToListID(self, serviceEdgeGroup):
-        if serviceEdgeGroup is None:
+    def mapServiceEdgesJSONToList(self, serviceEdges):
+        if serviceEdges is None:
             return []
         l = []
-        for s in serviceEdgeGroup:
-            l.append(s.get("id"))
+        for s in serviceEdges:
+            d = self.camelcaseToSnakeCase(s)
+            l.append(d)
         return l
 
-    def mapServiceEdgeGroupsToJSON(self, serviceEdgeGroup):
-        if serviceEdgeGroup is None:
+    @staticmethod
+    def camelcaseToSnakeCase(obj):
+        new_obj = dict()
+        for key, value in obj.items():
+            if value is not None:
+                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
+        return new_obj
+
+    def mapServiceEdgesListToJSON(self, serviceEdges):
+        if serviceEdges is None:
             return []
         l = []
-        for id in serviceEdgeGroup:
-            l.append(dict(id=id))
+        for s in serviceEdges:
+            d = dict(id=s.get("id"))
+            l.append(d)
+        return l
+    
+    def mapTrustedNetworksJSONToList(self, trustedNetworks):
+        if trustedNetworks is None:
+            return []
+        l = []
+        for app in trustedNetworks:
+            d = self.camelcaseToSnakeCase(app)
+            l.append(d)
         return l
 
+    def mapTrustedNetworksListToJSON(self, trustedNetworks):
+        if trustedNetworks is None:
+            return []
+        l = []
+        for s in trustedNetworks:
+            d = dict(id=s.get("id"))
+            l.append(d)
+        return l
+    
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
             return {}
@@ -77,8 +106,8 @@ class ServiceEdgeGroupService:
             "version_profile_id": resp_json.get("versionProfileId"),
             "version_profile_name": resp_json.get("versionProfileName"),
             "version_profile_visibility_scope": resp_json.get("versionProfileVisibilityScope"),
-            "service_edges": self.mapServiceEdgeGroupsRespJSONToListID(resp_json.get("serviceEdges")),
-            "trusted_networks": self.mapServiceEdgeGroupsRespJSONToListID(resp_json.get("trustedNetworks")),
+            "service_edges": self.mapServiceEdgesJSONToList(resp_json.get("serviceEdges")),
+            "trusted_networks": self.mapTrustedNetworksJSONToList(resp_json.get("trustedNetworks")),
         }
 
     def mapAppToJSON(self, serviceEdge):
@@ -101,8 +130,8 @@ class ServiceEdgeGroupService:
             "upgradeTimeInSecs": serviceEdge.get("upgrade_time_in_secs"),
             "versionProfileId": serviceEdge.get("version_profile_id"),
             "versionProfileVisibilityScope": serviceEdge.get("version_profile_visibility_scope"),
-            "serviceEdges": self.mapServiceEdgeGroupsToJSON(serviceEdge.get("service_edges")),
-            "trustedNetworks": self.mapServiceEdgeGroupsToJSON(serviceEdge.get("trusted_networks")),
+            "serviceEdges": self.mapServiceEdgesListToJSON(serviceEdge.get("service_edges")),
+            "trustedNetworks": self.mapTrustedNetworksListToJSON(serviceEdge.get("trusted_networks")),
         }
 
     def create(self, app):

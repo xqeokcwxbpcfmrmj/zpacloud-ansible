@@ -254,6 +254,8 @@ def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     port_spec = dict(to=dict(type='str', required=False))
     port_spec["from"] = dict(type='str', required=False)
+    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+        type='str', required=True), name=dict(type='str', required=False)), required=True)
     argument_spec.update(
         tcp_port_range=dict(type='list', elements='dict',
                             options=port_spec, required=False),
@@ -281,7 +283,7 @@ def main():
         modifiedby=dict(type='str', required=False),
         modified_time=dict(type='str', required=False),
         id=dict(type='str'),
-        server_groups=dict(type='list', elements='str', required=True),
+        server_groups=id_name_spec,
         segment_group_name=dict(type='str', required=False),
         domain_names=dict(type='list', elements='str', required=True),
         state=dict(type="str", choices=[

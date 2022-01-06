@@ -204,6 +204,8 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
+    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+        type='str', required=False), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
         city_country=dict(type="str", required=False),
         country_code=dict(type="str", required=False),
@@ -224,8 +226,10 @@ def main():
         version_profile_name=dict(type="str", required=False),
         version_profile_visibility_scope=dict(type="str", default="NONE", choices=[
                                 'ALL', 'NONE', 'CUSTOM'], required=False),
-        service_edges=dict(type='list', elements='str', required=False),
-        trusted_networks=dict(type='list', elements='str', required=False),
+        service_edges=id_name_spec,
+        trusted_networks=id_name_spec,
+        # service_edges=dict(type='list', elements='str', required=False),
+        # trusted_networks=dict(type='list', elements='str', required=False),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

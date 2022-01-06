@@ -202,7 +202,10 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
+    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+        type='str', required=True), name=dict(type='str', required=False)), required=True)
     argument_spec.update(
+        connectors=id_name_spec,
         name=dict(type="str", required=True),
         id=dict(type="str", required=False),
         city_country=dict(type="str", required=False),
