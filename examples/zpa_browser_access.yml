@@ -10,7 +10,7 @@
         msg: "{{ app }}"
     - name: Create an app segment
       willguibr.zpacloud_ansible.zpa_browser_access:
-        state: absent
+        # state: absent
         name: Example Application
         description: Example Application Test
         enabled: true
