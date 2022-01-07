@@ -27,132 +27,120 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: zpa_app_connector_groups
-short_description: Create/ an app connector group
+module: zpa_provisioning_key
+short_description: Create/ an Provisioning Key
 description:
-  - This module will create, retrieve, update or delete a specific app connector group
+  - This module will create, retrieve, update or delete a specific Provisioning Key
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  name:
-    description: "Name of the App Connector Group."
-    required: True
-    type: str
-  id:
-    description: "ID of the App Connector Group."
-    type: str
-  city_country:
-    description: "City Country of the App Connector Group."
-    type: str
-  country_code:
-    description: "Country code of the App Connector Group."
-    type: str
-  description:
-    description: "Description of the App Connector Group."
-    type: str
-  dns_query_type:
-    description: "Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the App Connector Group."
-    default: IPV4_IPV6
-    choices: ["IPV4_IPV6", "IPV4", "IPV6"]
-    type: str
   enabled:
-    description: "Whether this App Connector Group is enabled or not."
-    required: False
-    default: True
     type: bool
-  latitude:
-    description: "Latitude of the App Connector Group. Integer or decimal. With values in the range of -90 to 90."
-    type: str
-  location:
-    description: "Location of the App Connector Group."
-    type: str
-  longitude:
-    description: "Longitude of the App Connector Group. Integer or decimal. With values in the range of -180 to 180."
-    type: str
-  lss_app_connector_group:
-    description: "LSS app connector group."
     required: False
-    type: bool
-  upgrade_day:
-    description: "App Connectors in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday)."
-    default: SUNDAY
+    description: "Whether the provisioning key is enabled or not. Supported values: true, false"
+    default: true
+  max_usage:
     type: str
-  upgrade_time_in_secs:
-    description: "App Connectors in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals."
-    default: 66600
+    required: True
+    description: "The maximum number of instances where this provisioning key can be used for enrolling an App Connector or Service Edge."
+  enrollment_cert_id:
     type: str
-  override_version_profile:
-    description: "Whether the default version profile of the App Connector Group is applied or overridden. Supported values: true, false."
+    required: True
+    description: "ID of the enrollment certificate that can be used for this provisioning key."
+  ui_config:
+    type: str
     required: False
-    default: False
-    type: bool
-  version_profile_id:
-    description: "ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true."
-    default: 0
-    choices: ["0", "1", "2"]
+    description: ""
+  provisioning_key:
     type: str
-  version_profile_name:
-    description: "Name of the version profile."
+    description: "read only field. Ignored in PUT/POST calls."
+  association_type:
     type: str
-  state:
-    description: "Whether the app connector group should be present or absent."
-    default: present
-    choices: ["present", "absent"]
+    required: True
+    description: "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
+  id:
     type: str
+    required: False
+    description: ""
+  name:
+    type: str
+    required: True
+    description: "Name of the provisioning key."
+  usage_count:
+    type: str
+    required: False
+    description: "The provisioning key utilization count."
+  zcomponent_id:
+    type: str
+    required: True
+    description: "ID of the existing App Connector or Service Edge Group."
+  zcomponent_name:
+    type: str
+    required: False
+    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+  enrollment_cert_name:
+    type: str
+    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+  app_connector_group_id:
+    type: str
+    required: False
+    description: ""
+  app_connector_group_name:
+    type: str
+    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+  ip_acl:
+    type: list
+    elements: str
+    description: ""
+    required: False
 """
 
 EXAMPLES = '''
-- name: App Connector Groups
+- name: App Provisioning Key
   hosts: localhost
   tasks:
-    - name: Create/update/delete an app connector group
-      willguibr.zpacloud_ansible.zpa_app_connector_groups:
-        state: "absent"
-        #id: "216196257331292046"
-        name: "Example"
-        description: "Example2"
-        enabled: true
-        city_country: "California, US"
-        country_code: "US"
-        latitude: "37.3382082"
-        longitude: "-121.8863286"
-        location: "San Jose, CA, USA"
-        upgrade_day: "SUNDAY"
-        upgrade_time_in_secs: "66600"
-        override_version_profile: true
-        version_profile_id: "0"
-        dns_query_type: "IPV4"
-      register: appconnectorg
-    - name: created appconnector group
+    - name: Create/update/delete a Provisioning Key
+      willguibr.zpacloud_ansible.zpa_provisioning_key:
+        name             : "New York Provisioning Key"
+        association_type : "CONNECTOR_GRP"
+        max_usage        : "10"
+        enrollment_cert_id : 92828292
+        zcomponent_id : 2828227
+      register: key
+    - name: created key
       debug:
-        msg: "{{ appconnectorg }}"
+        msg: "{{ key }}"
 
 '''
 
 RETURN = r"""
 data:
-    description: App Connector Group
+    description: Provisioning Key
     returned: success
     type: dict
-    sample: [
+    sample:
         {
-          id                      = "82827282828",
-          name                    = "Example",
-          description             = "Example",
-          enabled                 = true,
-          city_country            = "California, US",
-          country_code            = "US",
-          latitude                = "37.3382082",
-          longitude               = "-121.8863286",
-          location                = "San Jose, CA, USA",
-          upgrade_day             = "SUNDAY",
-          upgrade_time_in_secs    = "66600",
-          override_version_profile= true,
-          version_profile_id      = 0,
-          dns_query_type          = "IPV4"
-        },
-    ]
+            "app_connector_group_id": null,
+            "app_connector_group_name": "USA App Connector Group",
+            "creation_time": "1639693617",
+            "enabled": true,
+            "enrollment_cert_id": "6573",
+            "enrollment_cert_name": "Connector",
+            "expiration_in_epoch_sec": null,
+            "id": "8691",
+            "ip_acl": null,
+            "max_usage": "2",
+            "modified_by": "216196257331282070",
+            "modified_time": null,
+            "name": "USA App Connector Group",
+            "provisioning_key": "3|api.private.zscaler.com|Wy3HzPKWJr88i6uA...",
+            "ui_config": null,
+            "usage_count": "0",
+            "zcomponent_id": "216196257331291906",
+            "zcomponent_name": "USA App Connector Group",
+        }
+
 """
 
 
@@ -180,10 +168,13 @@ def core(module):
         "usage_count",
         "zcomponent_id",
         "zcomponent_name",
+        "association_type"
     ]
+    association_type = module.params.get("association_type")
     for param_name in params:
         provisioning_key[param_name] = module.params.get(param_name, None)
-    existing_key = service.getByIDOrName(provisioning_key.get("id"), provisioning_key.get("name"))
+    existing_key = service.getByIDOrName(
+        provisioning_key.get("id"), provisioning_key.get("name"), association_type)
     if existing_key is not None:
         id = existing_key.get("id")
         existing_key.update(provisioning_key)
@@ -191,15 +182,16 @@ def core(module):
     if state == "present":
         if existing_key is not None:
             """Update"""
-            service.update(existing_key)
+            existing_key = service.update(existing_key, association_type)
             module.exit_json(changed=True, data=existing_key)
         else:
             """Create"""
-            provisioning_key = service.create(provisioning_key)
+            provisioning_key = service.create(
+                provisioning_key, association_type)
             module.exit_json(changed=False, data=provisioning_key)
     elif state == "absent":
         if existing_key is not None:
-            service.delete(existing_key.get("id"))
+            service.delete(existing_key.get("id"), association_type)
             module.exit_json(changed=False, data=existing_key)
     module.exit_json(changed=False, data={})
 
@@ -214,17 +206,19 @@ def main():
         expiration_in_epoch_sec=dict(type="str", required=False),
         id=dict(type="str", required=False),
         ip_acl=dict(type="str", required=False),
-        max_usage=dict(type="str", required=False),
+        max_usage=dict(type="str", required=True),
         modified_by=dict(type="str", required=False),
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=True),
         provisioning_key=dict(type="str", required=False),
-        enrollment_cert_id=dict(type="str", required=False),
+        enrollment_cert_id=dict(type="str", required=True),
         enrollment_cert_name=dict(type="str", required=False),
         ui_config=dict(type="str", required=False),
         usage_count=dict(type="str", required=False),
-        zcomponent_id=dict(type="str", required=False),
+        zcomponent_id=dict(type="str", required=True),
         zcomponent_name=dict(type="str", required=False),
+        association_type=dict(type="str", choices=[
+                              "CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

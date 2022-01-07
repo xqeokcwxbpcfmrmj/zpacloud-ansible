@@ -31,84 +31,121 @@ DOCUMENTATION = r"""
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific posture profile created in the Zscaler Private Access Mobile Portal
-module: zpa_posture_profile_info
-short_description: Provides details about a specific posture profile created in the Zscaler Private Access Mobile Portal
+  - Provides details about a specific provisioning key created in the Zscaler Private Access Mobile Portal
+module: zpa_provisioning_key_info
+short_description: Provides details about a specific provisioning key created in the Zscaler Private Access Mobile Portal
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-      - Name of the posture profile.
+      - Name of the provisioning key.
     required: false
     type: str
   id:
     description:
-      - ID of the posture profile.
+      - ID of the provisioning key.
     required: false
     type: str
+  association_type:
+    type: str
+    required: True
+    description: "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
 
 """
 
 EXAMPLES = """
-- name: posture profile
+- name: provisioning key
   hosts: localhost
   tasks:
-    - name: Gather information about all posture profile
-      willguibr.zpacloud_ansible.zpa_posture_profile_info:
-        #name: CrowdStrike_ZPA_Pre-ZTA
-        id: 216196257331282234
-      register: postures
-    - name: postures
+    - name: Gather information about all provisioning keys
+      willguibr.zpacloud_ansible.zpa_provisioning_key_info:
+        #id: "216196257331291981"
+        association_type: "CONNECTOR_GRP"
+      register: keys
+    - name: provisioning key
       debug:
-        msg: "{{ postures }}"
+        msg: "{{ keys }}"
 
 """
 
 RETURN = r"""
 data:
-    description: Posture Profile information
+    description: provisioning key information
     returned: success
     elements: dict
     type: list
-    sample: [
-      {
-        "creation_time": "1638237193",
-        "domain": null,
-        "id": "216196257331291092",
-        "master_customer_id": null,
-        "modified_by": "72057594037928115",
-        "modified_time": "1638237193",
-        "name": "Microsoft Windows Defender",
-        "posture_udid": "e7ac7e3f-2098-42fc-a659-030bdca2c4a7",
-        "zscaler_cloud": "zscalerthree",
-        "zscaler_customer_id": null
-      }
-    ]
+    sample:
+        [
+            {
+                "app_connector_group_id": null,
+                "app_connector_group_name": "Canada LSS App Connector Group",
+                "creation_time": "1641586556",
+                "enabled": true,
+                "enrollment_cert_id": "6573",
+                "enrollment_cert_name": "Connector",
+                "expiration_in_epoch_sec": null,
+                "id": "9003",
+                "ip_acl": null,
+                "max_usage": "10",
+                "modified_by": "216196257331282070",
+                "modified_time": null,
+                "name": "New York Provisioning Key",
+                "provisioning_key": "3|api.private.zscaler.com|297XDkU9fv6G/d7s9WS...",
+                "ui_config": null,
+                "usage_count": "0",
+                "zcomponent_id": "216196257331291903",
+                "zcomponent_name": "Canada LSS App Connector Group",
+            },
+            {
+                "app_connector_group_id": null,
+                "app_connector_group_name": "USA App Connector Group",
+                "creation_time": "1639693617",
+                "enabled": true,
+                "enrollment_cert_id": "6573",
+                "enrollment_cert_name": "Connector",
+                "expiration_in_epoch_sec": null,
+                "id": "8691",
+                "ip_acl": null,
+                "max_usage": "2",
+                "modified_by": "216196257331282070",
+                "modified_time": null,
+                "name": "USA App Connector Group",
+                "provisioning_key": "3|api.private.zscaler.com|Wy3HzPKWJr88i6u...",
+                "ui_config": null,
+                "usage_count": "0",
+                "zcomponent_id": "216196257331291906",
+                "zcomponent_name": "USA App Connector Group",
+            },
+        ]
+
 """
 
 
 def core(module):
     provisioning_key_name = module.params.get("name", None)
     provisioning_key_id = module.params.get("id", None)
+    association_type = module.params.get("association_type", None)
     customer_id = module.params.get("customer_id", None)
     service = ProvisioningKeyService(module, customer_id)
     provisioning_keys = []
     if provisioning_key_id is not None:
-        provisioning_key = service.getByID(provisioning_key_id)
+        provisioning_key = service.getByID(
+            provisioning_key_id, association_type)
         if provisioning_key is None:
             module.fail_json(
                 msg="Failed to retrieve Provisioning Key ID: '%s'" % (id))
         provisioning_keys = [provisioning_key]
     elif provisioning_key_name is not None:
-        provisioning_key = service.getByName(provisioning_key_name)
+        provisioning_key = service.getByName(
+            provisioning_key_name, association_type)
         if provisioning_key is None:
             module.fail_json(
                 msg="Failed to retrieve Provisioning Key Name: '%s'" % (provisioning_key_name))
         provisioning_keys = [provisioning_key]
     else:
-        postures = service.getAll()
+        provisioning_keys = service.getAll(association_type)
     module.exit_json(changed=False, data=provisioning_keys)
 
 
@@ -117,6 +154,8 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
+        association_type=dict(type="str", choices=[
+                              "CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True),
     )
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)
