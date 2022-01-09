@@ -4,7 +4,7 @@
     - name: Gather information about all Enrollment Certificate
       willguibr.zpacloud_ansible.zpa_enrollement_certificate_info:
         # name: Root
-        id: 6571
+        # id: 6571
       register: certificates
     - name: certificates
       debug:
