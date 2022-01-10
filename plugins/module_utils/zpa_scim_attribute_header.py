@@ -3,7 +3,7 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_cli
 )
 
 
-class SamlAttributeService:
+class ScimAttributeHeaderService:
     def __init__(self, module, customer_id):
         self.module = module
         self.customer_id = customer_id
@@ -17,24 +17,42 @@ class SamlAttributeService:
             scimAttribute = self.getByName(name)
         return scimAttribute
 
-    def getByID(self, idp_id, attribute_id):
+    def getByID(self, attribute_id, idpName):
+        idp = self.getIDPByName(idpName)
+        if idp is None or idp.get("id") is None:
+            return None
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute/%s" % (self.customer_id, idp_id, attribute_id))
+            "/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute/%s" % (self.customer_id, idp.get("id"), attribute_id))
         status_code = response.status_code
         if status_code != 200:
             return None
         return self.mapRespJSONToApp(response.json)
 
-    def getAll(self):
+    def getAllIDPControllersRaw(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/idp/%s/scimattribute" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/idp" % (self.customer_id), data_key_name="list")
+        return list
+
+    def getIDPByName(self, idpName):
+        idps = self.getAllIDPControllersRaw()
+        for idp in idps:
+            if idp.get("name") == idpName:
+                return idp
+        return None
+
+    def getAllByIDPName(self, idpName):
+        idp = self.getIDPByName(idpName)
+        if idp is None or idp.get("id") is None:
+            return []
+        list = self.rest.get_paginated_data(
+            base_url="/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute" % (self.customer_id, idp.get("id")), data_key_name="list")
         scimAttributes = []
         for scimAttribute in list:
             scimAttributes.append(self.mapRespJSONToApp(scimAttribute))
         return scimAttributes
 
-    def getByName(self, name):
-        samlAttributes = self.getAll()
+    def getByName(self, name, idpName):
+        samlAttributes = self.getAllByIDPName(idpName)
         for samlAttribute in samlAttributes:
             if samlAttribute.get("name") == name:
                 return samlAttribute
