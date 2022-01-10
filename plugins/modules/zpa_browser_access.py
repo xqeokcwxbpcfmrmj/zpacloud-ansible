@@ -25,7 +25,7 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_bro
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_segment
 short_description: Create an application segment
@@ -35,14 +35,6 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  creation_time:
-    type: str
-    required: False
-    description: "creation_time"
-  modified_time:
-    type: str
-    required: False
-    description: "modified_time"
   default_max_age:
     type: str
     required: False
@@ -157,11 +149,9 @@ options:
     elements: str
     required: True
     description: "List of domains and IPs."
-
 """
 
-
-EXAMPLES = '''
+EXAMPLES = """
 - name: App segment
   hosts: localhost
   tasks:
@@ -186,8 +176,10 @@ EXAMPLES = '''
     - name: created/updated app segment
       debug:
         msg: "{{ app_segment }}"
-'''
-RETURN = r"""
+"""
+
+RETURN = """
+# The newly created browser access application segment resource record.
 """
 
 def core(module):

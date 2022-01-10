@@ -27,9 +27,9 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
-module: zpa_app_connector_groups_info
+module: zpa_browser_access_info
 short_description: Gather information about an app connector group
 description:
   - This module can be used to gather information about an app connector group.
@@ -47,58 +47,36 @@ options:
       - ID of the App Connector Group.
     required: false
     type: str
-
 """
 
-EXAMPLES = r'''
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+EXAMPLES = """
+- name: Gather information about all browser access application segments
+  willguibr.zpacloud_ansible.zpa_browser_access_info:
+  register: all_browser_access
 
-    - name: Gather information about App Connector Group with given ID
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        id: "198288282"
-      register: resp_out
+- debug:
+  msg: "{{ all_browser_access }}"
 
-    - name: Gather information about App Connector Group with given name
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        name: "example"
-      register: resp_out
-    - debug:
-        msg: "{{ resp_out.name }}"
-'''
+- name: Browser Access Application Segment by Name
+  willguibr.zpacloud_ansible.zpa_browser_access_info:
+    name: "Example"
+  register: ba_app_segment_name
+  
+- debug:
+    msg: "{{ ba_app_segment_name }}"
+    
+- name: Browser Access Application Segment by ID
+  willguibr.zpacloud_ansible.zpa_browser_access_info:
+    id: "198288282"
+  register: ba_app_segment_id
 
-RETURN = r"""
-data:
-    description: App Connector Group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-        {
-          id                      = "82827282828",
-          name                    = "Example",
-          description             = "Example",
-          enabled                 = true,
-          city_country            = "California, US",
-          country_code            = "US",
-          latitude                = "37.3382082",
-          longitude               = "-121.8863286",
-          location                = "San Jose, CA, USA",
-          upgrade_day             = "SUNDAY",
-          upgrade_time_in_secs    = "66600",
-          override_version_profile= true,
-          version_profile_id      = 0,
-          dns_query_type          = "IPV4"
-        },
-    ]
+- debug:
+    msg: "{{ ba_app_segment_id }}"
 """
 
+RETURN = """
+# Returns information on a specified Browser Access Application Segment.
+"""
 
 def core(module):
     app_name = module.params.get("name", None)
