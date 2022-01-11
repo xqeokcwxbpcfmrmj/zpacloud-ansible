@@ -28,7 +28,7 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_servers
-short_description: Create server objects in the ZPA portal
+short_description: Create/Update/Delete an application server.
 description:
     - Create server group objects in the ZPA portal
 author:
@@ -38,44 +38,51 @@ options:
     name:
         description:
             - This field defines the name of the server to create.
-        required: true
+        required: True
         type: str
     app_application_server_ids:
         description:
             - This field defines the list of server groups IDs.
-        required: false
+        required: False
         type: list
         elements: str
     enabled:
         description:
             - This field defines the status of the server, true or false.
-        required: false
+        required: False
         type: bool
     description:
         description:
             - This field defines the description of the server to create.
-        required: false
+        required: False
         type: str
     config_space:
         description:
             - This field defines the type of the server, DEFAULT or SIEM.
-        required: false
+        required: False
         type: str
         elements: str
 """
 
 EXAMPLES = """
-# Create a server object
-  - name: example_server
-    zpa_server:
-      name: "example"
-      description: "example"
-      enable: true
-      app_application_server_ids: ['']
+- name: Create First Application Server
+    willguibr.zpacloud.zpa_application_server:
+    name: Example
+    description: Example
+    address: example.acme.com
+    enabled: true
+
+- name: Create Second Application Server
+    willguibr.zpacloud.zpa_application_server:
+    name: Example1
+    description: Example1
+    address: example.acme.com
+    enabled: true
+    app_server_group_ids: []
 """
 
 RETURN = """
-# Default return values
+# The newly created application server resource record.
 """
 
 def core(module):

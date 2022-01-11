@@ -3,8 +3,9 @@
   tasks:
     - name: Gather information about all SCIM Attribute
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        # name: DepartmentName_SGIO-User-Okta
-        # id: 216196257331282234
+        #name: costCenter
+        #id: 216196257331285842
+        idp_name: SGIO-User-Okta
       register: scim
     - name: scim
       debug:

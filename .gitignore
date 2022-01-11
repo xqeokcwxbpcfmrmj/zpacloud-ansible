@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+.DS_Store
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -82,10 +83,14 @@ docs/_diagrams
 
 # vim swap files
 *.swp
+/_build
+/doctrees
 
 # Runtime files
 *.retry
 *.swp
+__pycache__
+*.pyc
 
 tests/output/
 
@@ -101,3 +106,5 @@ examples/script.sh
 collections_test/
 zpa_all_together/
 zpa_all_together/*
+scripts/
+scripts/*

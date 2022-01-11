@@ -25,24 +25,20 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_app
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_segment
-short_description: Create an application segment
+short_description: Create/Update/Delete an App Connector Group.
 description:
-  - This module will create, retrieve, update or delete a specific application segment
+  - This module will Create/Update/Delete an application segment
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  creation_time:
+  name:
     type: str
-    required: False
-    description: "creation_time"
-  modified_time:
-    type: str
-    required: False
-    description: "modified_time"
+    required: True
+    description: "Name of the application."
   default_max_age:
     type: str
     required: False
@@ -52,14 +48,16 @@ options:
     type: bool
     required: False
     description: "ip_anchored"
+  tcp_port_range:
+    type: list
+    elements: dict
+    required: True
+    description: List of tcp port range pairs, e.g. [‘22’, ‘22’] for port 22-22, [‘80’, ‘100’] for 80-100.
   udp_port_range:
     type: list
     elements: dict
-    required: False
-    description: "udp port range"
-  id:
-    type: str
-    description: "Unique ID."
+    required: True
+    description: "List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000."
   double_encrypt:
     type: bool
     required: False
@@ -75,10 +73,6 @@ options:
     required: False
     default: ""
     description: "default idle timeout."
-  modifiedby:
-    type: str
-    required: False
-    description: "modified by."
   passive_health_enabled:
     type: bool
     required: False
@@ -92,10 +86,6 @@ options:
     type: bool
     required: False
     description: "Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors."
-  name:
-    type: str
-    required: True
-    description: "Name of the application."
   config_space:
     type: str
     required: False
@@ -133,11 +123,6 @@ options:
     type: str
     required: False
     description: "segment group name."
-  tcp_port_range:
-    type: list
-    elements: dict
-    required: False
-    description: "tcp port range"
   enabled:
     type: bool
     required: False
@@ -147,37 +132,29 @@ options:
     elements: str
     required: True
     description: "List of domains and IPs."
-
 """
 
+EXAMPLES = """
+- name: Create/Update/Delete an application segment.
+  willguibr.zpacloud_ansible.zpa_application_segment:
+    name: Example Application Segment
+    description: Example Application Segment
+    enabled: true
+    health_reporting: ON_ACCESS
+    bypass_type: NEVER
+    is_cname_enabled: true
+    tcp_port_range:
+      - from: "80"
+        to: "80"
+    domain_names:
+      - crm.example.com
+    segment_group_id: "216196257331291896"
+    server_groups:
+      - "216196257331291969"
+"""
 
-EXAMPLES = '''
-- name: App segment
-  hosts: localhost
-  tasks:
-    - name: Create an app segment
-      willguibr.zpacloud_ansible.zpa_application_segment:
-        state: absent
-        name: Example Application
-        description: Example Application Test
-        enabled: true
-        health_reporting: ON_ACCESS
-        bypass_type: NEVER
-        is_cname_enabled: true
-        tcp_port_range:
-          - from: "80"
-            to: "80"
-        domain_names:
-          - crm.example.com
-        segment_group_id: "216196257331291896"
-        server_groups:
-          #- "216196257331291969"
-      register: app_segment
-    - name: created/updated app segment
-      debug:
-        msg: "{{ app_segment }}"
-'''
-RETURN = r"""
+RETURN = """
+# The newly created application segment resource record.
 """
 
 

@@ -43,6 +43,11 @@ options:
       - Name of the scim attribute.
     required: false
     type: str
+  idp_name:
+    description:
+      - Name of the IDP, required when ID is not sepcified.
+    required: false
+    type: str
   id:
     description:
       - ID of the scim attribute.
@@ -55,29 +60,29 @@ EXAMPLES = """
 - name: scim attribute
   hosts: localhost
   tasks:
-    - name: Gather information about scim attribute by attribute Name
+    - name: Gather information about all SCIM Attribute of IDP SGIO-User-Okta
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        name: DepartmentName_User-Okta
-      register: department_name
-    - name: department_name
+        idp_name: SGIO-User-Okta
+      register: scim
+    - name: scim
       debug:
-        msg: "{{ department_name }}"
-        
-    - name: Gather information about scim attribute by attribute ID
+        msg: "{{ scim }}"
+    - name: Gather information about the SCIM Attribute named costCenter
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        id: 216196257331285827
-      register: attribute_id
-    - name: attribute_id
+        name: costCenter
+        idp_name: SGIO-User-Okta
+      register: scim2
+    - name: scim2
       debug:
-        msg: "{{ attribute_id }}"
-        
-    - name: Gather information about all scim attribute by attributes
+        msg: "{{ scim2 }}"
+    - name: Gather information about the SCIM Attribute with ID 216196257331285842
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-      register: scim_attribute_header
-    - name: scim_attribute_header
+        id: 216196257331285842
+        idp_name: SGIO-User-Okta
+      register: scim3
+    - name: scim3
       debug:
-        msg: "{{ scim_attribute_header }}"
-
+        msg: "{{ scim3 }}"
 """
 
 RETURN = r"""
@@ -88,40 +93,48 @@ data:
     type: list
     data: [
             {
-              "creation_time": "1631718008",
-              "id": "216196257331285827",
-              "idp_id": "216196257331285825",
-              "idp_name": "User-Okta",
-              "modified_by": "216196257331281958",
-              "modified_time": null,
-              "name": "DepartmentName-User-Okta",
-              "saml_name": "DepartmentName",
-              "user_attribute": false
-            },
+                "canonical_values": null,
+                "case_sensitive": false,
+                "creation_time": "1631718085",
+                "data_type": "String",
+                "description": null,
+                "id": "216196257331285842",
+                "idp_id": "216196257331285825",
+                "modified_by": "216196257331281958",
+                "modified_time": null,
+                "multivalued": false,
+                "mutability": "readWrite",
+                "name": "costCenter",
+                "required": false,
+                "returned": "default",
+                "schema_uri": "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+                "uniqueness": false
+            }
     ]
 """
 
 
 def core(module):
     scim_attr_name = module.params.get("name", None)
+    idp_name = module.params.get("idp_name", None)
     scim_attr_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
     service = ScimAttributeHeaderService(module, customer_id)
     attributes = []
     if scim_attr_id is not None:
-        attribute = service.getByID(scim_attr_id)
+        attribute = service.getByID(scim_attr_id, idp_name)
         if attribute is None:
             module.fail_json(
                 msg="Failed to retrieve scim attribute header ID: '%s'" % (id))
         attributes = [attribute]
     elif scim_attr_name is not None:
-        attribute = service.getByName(scim_attr_name)
+        attribute = service.getByName(scim_attr_name, idp_name)
         if attribute is None:
             module.fail_json(
                 msg="Failed to retrieve scim attribute header Name: '%s'" % (scim_attr_name))
         attributes = [attribute]
     else:
-        attributes = service.getAll()
+        attributes = service.getAllByIDPName(idp_name)
     module.exit_json(changed=False, data=attributes)
 
 
@@ -130,6 +143,7 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
+        idp_name=dict(type="str", required=True)
     )
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)

@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups_info
 short_description: Gather information about cloud connector group(s)
@@ -47,68 +47,36 @@ options:
       - ID of the Cloud Connector Group.
     required: false
     type: str
-
 """
 
-EXAMPLES = r'''
-- name: Cloud Connector Group
-  hosts: localhost
-  tasks:
-    - name: Gather information about specific Cloud Connector Group by name
-      willguibr.zpacloud_ansible.zpa_cloud_connector_group_info:
-        name: "zs-cc-vpc-096108eb5d9e68d71-ca-central-1a"
-      register: connector_group
-    - debug:
-        msg: "{{ connector_group.name }}"
+EXAMPLES = """
+- name: Gather Information Details of All Cloud Connector Groups
+  willguibr.zpacloud.zpa_cloud_connector_group_info:
+  register: all_cloud_connector_groups
 
-    - name: Gather information about specific Cloud Connector Group by ID
-      willguibr.zpacloud_ansible.zpa_cloud_connector_group_info:
-        id: "216196257331292018"
-      register: connector_group
-    - debug:
-        msg: "{{ connector_group.id }}"
+- debug:
+    msg: "{{ all_cloud_connector_groups }}"
 
-    - name: Gather information about all Cloud Connector Groups
-      willguibr.zpacloud_ansible.zpa_cloud_connector_group_info:
-      register: connector_group
-    - debug:
-        msg: "{{ connector_group }}"
-'''
+- name: Gather Information Details of a Cloud Connector Group by Name
+  willguibr.zpacloud.zpa_cloud_connector_group_info:
+    name: zs-cc-vpc-096108eb5d9e68d71-ca-central-1a
+  register: cloud_connector_group_name
 
-RETURN = r"""
-data:
-    description: Cloud Connector Group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-            {
-                "cloud_connectors": [
-                    {
-                        "creationTime": "1639806553",
-                        "enabled": true,
-                        "fingerprint": "ami-0796fdf37518f905e_i-04ef329486bc7f2f4:=&gt;36788942",
-                        "id": "216196257331292018",
-                        "issuedCertId": "480193",
-                        "modifiedBy": "3",
-                        "modifiedTime": "1639806554",
-                        "name": "zs-cc-vpc-096108eb5d9e68d71-ca-central-1aProvKey-1639806553869"
-                    }
-                ],
-                "creation_time": "1639806438",
-                "description": "Auto created from ami-0796fdf37518f905e_i-04ef329486bc7f2f4",
-                "enabled": true,
-                "geolocation_id": null,
-                "id": "216196257331292017",
-                "modified_by": "72057594037929625",
-                "modified_time": null,
-                "name": "zs-cc-vpc-096108eb5d9e68d71-ca-central-1a",
-                "zia_cloud": "zscalerthree.net",
-                "zia_org_id": "24326813"
-            }
-    ]
+- debug:
+    msg: "{{ cloud_connector_group_name }}"
+
+- name: Gather Information Details of a Cloud Connector Group by ID
+  willguibr.zpacloud.zpa_cloud_connector_group_info:
+    id: "216196257331292017"
+  register: cloud_connector_group_id
+
+- debug:
+    msg: "{{ cloud_connector_group_id }}"
 """
 
+RETURN = """
+# Returns information on a specified Cloud Connector Group.
+"""
 
 def core(module):
     cloud_connector_name = module.params.get("name", None)

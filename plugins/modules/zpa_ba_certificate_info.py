@@ -29,11 +29,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-author: William Guilherme (@willguibr)
+module: zpa_ba_certificate_info
+short_description: This module can be used to gather information about a browser access certificate.
 description:
-  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
-module: zpa_trusted_network_info
-short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+  - Returns information on a specified Browser Access certificate.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -41,67 +41,43 @@ options:
   name:
     description:
       - Name of the browser certificate.
-    required: false
+    required: True
     type: str
   id:
     description:
       - ID of the browser certificate.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: browser certificate
-  hosts: localhost
-  tasks:
-    - name: Gather information about all browser certificate by name
-      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
-        name: server1.acme.com
-      register: certificates
-    - name: certificates
-      debug:
-        msg: "{{ certificates }}"
-        
-    - name: Gather information about specific browser certificate by id
-      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
-        id: 216196257331282234
-      register: certificates
-    - name: certificates
-      debug:
-        msg: "{{ certificates }}"
-        
-    - name: Gather information about all browser certificates
-      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
-      register: certificates
-    - name: certificates
-      debug:
-        msg: "{{ certificates }}"
+- name: Gather Details of All Browser Certificates
+  willguibr.zpacloud.zpa_ba_certificate_info:
+  register: all_certificates
 
+- debug:
+  msg: "{{ all_certificates }}"
+
+- name: Gather Details of a Specific Browser Certificates by Name
+  willguibr.zpacloud.zpa_ba_certificate_info:
+    name: crm.acme.com
+  register: certificate_name
+
+- debug:
+  msg: "{{ certificate_name }}"
+
+- name: Gather Details of a Specific Browser Certificates by ID
+  willguibr.zpacloud.zpa_ba_certificate_info:
+    id: "216196257331282583"
+  register: certificate_id
+
+- debug:
+  msg: "{{ certificate_id }}"
 """
 
 RETURN = """
-data:
-    description: Browser Certificate information
-    returned: success
-    elements: dict
-    type: list
-    data: [
-            {
-              "id": "216196257331282582",
-              "name": "server1.acme.com"
-            },
-            {
-              "id": "216196257331282583",
-              "name": "server2.acme.com"
-            },
-            {
-              "id": "216196257331282584",
-              "name": "server3.acme.com"
-            }
-    ]
+# Returns information on a specified Browser Access certificate.
 """
-
 
 def core(module):
     certificate_name = module.params.get("name", None)

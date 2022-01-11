@@ -27,13 +27,13 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Retrieves details of a customer version profile in the Zscaler Private Access portal.
+  - Get details (ID and/or Name) of a customer version profile.
 module: zpa_customer_version_profile_info
-short_description: Retrieves details of a customer version profile in the Zscaler Private Access portal.
+short_description: Get details (ID and/or Name) of a customer version profile.
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 2.0
@@ -41,99 +41,43 @@ options:
   name:
     description:
       - Name of the customer version profile.
-    required: false
+    required: True
     type: str
   id:
     description:
       - ID of the customer version profile.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: customer version profile
-  hosts: localhost
-  tasks:
-    - name: Gather information about all customer version profile
-      willguibr.zpacloud_ansible.zpa_customer_version_profile_info:
-        name: Default
-      register: version_profile
-    - name: version_profile
-      debug:
-        msg: "{{ version_profile }}"
+- name: Gather Information Details of All Customer Version Profiles
+  willguibr.zpacloud.zpa_customer_version_profile_info:
+  register: all_customer_version_profiles
+
+- debug:
+    msg: "{{ all_customer_version_profiles }}"
+
+- name: Gather Information Details of a Cloud Connector Group by Name
+  willguibr.zpacloud.zpa_customer_version_profile_info:
+    name: "New Release"
+  register: version_profile_name
+
+- debug:
+    msg: "{{ version_profile_name }}"
+
+- name: Gather Information Details of a Cloud Connector Group by ID
+  willguibr.zpacloud.zpa_customer_version_profile_info:
+    id: "2"
+  register: version_profile_id
+
+- debug:
+    msg: "{{ version_profile_id }}"
 """
 
+RETURN = """
+# Returns information on a specified Customer Version Profile.
 """
-- name: customer version profile
-  hosts: localhost
-  tasks:
-    - name: Gather information about all customer version profile
-      willguibr.zpacloud_ansible.zpa_customer_version_profile_info:
-        name: Previous Default
-      register: version_profile
-    - name: version_profile
-      debug:
-        msg: "{{ version_profile }}"
-"""
-
-
-"""
-- name: customer version profile
-  hosts: localhost
-  tasks:
-    - name: Gather information about all customer version profile
-      willguibr.zpacloud_ansible.zpa_customer_version_profile_info:
-        name: New Release
-      register: version_profile
-    - name: version_profile
-      debug:
-        msg: "{{ version_profile }}"
-"""
-
-RETURN = r"""
-data:
-    description: Customer Profile New Release
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-    {
-        "creation_time": "1475127781",
-        "custome_id": "72057594037927936",
-        "description": null,
-        "id": "0",
-        "modified_by": "72057594037928193",
-        "modified_time": "1634285282",
-        "name": "Default",
-        "upgrade_priority": "WEEK",
-        "visibility_scope": "ALL"
-    },
-    {
-        "creation_time": "1631577657",
-        "custome_id": "72057594037927936",
-        "description": null,
-        "id": "1",
-        "modified_by": "72057594037928193",
-        "modified_time": "1634285256",
-        "name": "Previous Default",
-        "upgrade_priority": "DAY",
-        "visibility_scope": "ALL"
-    },
-    {
-        "creation_time": "1631577657",
-        "custome_id": "72057594037927936",
-        "description": null,
-        "id": "2",
-        "modified_by": "72057594037928193",
-        "modified_time": "1633764547",
-        "name": "New Release",
-        "upgrade_priority": "DAY",
-        "visibility_scope": "ALL"
-    }
-    ]
-"""
-
 
 def core(module):
     version_profile = module.params.get("name", None)

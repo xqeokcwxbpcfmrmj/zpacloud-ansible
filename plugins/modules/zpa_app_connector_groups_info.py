@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups_info
 short_description: Gather information about an app connector group
@@ -47,56 +47,35 @@ options:
       - ID of the App Connector Group.
     required: false
     type: str
-
 """
 
-EXAMPLES = r'''
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+EXAMPLES = """
+- name: Gather Details of all App Connector Groups
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+  register: all_app_connector
 
-    - name: Gather information about App Connector Group with given ID
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        id: "198288282"
-      register: resp_out
+- debug:
+    msg: "{{ all_app_connector }}"
 
-    - name: Gather information about App Connector Group with given name
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        name: "example"
-      register: resp_out
-    - debug:
-        msg: "{{ resp_out.name }}"
-'''
+- name: Gather Details of a Specific App Connector Groups by Name
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+    name: "Example App Connector Group"
+  register: app_connector_name
 
-RETURN = r"""
-data:
-    description: App Connector Group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-        {
-          id                      = "82827282828",
-          name                    = "Example",
-          description             = "Example",
-          enabled                 = true,
-          city_country            = "California, US",
-          country_code            = "US",
-          latitude                = "37.3382082",
-          longitude               = "-121.8863286",
-          location                = "San Jose, CA, USA",
-          upgrade_day             = "SUNDAY",
-          upgrade_time_in_secs    = "66600",
-          override_version_profile= true,
-          version_profile_id      = 0,
-          dns_query_type          = "IPV4"
-        },
-    ]
+- debug:
+    msg: "{{ app_connector_name }}"
+
+- name: Gather Details of a Specific App Connector Groups by ID
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+    id: "216196257331292046"
+  register: app_connector_id
+
+- debug:
+    msg: "{{ app_connector_id }}"   
+"""
+
+RETURN = """
+# Default return values
 """
 
 

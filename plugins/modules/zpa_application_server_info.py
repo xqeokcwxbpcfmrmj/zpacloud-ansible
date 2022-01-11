@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_server_info
 short_description: Gather information about an server group
@@ -49,48 +49,34 @@ options:
     type: str
 """
 
-EXAMPLES = '''
-- name: server group
-  hosts: localhost
-  tasks:
-    - name: Gather information about all server group
-      willguibr.zpacloud_ansible.zpa_application_server_info:
-        name: Browser Access Apps
-        #id: 216196257331291969
-      register: servers
-    - name: servers
-      debug:
-        msg: "{{ servers }}"
-'''
+EXAMPLES = """
+- name: Gather Information Details of All Application Servers
+    willguibr.zpacloud.zpa_application_server_info:
+    register: all_app_server
 
-RETURN = r"""
-data:
-    description: server group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-      {
-                "app_connector_groups": [
-                    "216196257331291924"
-                ],
-                "applications": [
-                    "216196257331291974"
-                ],
-                "config_space": "DEFAULT",
-                "description": "SGIO Domain Controllers",
-                "dynamic_discovery": true,
-                "enabled": true,
-                "id": "216196257331291964",
-                "ip_anchored": false,
-                "name": "SGIO Domain Controllers",
-                "servers": [
-                    "216196257331291974"
-                ]
-            }
-    ]
+- debug:
+    msg: "{{ all_app_server }}"
+
+- name: Gather Information Details of an Application Server by Name
+    willguibr.zpacloud.zpa_application_server_info:
+    name: server1.acme.com
+    register: app_server_name
+
+- debug:
+    msg: "{{ app_server_name }}"
+
+- name: Gather Information Details of an Application Server by ID
+    willguibr.zpacloud.zpa_application_server_info:
+    id: "216196257331291921"
+    register: app_server_id
+
+- debug:
+    msg: "{{ app_server_id }}"
 """
 
+RETURN = """
+# Default return values
+"""
 
 def core(module):
     application_server_name = module.params.get("name", None)
