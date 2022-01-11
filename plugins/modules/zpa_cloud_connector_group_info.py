@@ -52,26 +52,15 @@ options:
 EXAMPLES = """
 - name: Gather Information Details of All Cloud Connector Groups
   willguibr.zpacloud.zpa_cloud_connector_group_info:
-  register: all_cloud_connector_groups
-
-- debug:
-    msg: "{{ all_cloud_connector_groups }}"
 
 - name: Gather Information Details of a Cloud Connector Group by Name
   willguibr.zpacloud.zpa_cloud_connector_group_info:
     name: zs-cc-vpc-096108eb5d9e68d71-ca-central-1a
-  register: cloud_connector_group_name
-
-- debug:
-    msg: "{{ cloud_connector_group_name }}"
 
 - name: Gather Information Details of a Cloud Connector Group by ID
   willguibr.zpacloud.zpa_cloud_connector_group_info:
     id: "216196257331292017"
-  register: cloud_connector_group_id
-
-- debug:
-    msg: "{{ cloud_connector_group_id }}"
+    
 """
 
 RETURN = """

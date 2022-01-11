@@ -27,75 +27,80 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups_info
-short_description: Gather information about an app connector group
+short_description: Get details (ID and/or Name) of a Service Edge Group.
 description:
-  - This module can be used to gather information about an app connector group.
+  - This module can be used to Get details (ID and/or Name) of a Service Edge Group.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
   name:
     description:
-      - Name of the App Connector Group.
+      - Name of the Service Edge Group..
     required: false
     type: str
   id:
     description:
-      - ID of the App Connector Group.
+      - ID of the Service Edge Group..
     required: false
     type: str
 
 """
 
-EXAMPLES = r'''
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+EXAMPLES = """
+- name: Gather information about all Service Edge Groups
+  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+    
+- name: Gather information about all Service Edge Groups by Name
+  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+    name: "Example Service Edge Group"
+    
+- name: Gather information about all Service Edge Groups by ID
+  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+    id: "216196257331292046"
+"""
 
-    - name: Gather information about App Connector Group with given ID
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        id: "198288282"
-      register: resp_out
-
-    - name: Gather information about App Connector Group with given name
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
-        name: "example"
-      register: resp_out
-    - debug:
-        msg: "{{ resp_out.name }}"
-'''
-
-RETURN = r"""
+RETURN = """
 data:
     description: App Connector Group information
     returned: success
     elements: dict
     type: list
     sample: [
-        {
-          id                      = "82827282828",
-          name                    = "Example",
-          description             = "Example",
-          enabled                 = true,
-          city_country            = "California, US",
-          country_code            = "US",
-          latitude                = "37.3382082",
-          longitude               = "-121.8863286",
-          location                = "San Jose, CA, USA",
-          upgrade_day             = "SUNDAY",
-          upgrade_time_in_secs    = "66600",
-          override_version_profile= true,
-          version_profile_id      = 0,
-          dns_query_type          = "IPV4"
-        },
+            {
+              "city_country": "Langley, CA",
+              "country_code": "CA",
+              "description": "Canada Service Edge Group",
+              "enabled": true,
+              "geolocation_id": null,
+              "id": "216196257331291917",
+              "is_public": "FALSE",
+              "latitude": "49.1041779",
+              "location": "Langley City, BC, Canada",
+              "longitude": "-122.6603519",
+              "name": "Canada Service Edge Group",
+              "override_version_profile": true,
+              "service_edges": [],
+              "trusted_networks": [
+                  {
+                      "creation_time": "1625992655",
+                      "id": "216196257331282234",
+                      "modified_by": "72057594037928115",
+                      "modified_time": "1631935891",
+                      "name": "Corp-Trusted-Networks",
+                      "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
+                      "zscaler_cloud": "zscalerthree"
+                  }
+              ],
+              "upgrade_day": "SUNDAY",
+              "upgrade_time_in_secs": "66600",
+              "version_profile_id": "2",
+              "version_profile_name": "New Release",
+              "version_profile_visibility_scope": "ALL"
+            }
     ]
 """
 

@@ -52,26 +52,15 @@ options:
 EXAMPLES = """
 - name: Gather information about all browser access application segments
   willguibr.zpacloud_ansible.zpa_browser_access_info:
-  register: all_browser_access
-
-- debug:
-  msg: "{{ all_browser_access }}"
 
 - name: Browser Access Application Segment by Name
   willguibr.zpacloud_ansible.zpa_browser_access_info:
     name: "Example"
-  register: ba_app_segment_name
-  
-- debug:
-    msg: "{{ ba_app_segment_name }}"
     
 - name: Browser Access Application Segment by ID
   willguibr.zpacloud_ansible.zpa_browser_access_info:
     id: "198288282"
-  register: ba_app_segment_id
 
-- debug:
-    msg: "{{ ba_app_segment_id }}"
 """
 
 RETURN = """

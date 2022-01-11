@@ -53,26 +53,15 @@ options:
 EXAMPLES = """
 - name: Gather Information Details of All Customer Version Profiles
   willguibr.zpacloud.zpa_customer_version_profile_info:
-  register: all_customer_version_profiles
-
-- debug:
-    msg: "{{ all_customer_version_profiles }}"
 
 - name: Gather Information Details of a Cloud Connector Group by Name
   willguibr.zpacloud.zpa_customer_version_profile_info:
     name: "New Release"
-  register: version_profile_name
-
-- debug:
-    msg: "{{ version_profile_name }}"
 
 - name: Gather Information Details of a Cloud Connector Group by ID
   willguibr.zpacloud.zpa_customer_version_profile_info:
     id: "2"
-  register: version_profile_id
 
-- debug:
-    msg: "{{ version_profile_id }}"
 """
 
 RETURN = """

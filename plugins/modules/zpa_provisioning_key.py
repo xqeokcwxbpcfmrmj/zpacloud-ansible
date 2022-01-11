@@ -23,9 +23,10 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_provisioning_key
 short_description: Create/ an Provisioning Key
@@ -96,7 +97,7 @@ options:
     required: False
 """
 
-EXAMPLES = '''
+EXAMPLES = """
 - name: App Provisioning Key
   hosts: localhost
   tasks:
@@ -112,9 +113,9 @@ EXAMPLES = '''
       debug:
         msg: "{{ key }}"
 
-'''
+"""
 
-RETURN = r"""
+RETURN = """
 data:
     description: Provisioning Key
     returned: success

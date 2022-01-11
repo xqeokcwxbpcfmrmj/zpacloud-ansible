@@ -25,22 +25,22 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_ser
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups
-short_description: Create/ an app connector group
+short_description: Create/Update/Delete an Service Edge Group.
 description:
-  - This module will create, retrieve, update or delete a specific app connector group
+  - This module will Create/Update/Delete an Service Edge Group.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
   name:
-    description: "Name of the App Connector Group."
+    description: "Name of the Service Edge Group."
     required: True
     type: str
   id:
-    description: "ID of the App Connector Group."
+    description: "Description of the Service Edge Group."
     type: str
   city_country:
     description: "City Country of the App Connector Group."
@@ -57,33 +57,29 @@ options:
     choices: ["IPV4_IPV6", "IPV4", "IPV6"]
     type: str
   enabled:
-    description: "Whether this App Connector Group is enabled or not."
+    description: "Whether this Service Edge Group is enabled or not."
     required: False
     default: True
     type: bool
   latitude:
-    description: "Latitude of the App Connector Group. Integer or decimal. With values in the range of -90 to 90."
+    description: "Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90."
     type: str
   location:
-    description: "Location of the App Connector Group."
+    description: "Location of the Service Edge Group."
     type: str
   longitude:
-    description: "Longitude of the App Connector Group. Integer or decimal. With values in the range of -180 to 180."
+    description: "Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180."
     type: str
-  lss_app_connector_group:
-    description: "LSS app connector group."
-    required: False
-    type: bool
   upgrade_day:
-    description: "App Connectors in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday)."
+    description: "Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday)."
     default: SUNDAY
     type: str
   upgrade_time_in_secs:
-    description: "App Connectors in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals."
+    description: "Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals."
     default: 66600
     type: str
   override_version_profile:
-    description: "Whether the default version profile of the App Connector Group is applied or overridden. Supported values: true, false."
+    description: "Whether the default version profile of the Service Edges Group is applied or overridden. Supported values: true, false."
     required: False
     default: False
     type: bool
@@ -96,62 +92,69 @@ options:
     description: "Name of the version profile."
     type: str
   state:
-    description: "Whether the app connector group should be present or absent."
+    description: "Whether the Service Edge group should be present or absent."
     default: present
     choices: ["present", "absent"]
     type: str
 """
 
-EXAMPLES = '''
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Create/update/delete an app connector group
-      willguibr.zpacloud_ansible.zpa_app_connector_groups:
-        state: "absent"
-        #id: "216196257331292046"
-        name: "Example"
-        description: "Example2"
-        enabled: true
-        city_country: "California, US"
-        country_code: "US"
-        latitude: "37.3382082"
-        longitude: "-121.8863286"
-        location: "San Jose, CA, USA"
-        upgrade_day: "SUNDAY"
-        upgrade_time_in_secs: "66600"
-        override_version_profile: true
-        version_profile_id: "0"
-        dns_query_type: "IPV4"
-      register: appconnectorg
-    - name: created appconnector group
-      debug:
-        msg: "{{ appconnectorg }}"
+EXAMPLES = """
+- name: Create/Update/Delete a Service Edge Group
+  willguibr.zpacloud_ansible.zpa_service_edge_groups:
+    state: "absent"
+    #id: "216196257331292046"
+    name: "Example"
+    description: "Example2"
+    enabled: true
+    city_country: "California, US"
+    country_code: "US"
+    latitude: "37.3382082"
+    longitude: "-121.8863286"
+    location: "San Jose, CA, USA"
+    upgrade_day: "SUNDAY"
+    upgrade_time_in_secs: "66600"
+    override_version_profile: true
+    version_profile_id: "0"
 
-'''
+"""
 
-RETURN = r"""
+RETURN = """
 data:
     description: App Connector Group
     returned: success
     type: dict
     sample: [
-        {
-          id                      = "82827282828",
-          name                    = "Example",
-          description             = "Example",
-          enabled                 = true,
-          city_country            = "California, US",
-          country_code            = "US",
-          latitude                = "37.3382082",
-          longitude               = "-121.8863286",
-          location                = "San Jose, CA, USA",
-          upgrade_day             = "SUNDAY",
-          upgrade_time_in_secs    = "66600",
-          override_version_profile= true,
-          version_profile_id      = 0,
-          dns_query_type          = "IPV4"
-        },
+            {
+              "city_country": "Langley, CA",
+              "country_code": "CA",
+              "description": "Canada Service Edge Group",
+              "enabled": true,
+              "geolocation_id": null,
+              "id": "216196257331291917",
+              "is_public": "FALSE",
+              "latitude": "49.1041779",
+              "location": "Langley City, BC, Canada",
+              "longitude": "-122.6603519",
+              "name": "Canada Service Edge Group",
+              "override_version_profile": true,
+              "service_edges": [],
+              "trusted_networks": [
+                  {
+                      "creation_time": "1625992655",
+                      "id": "216196257331282234",
+                      "modified_by": "72057594037928115",
+                      "modified_time": "1631935891",
+                      "name": "Corp-Trusted-Networks",
+                      "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
+                      "zscaler_cloud": "zscalerthree"
+                  }
+              ],
+              "upgrade_day": "SUNDAY",
+              "upgrade_time_in_secs": "66600",
+              "version_profile_id": "2",
+              "version_profile_name": "New Release",
+              "version_profile_visibility_scope": "ALL"
+            }
     ]
 """
 

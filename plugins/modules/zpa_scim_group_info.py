@@ -27,13 +27,13 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific scim attributes from a given IDP
+  - Provides details about a specific scim group from a given IDP
 module: zpa_scim_attribute_header_info
-short_description: Provides details about a specific scim attributes from a given IDP
+short_description: Provides details about a specific scim group from a given IDP
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -46,7 +46,7 @@ options:
   idp_name:
     description:
       - Name of the IDP.
-    required: false
+    required: true
     type: str
   id:
     description:
@@ -57,45 +57,29 @@ options:
 """
 
 EXAMPLES = """
-- name: scim attribute
-  hosts: localhost
-  tasks:
-    - name: Gather information about scim attribute by attribute Name
+    - name: Gather information about all scim groups by the IdP name
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        name: DepartmentName_User-Okta
-        idp_name: "SGIO-User-Okta"
-      register: department_name
-    - name: department_name
-      debug:
-        msg: "{{ department_name }}"
+        idp_name: "IdP_Name"
         
-    - name: Gather information about scim attribute by attribute ID
+    - name: Gather information about all scim groups by the IdP and group name
+      willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
+        name: DepartmentName
+        idp_name: "SGIO-User-Okta"
+        
+    - name: Gather information about all scim groups by the IdP and group ID
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
         id: 216196257331285827
         idp_name: "SGIO-User-Okta"
-      register: attribute_id
-    - name: attribute_id
-      debug:
-        msg: "{{ attribute_id }}"
-        
-    - name: Gather information about all scim attribute by attributes
-      willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        idp_name: "SGIO-User-Okta"
-      register: scim_attribute_header
-    - name: scim_attribute_header
-      debug:
-        msg: "{{ scim_attribute_header }}"
-
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: scim group information
     returned: success
     elements: dict
     type: list
     data: [
-  {
+            {
                 "creation_time": 1631718444,
                 "id": 293479,
                 "idp_group_id": null,

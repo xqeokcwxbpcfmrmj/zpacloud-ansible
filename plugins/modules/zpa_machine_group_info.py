@@ -27,61 +27,59 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+  - Provides details about (ID and/or Name) of a machine group resource.
 module: zpa_trusted_network_info
-short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+short_description: Provides details about (ID and/or Name) of a machine group resource.
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-      - Name of the trusted network.
+      - Name of the machine group.
     required: false
     type: str
   id:
     description:
-      - ID of the trusted network.
+      - ID of the machine group.
     required: false
     type: str
 
 """
 
 EXAMPLES = """
-- name: trusted network
-  hosts: localhost
-  tasks:
-    - name: Gather information about all trusted network
-      willguibr.zpacloud_ansible.zpa_trusted_network_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: networks
-    - name: networks
-      debug:
-        msg: "{{ networks }}"
+    - name: Gather Details of All Machine Groups
+      willguibr.zpacloud.zpa_machine_group_info:
 
+    - name: Gather Details of a Specific Machine Group by Name
+      willguibr.zpacloud.zpa_machine_group_info:
+        name: "Corp_Machine_Group"
+
+    - name: Gather Details of a Specific Machine Group by ID
+      willguibr.zpacloud.zpa_machine_group_info:
+        id: "216196257331282583"
 """
 
-RETURN = r"""
+RETURN = """
 data:
-    description: Trusted Network information
+    description: Machine Group Information
     returned: success
     elements: dict
     type: list
-    sample: [
-      {
-          "id": "216196257331282234",
-          "modified_time": "1631935891",
-          "creation_time": "1625992655",
-          "modified_by": "72057594037928115",
-          "name": "Corp-Trusted-Networks",
-          "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
-          "zscaler_cloud": "zscalerthree"
-      }
+    "sample": [
+        {
+            "creation_time": "1638488366",
+            "description": null,
+            "enabled": true,
+            "id": "216196257331291115",
+            "modified_by": "216196257331281958",
+            "modified_time": null,
+            "name": "SGIO-MGR01"
+        }
     ]
 """
 

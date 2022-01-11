@@ -30,108 +30,108 @@ DOCUMENTATION = """
 module: zpa_application_segment
 short_description: Create/Update/Delete an App Connector Group.
 description:
-  - This module will Create/Update/Delete an application segment
+    - This module will Create/Update/Delete an application segment
 author:
-  - William Guilherme (@willguibr)
+    - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  name:
-    type: str
-    required: True
-    description: "Name of the application."
-  default_max_age:
-    type: str
-    required: False
-    default: ""
-    description: "default_max_age"
-  ip_anchored:
-    type: bool
-    required: False
-    description: "ip_anchored"
-  tcp_port_range:
-    type: list
-    elements: dict
-    required: True
-    description: List of tcp port range pairs, e.g. [‘22’, ‘22’] for port 22-22, [‘80’, ‘100’] for 80-100.
-  udp_port_range:
-    type: list
-    elements: dict
-    required: True
-    description: "List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000."
-  double_encrypt:
-    type: bool
-    required: False
-    description: "Whether Double Encryption is enabled or disabled for the app."
-  icmp_access_type:
-    type: str
-    required: False
-    default: "NONE"
-    choices: ["PING_TRACEROUTING", "PING", "NONE"]
-    description: "icmp access type."
-  default_idle_timeout:
-    type: str
-    required: False
-    default: ""
-    description: "default idle timeout."
-  passive_health_enabled:
-    type: bool
-    required: False
-    description: "passive health enabled."
-  bypass_type:
-    type: str
-    required: False
-    description: "Indicates whether users can bypass ZPA to access applications."
-    choices: ["ALWAYS", "NEVER", "ON_NET"]
-  is_cname_enabled:
-    type: bool
-    required: False
-    description: "Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors."
-  config_space:
-    type: str
-    required: False
-    default: "DEFAULT"
-    choices: ["DEFAULT", "SIEM"]
-    description: "config space."
-  health_reporting:
-    type: str
-    required: False
-    description: "Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS."
-    default: "NONE"
-    choices: ["NONE", "ON_ACCESS", "CONTINUOUS"]
-  log_features:
-    type: str
-    required: False
-    choices: ["skip_discovery", "full_wildcard"]
-    description: "log features."
-  server_groups:
-    type: list
-    elements: dict
-    required: True
-    description: "List of the server group ID objects of type {"id":"82828"}"
-  segment_group_id:
-    type: str
-    required: True
-    description: "segment group id"
-  description:
-    type: str
-    required: False
-    description: "Description of the application."
-  health_check_type:
-    type: str
-    description: "health check type."
-  segment_group_name:
-    type: str
-    required: False
-    description: "segment group name."
-  enabled:
-    type: bool
-    required: False
-    description: "Whether this application is enabled or not."
-  domain_names:
-    type: list
-    elements: str
-    required: True
-    description: "List of domains and IPs."
+    name:
+      type: str
+      required: True
+      description: "Name of the application."
+    description:
+      type: str
+      required: False
+      description: "Description of the application."
+    default_max_age:
+      type: str
+      required: False
+      default: ""
+      description: "default_max_age"
+    ip_anchored:
+      type: bool
+      required: False
+      description: "Whether Source IP Anchoring for use with ZIA, is enabled or disabled for the app."
+    tcp_port_range:
+      type: list
+      elements: dict
+      required: True
+      description: List of tcp port range pairs, e.g. [‘22’, ‘22’] for port 22-22, [‘80’, ‘100’] for 80-100.
+    udp_port_range:
+      type: list
+      elements: dict
+      required: True
+      description: "List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000."
+    double_encrypt:
+      type: bool
+      required: False
+      description: "Whether Double Encryption is enabled or disabled for the app."
+    icmp_access_type:
+      type: str
+      required: False
+      default: "NONE"
+      choices: ["PING_TRACEROUTING", "PING", "NONE"]
+      description: "icmp access type."
+    default_idle_timeout:
+      type: str
+      required: False
+      default: ""
+      description: "default idle timeout."
+    passive_health_enabled:
+      type: bool
+      required: False
+      description: "passive health enabled."
+    bypass_type:
+      type: str
+      required: False
+      description: "Indicates whether users can bypass ZPA to access applications."
+      choices: ["ALWAYS", "NEVER", "ON_NET"]
+    is_cname_enabled:
+      type: bool
+      required: False
+      description: "Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors."
+    config_space:
+      type: str
+      required: False
+      default: "DEFAULT"
+      choices: ["DEFAULT", "SIEM"]
+      description: "config space."
+    health_reporting:
+      type: str
+      required: False
+      description: "Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS."
+      default: "NONE"
+      choices: ["NONE", "ON_ACCESS", "CONTINUOUS"]
+    log_features:
+      type: str
+      required: False
+      choices: ["skip_discovery", "full_wildcard"]
+      description: "log features."
+    server_groups:
+      type: list
+      elements: dict
+      required: True
+      description: "List of the server group ID objects of type {"id":"82828"}"
+    segment_group_id:
+      type: str
+      required: True
+      description: "segment group id"
+    segment_group_name:
+      type: str
+      required: False
+      description: "segment group name."
+    health_check_type:
+      type: str
+      description: "health check type."
+    enabled:
+      type: bool
+      required: False
+      description: "Whether this application is enabled or not."
+    domain_names:
+      type: list
+      elements: str
+      required: True
+      description: "List of domains and IPs."
 """
 
 EXAMPLES = """

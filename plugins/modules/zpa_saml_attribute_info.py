@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
@@ -52,35 +52,20 @@ options:
 """
 
 EXAMPLES = """
-- name: saml attribute
-  hosts: localhost
-  tasks:
+
+    - name: Gather information about all saml attribute by attributes
+      willguibr.zpacloud_ansible.zpa_saml_attribute_info:
+      
     - name: Gather information about saml attribute by attribute Name
       willguibr.zpacloud_ansible.zpa_saml_attribute_info:
-        name: DepartmentName_User-Okta
-      register: department_name
-    - name: department_name
-      debug:
-        msg: "{{ department_name }}"
+        name: DepartmentName_User
         
     - name: Gather information about saml attribute by attribute ID
       willguibr.zpacloud_ansible.zpa_saml_attribute_info:
         id: 216196257331285827
-      register: attribute_id
-    - name: attribute_id
-      debug:
-        msg: "{{ attribute_id }}"
-        
-    - name: Gather information about all saml attribute by attributes
-      willguibr.zpacloud_ansible.zpa_saml_attribute_info:
-      register: saml_attributes
-    - name: saml_attributes
-      debug:
-        msg: "{{ saml_attributes }}"
-
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: saml attribute information
     returned: success

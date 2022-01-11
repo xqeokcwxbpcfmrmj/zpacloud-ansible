@@ -25,7 +25,7 @@ from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_seg
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: zpa_segment_group
 short_description: Create a segment group
@@ -73,28 +73,20 @@ options:
     choices: ["present", "absent"]
     type: str
 
-'''
+"""
 
-EXAMPLES = r'''
-- name: segment group
-  hosts: localhost
-  tasks:
-    - name: Create an Segment group
-      willguibr.zpacloud_ansible.zpa_segment_group:
-        state: absent
-        name: "Example Test"
-        description: "Example Test"
-        enabled: false
-        applications:
-          - id: 827277282
-      register: segment_group
-    - name: segment group
-      debug:
-        msg: "{{ segment_group }}"
+EXAMPLES = """
+- name: Create/Update/Delete a Server Group
+  willguibr.zpacloud.zpa_segment_group:
+    config_space: "DEFAULT"
+    name: Example Segment Group
+    description: Example Segment Group
+    enabled: true
+    policy_migrated: true
+    tcp_keep_alive_enabled: "1"
+"""
 
-'''
-
-RETURN = r"""
+RETURN = """
 data:
     description: Segment Group
     returned: success

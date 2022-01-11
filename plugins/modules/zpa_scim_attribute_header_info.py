@@ -27,13 +27,13 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific scim attributes from a given IDP
+  - Provides details about a specific scim attribute header from a given IDP
 module: zpa_scim_attribute_header_info
-short_description: Provides details about a specific scim attributes from a given IDP
+short_description: Provides details about a specific scim attribute header from a given IDP
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -57,35 +57,22 @@ options:
 """
 
 EXAMPLES = """
-- name: scim attribute
-  hosts: localhost
-  tasks:
-    - name: Gather information about all SCIM Attribute of IDP SGIO-User-Okta
+    - name: Gather information about all SCIM Attribute of an IDP
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
-        idp_name: SGIO-User-Okta
-      register: scim
-    - name: scim
-      debug:
-        msg: "{{ scim }}"
-    - name: Gather information about the SCIM Attribute named costCenter
+        idp_name: IdP_Name
+
+    - name: Gather information about the SCIM Attribute by Name
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
         name: costCenter
         idp_name: SGIO-User-Okta
-      register: scim2
-    - name: scim2
-      debug:
-        msg: "{{ scim2 }}"
-    - name: Gather information about the SCIM Attribute with ID 216196257331285842
+
+    - name: Gather information about the SCIM Attribute by ID
       willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
         id: 216196257331285842
         idp_name: SGIO-User-Okta
-      register: scim3
-    - name: scim3
-      debug:
-        msg: "{{ scim3 }}"
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: saml attribute information
     returned: success
@@ -93,22 +80,22 @@ data:
     type: list
     data: [
             {
-                "canonical_values": null,
-                "case_sensitive": false,
-                "creation_time": "1631718085",
-                "data_type": "String",
-                "description": null,
-                "id": "216196257331285842",
-                "idp_id": "216196257331285825",
-                "modified_by": "216196257331281958",
-                "modified_time": null,
-                "multivalued": false,
-                "mutability": "readWrite",
-                "name": "costCenter",
-                "required": false,
-                "returned": "default",
-                "schema_uri": "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-                "uniqueness": false
+              "canonical_values": null,
+              "case_sensitive": false,
+              "creation_time": "1631718085",
+              "data_type": "String",
+              "description": null,
+              "id": "216196257331285842",
+              "idp_id": "216196257331285825",
+              "modified_by": "216196257331281958",
+              "modified_time": null,
+              "multivalued": false,
+              "mutability": "readWrite",
+              "name": "costCenter",
+              "required": false,
+              "returned": "default",
+              "schema_uri": "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+              "uniqueness": false
             }
     ]
 """

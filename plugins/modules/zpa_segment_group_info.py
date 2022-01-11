@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_segment_group_info
 short_description: Gather information about an server group
@@ -49,28 +49,27 @@ options:
     type: str
 """
 
-EXAMPLES = '''
-- name: server group
-  hosts: localhost
-  tasks:
-    - name: Gather information about all server group
-      willguibr.zpacloud_ansible.zpa_segment_group_info:
-        name: Browser Access Apps
-        #id: 216196257331291969
-      register: servers
-    - name: servers
-      debug:
-        msg: "{{ servers }}"
-'''
+EXAMPLES = """
+    - name: Gather Detail Information of All Server Groups
+      willguibr.zpacloud.zpa_segment_group_info:
 
-RETURN = r"""
+    - name: Gather Details of All Segment Groups by Name
+      willguibr.zpacloud.zpa_segment_group_info:
+        name: Example1
+
+    - name: Gather Details of All Segment Groups by ID
+      willguibr.zpacloud.zpa_segment_group_info:
+        id: "216196257331291969"
+"""
+
+RETURN = """
 data:
     description: server group information
     returned: success
     elements: dict
     type: list
     sample: [
-      {
+            {
                 "app_connector_groups": [
                     "216196257331291924"
                 ],

@@ -27,13 +27,13 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific posture profile created in the Zscaler Private Access Mobile Portal
+  - Provides details about an (ID and/or Name) of a posture profile resource.
 module: zpa_posture_profile_info
-short_description: Provides details about a specific posture profile created in the Zscaler Private Access Mobile Portal
+short_description: Provides details about an (ID and/or Name) of a posture profile resource.
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -48,25 +48,22 @@ options:
       - ID of the posture profile.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: posture profile
-  hosts: localhost
-  tasks:
-    - name: Gather information about all posture profile
-      willguibr.zpacloud_ansible.zpa_posture_profile_info:
-        #name: CrowdStrike_ZPA_Pre-ZTA
-        id: 216196257331282234
-      register: postures
-    - name: postures
-      debug:
-        msg: "{{ postures }}"
+    - name: Gather Details of All Machine Groups
+      willguibr.zpacloud.zpa_posture_profile_info:
 
+    - name: Gather Details of a Specific Machine Group by Name
+      willguibr.zpacloud.zpa_posture_profile_info:
+        name: "Corp_Machine_Group"
+
+    - name: Gather Details of a Specific Machine Group by ID
+      willguibr.zpacloud.zpa_posture_profile_info:
+        id: "216196257331282583"
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: Posture Profile information
     returned: success

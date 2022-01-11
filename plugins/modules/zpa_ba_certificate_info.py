@@ -53,26 +53,15 @@ options:
 EXAMPLES = """
 - name: Gather Details of All Browser Certificates
   willguibr.zpacloud.zpa_ba_certificate_info:
-  register: all_certificates
-
-- debug:
-  msg: "{{ all_certificates }}"
 
 - name: Gather Details of a Specific Browser Certificates by Name
   willguibr.zpacloud.zpa_ba_certificate_info:
     name: crm.acme.com
-  register: certificate_name
-
-- debug:
-  msg: "{{ certificate_name }}"
 
 - name: Gather Details of a Specific Browser Certificates by ID
   willguibr.zpacloud.zpa_ba_certificate_info:
     id: "216196257331282583"
-  register: certificate_id
-
-- debug:
-  msg: "{{ certificate_id }}"
+    
 """
 
 RETURN = """

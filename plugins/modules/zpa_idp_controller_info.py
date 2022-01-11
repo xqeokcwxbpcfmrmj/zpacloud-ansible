@@ -27,73 +27,56 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+  - Provides details about the (ID and/or Name) of an idp controller resource.
 module: zpa_trusted_network_info
-short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+short_description: Provides details about the (ID and/or Name) of an idp controller resource.
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-      - Name of the browser certificate.
+      - Name of the Identity Provider.
     required: false
     type: str
   id:
     description:
-      - ID of the browser certificate.
+      - ID of the of the Identity Provider.
     required: false
     type: str
 
 """
 
 EXAMPLES = """
-- name: browser certificate
-  hosts: localhost
-  tasks:
-    - name: Gather information about all browser certificate
-      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: certificates
-    - name: certificates
-      debug:
-        msg: "{{ certificates }}"
+    - name: Gather Details of All IdP Controllers
+      willguibr.zpacloud.zpa_idp_controller_info:
+
+    - name: Gather Details of a Specific IdP Controller by Name
+      willguibr.zpacloud.zpa_idp_controller_info:
+        name: User_IdP_Name
+
+    - name: Gather Details of a Specific IdP Controller by ID
+      willguibr.zpacloud.zpa_idp_controller_info:
+        id: "216196257331282583"
 
 """
 
-RETURN = r"""
+RETURN = """
 data:
-    description: Browser Certificate information
+    description: List of Identity Providers
     returned: success
     elements: dict
     type: list
-    data: [
+        "data": [
             {
-              "id": "12345",
-              "name": "Root",
-            },
-            {
-              "id": "12345",
-              "name": "Client",
-            },
-            {
-              "id": "1234567890",
-              "name": "Connector",
-            },
-            {
-              "id": "6574",
-              "name": "Service Edge",
-            },
-            {
-                "id": "10242",
-                "name": "Isolation Client",
+                "id": "216196257331285825",
+                "name": "IdP_Name"
             }
-    ]
+        ]
 """
 
 

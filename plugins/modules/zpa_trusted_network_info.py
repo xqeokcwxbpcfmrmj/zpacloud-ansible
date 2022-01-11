@@ -27,7 +27,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 author: William Guilherme (@willguibr)
 description:
@@ -52,21 +52,21 @@ options:
 """
 
 EXAMPLES = """
-- name: trusted network
-  hosts: localhost
-  tasks:
-    - name: Gather information about all trusted network
-      willguibr.zpacloud_ansible.zpa_trusted_network_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: networks
-    - name: networks
-      debug:
-        msg: "{{ networks }}"
+- name: Gather information about all trusted network
+  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+    #name: Corp-Trusted-Networks
+    id: 216196257331282234
+    
+- name: Gather information about a trusted network by Name
+  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+    name: Corp-Trusted-Networks
 
+- name: Gather information about a trusted network by ID
+  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+    id: 216196257331282234
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: Trusted Network information
     returned: success

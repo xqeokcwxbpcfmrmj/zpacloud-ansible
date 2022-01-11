@@ -216,7 +216,7 @@ def main():
     id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
         type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
-        action=dict(type='str', required=False, choices=["INTERCEPT", "INTERCEPT_ACCESSIBLE", "BYPASS"], required=False, default="INTERCEPT"),
+        action=dict(type='str', required=False, choices=["INTERCEPT", "INTERCEPT_ACCESSIBLE", "BYPASS"], default="INTERCEPT"),
         action_id=dict(type='str', required=False),
         app_connector_groups=id_name_spec,
         custom_msg=dict(type='str', required=False),
