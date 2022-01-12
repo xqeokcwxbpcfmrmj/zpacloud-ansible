@@ -23,6 +23,7 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_app_connector_group import AppConnectorGroupService
 from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -184,7 +185,7 @@ def core(module):
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=True)
+        type='str', required=False), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
         connectors=id_name_spec,
         name=dict(type="str", required=True),

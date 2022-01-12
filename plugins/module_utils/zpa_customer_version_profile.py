@@ -44,28 +44,28 @@ class ProfileVersionService:
         if resp_json is None:
             return {}
         return {
-            "creation_time": resp_json.get("creationTime"),
-            "custome_id": resp_json.get("customerId"),
-            "description": resp_json.get("description"),
+            # "creation_time": resp_json.get("creationTime"),
+            # "custome_id": resp_json.get("customerId"),
+            # "description": resp_json.get("description"),
             "id": resp_json.get("id"),
-            "modified_by": resp_json.get("modifiedBy"),
-            "modified_time": resp_json.get("modifiedTime"),
+            # "modified_by": resp_json.get("modifiedBy"),
+            # "modified_time": resp_json.get("modifiedTime"),
             "name": resp_json.get("name"),
-            "upgrade_priority": resp_json.get("upgradePriority"),
-            "visibility_scope": resp_json.get("visibilityScope"),
+            # "upgrade_priority": resp_json.get("upgradePriority"),
+            # "visibility_scope": resp_json.get("visibilityScope"),
         }
 
     def mapAppToJSON(self, version):
         if version is None:
             return {}
         return {
-            "creationTime": version.get("creation_time"),
-            "customerId": version.get("custome_id"),
-            "description": version.get("description"),
+            # "creationTime": version.get("creation_time"),
+            # "customerId": version.get("custome_id"),
+            # "description": version.get("description"),
             "id": version.get("id"),
-            "modifiedBy": version.get("modified_by"),
-            "modifiedTime": version.get("modified_time"),
+            # "modifiedBy": version.get("modified_by"),
+            # "modifiedTime": version.get("modified_time"),
             "name": version.get("name"),
-            "upgradePriority": version.get("upgrade_priority"),
-            "visibilityScope": version.get("visibility_scope"),
+            # "upgradePriority": version.get("upgrade_priority"),
+            # "visibilityScope": version.get("visibility_scope"),
         }
