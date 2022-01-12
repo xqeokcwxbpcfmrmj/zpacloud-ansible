@@ -75,7 +75,7 @@ class BrowserAccessService:
             d = self.camelcaseToSnakeCase(app)
             l.append(d)
         return l
-
+    
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
             return {}
@@ -115,7 +115,6 @@ class BrowserAccessService:
             "segmentGroupId": app.get("segment_group_id"),
             "segmentGroupName": app.get("segment_group_name"),
             "bypassType": app.get("bypass_type"),
-            # "clientlessApps": app.get("clientless_apps"),
             "configSpace": app.get("config_space"),
             "creationTime": app.get("creation_time"),
             "defaultIdleTimeout": app.get("default_idle_timeout"),

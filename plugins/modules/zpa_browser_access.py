@@ -243,6 +243,38 @@ def main():
     id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
         type='str', required=True), name=dict(type='str', required=False)), required=True)
     argument_spec.update(
+        # clientless_apps=dict(type='list', elements='dict', options=dict(allow_options=dict(type='bool', required=False),
+        #                                                     application_port=dict(
+        #                                                         type='str', required=True),
+        #                                                     application_protocol=dict(
+        #                                                         type='str', required=True, choices=["HTTP", "HTTPS", "FTP", "RDP"]),
+        #                                                     certificate_id=dict(
+        #                                                         type='str', required=True),
+        #                                                     certificate_name=dict(
+        #                                                         type='str', required=False),
+        #                                                     cname=dict(
+        #                                                         type='str', required=False),
+        #                                                     description=dict(
+        #                                                         type='str', required=False),
+        #                                                     domain=dict(
+        #                                                         type='str', required=False),
+        #                                                     enabled=dict(
+        #                                                         type='str', required=False),
+        #                                                     hidden=dict(
+        #                                                         type='str', required=False),
+        #                                                     # id=dict(
+        #                                                     #     type='str', required=False),
+        #                                                     local_domain=dict(
+        #                                                         type='str', required=False),
+        #                                                     name=dict(
+        #                                                         type='str', required=False),
+        #                                                     path=dict(
+        #                                                         type='str', required=False),
+        #                                                     portal=dict(
+        #                                                         type='str', required=False),
+        #                                                     trust_untrusted_cert=dict(
+        #                                                         type='str', required=False),
+        #                                                     ), required=False),
         tcp_port_range=dict(type='list', elements='dict',
                             options=port_spec, required=False),
         enabled=dict(type='bool', required=False),

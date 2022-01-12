@@ -97,7 +97,7 @@ def core(module):
         "description",
         "address",
         "enabled",
-        # "app_server_group_ids",
+        "app_server_group_ids",
         "config_space",
     ]
     for param_name in params:
@@ -126,15 +126,15 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    # id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-    #     type='str', required=False), name=dict(type='str', required=False)), required=False)
+    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+        type='str', required=False), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
-        id=dict(type="str", required=False),
+        id=dict(type="str"),
         name=dict(type='str', required=True),
         description=dict(type='str', required=False),
         address=dict(type='str', required=True),
         enabled=dict(type='bool', required=False),
-        # app_server_group_ids=id_name_spec,
+        app_server_group_ids=id_name_spec,
         config_space=dict(type='str', required=False,
                           default="DEFAULT", choices=["DEFAULT", "SIEM"]),
         state=dict(type="str", choices=[

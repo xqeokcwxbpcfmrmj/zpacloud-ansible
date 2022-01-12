@@ -75,7 +75,7 @@ class ApplicationServerService:
             "name": resp_json.get("name"),
             "description": resp_json.get("description"),
             "enabled": resp_json.get("enabled"),
-            # "app_server_group_ids": self.mapListJSONToList(resp_json.get("appServerGroupIds")),
+            "app_server_group_ids": self.mapListJSONToList(resp_json.get("appServerGroupIds")),
         }
 
     def mapAppToJSON(self, application_server):
@@ -88,7 +88,7 @@ class ApplicationServerService:
             "name": application_server.get("name"),
             "description": application_server.get("description"),
             "enabled": application_server.get("enabled"),
-            # "appServerGroupIds": self.mapListToJSONList(application_server.get("app_server_group_ids")),
+            "appServerGroupIds": self.mapListToJSONList(application_server.get("app_server_group_ids")),
         }
 
     def create(self, application_server):

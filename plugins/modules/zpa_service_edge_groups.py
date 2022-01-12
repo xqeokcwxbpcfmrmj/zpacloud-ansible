@@ -231,8 +231,6 @@ def main():
                                 'ALL', 'NONE', 'CUSTOM'], required=False),
         service_edges=id_name_spec,
         trusted_networks=id_name_spec,
-        # service_edges=dict(type='list', elements='str', required=False),
-        # trusted_networks=dict(type='list', elements='str', required=False),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )
