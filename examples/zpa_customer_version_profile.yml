@@ -3,6 +3,7 @@
   gather_facts: False
   tasks:
     - name: Gather information about all customer version profile
+<<<<<<< HEAD
       willguibr.zpacloud.zpa_customer_version_profile_info:
         name: "New Release"
         # id: 216196257331282234
@@ -10,3 +11,13 @@
       
     - debug: 
         msg: "{{ data }}"
+=======
+      willguibr.zpacloud_ansible.zpa_customer_version_profile_info:
+        name: "New Release"
+        # id: 216196257331282234
+      register: version
+    - name: version
+      debug:
+        msg: "{{ item.id }}"
+      with_items: "{{ version.data }}"
+>>>>>>> master
