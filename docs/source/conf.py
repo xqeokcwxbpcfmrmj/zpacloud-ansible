@@ -82,7 +82,7 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     "display_github": True,
     "github_user": "willguibr",
-    "github_repo": "zpacloud_ansible",
+    "github_repo": "zpacloud",
     "github_version": "master",
     "conf_py_path": "/docs/source/",
 }

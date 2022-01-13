@@ -1,16 +1,16 @@
 (Unofficial) Zscaler Private Access (ZPA) Ansible Collection
 =========================
 
-![Version on Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud_ansible/&query=latest_version.version)
+![Version on Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud/&query=latest_version.version)
 
 Ansible collection that automates the configuration and operational tasks on
 Zscaler Private Access, using the the ZPA API.
 
 -   Free software: Apache 2.0 License
 -   Documentation:
-    <https://willguibr.github.io/zpacloud_ansible/>
+    <https://willguibr.github.io/zpacloud/>
 -   Repo:
-    <https://github.com/willguibr/zpacloud_ansible>
+    <https://github.com/willguibr/zpacloud>
 -   Example Playbooks:
     <https://github.com/willguibr/zpacloud-playbooks>
 
@@ -26,7 +26,7 @@ Installation
 Install this collection using the Ansible Galaxy CLI:
 
 ```bash
-ansible-galaxy collection install willguibr.zpacloud_ansible
+ansible-galaxy collection install willguibr.zpacloud
 ```
 
 Usage
@@ -37,7 +37,7 @@ specification in your playbooks:
 
 ```yaml
   collections:
-    - willguibr.zpacloud_ansible
+    - willguibr.zpacloud
 
   tasks:
   - name: Get the system info

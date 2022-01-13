@@ -19,8 +19,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -52,14 +52,14 @@ options:
 
 EXAMPLES = """
 - name: Gather information about all Service Edge Groups
-  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     
 - name: Gather information about all Service Edge Groups by Name
-  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     name: "Example Service Edge Group"
     
 - name: Gather information about all Service Edge Groups by ID
-  willguibr.zpacloud_ansible.zpa_service_edge_groups_info:
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     id: "216196257331292046"
 """
 

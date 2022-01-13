@@ -124,7 +124,7 @@ Server Group
 .. code-block:: yaml
 
     - name: Create/Update/Delete a Server Group
-      willguibr.zpacloud_ansible.zpa_server_group:
+      willguibr.zpacloud.zpa_server_group:
         name: "Example"
         description: "Example"
         enabled: false

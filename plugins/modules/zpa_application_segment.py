@@ -21,8 +21,8 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -136,7 +136,7 @@ options:
 
 EXAMPLES = """
 - name: Create/Update/Delete an application segment.
-  willguibr.zpacloud_ansible.zpa_application_segment:
+  willguibr.zpacloud.zpa_application_segment:
     name: Example Application Segment
     description: Example Application Segment
     enabled: true

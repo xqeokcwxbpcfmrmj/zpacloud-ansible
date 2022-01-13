@@ -19,8 +19,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc

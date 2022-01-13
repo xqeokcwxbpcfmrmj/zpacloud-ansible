@@ -19,8 +19,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_trusted_network import TrustedNetworkService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_trusted_network import TrustedNetworkService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -53,16 +53,16 @@ options:
 
 EXAMPLES = """
 - name: Gather information about all trusted network
-  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+  willguibr.zpacloud.zpa_trusted_network_info:
     #name: Corp-Trusted-Networks
     id: 216196257331282234
     
 - name: Gather information about a trusted network by Name
-  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+  willguibr.zpacloud.zpa_trusted_network_info:
     name: Corp-Trusted-Networks
 
 - name: Gather information about a trusted network by ID
-  willguibr.zpacloud_ansible.zpa_trusted_network_info:
+  willguibr.zpacloud.zpa_trusted_network_info:
     id: 216196257331282234
 """
 

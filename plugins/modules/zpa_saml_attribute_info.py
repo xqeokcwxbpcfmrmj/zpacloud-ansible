@@ -19,8 +19,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_saml_attribute import SamlAttributeService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_saml_attribute import SamlAttributeService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -54,14 +54,14 @@ options:
 EXAMPLES = """
 
     - name: Gather information about all saml attribute by attributes
-      willguibr.zpacloud_ansible.zpa_saml_attribute_info:
+      willguibr.zpacloud.zpa_saml_attribute_info:
       
     - name: Gather information about saml attribute by attribute Name
-      willguibr.zpacloud_ansible.zpa_saml_attribute_info:
+      willguibr.zpacloud.zpa_saml_attribute_info:
         name: DepartmentName_User
         
     - name: Gather information about saml attribute by attribute ID
-      willguibr.zpacloud_ansible.zpa_saml_attribute_info:
+      willguibr.zpacloud.zpa_saml_attribute_info:
         id: 216196257331285827
 """
 

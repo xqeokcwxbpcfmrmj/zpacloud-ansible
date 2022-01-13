@@ -19,8 +19,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_scim_attribute_header import ScimAttributeHeaderService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_attribute_header import ScimAttributeHeaderService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -58,16 +58,16 @@ options:
 
 EXAMPLES = """
     - name: Gather information about all SCIM Attribute of an IDP
-      willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
         idp_name: IdP_Name
 
     - name: Gather information about the SCIM Attribute by Name
-      willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
         name: costCenter
         idp_name: SGIO-User-Okta
 
     - name: Gather information about the SCIM Attribute by ID
-      willguibr.zpacloud_ansible.zpa_scim_attribute_header_info:
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
         id: 216196257331285842
         idp_name: SGIO-User-Okta
 """
