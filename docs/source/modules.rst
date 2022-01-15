@@ -1,5 +1,5 @@
-Module reference
-----------------
+modules
+=======
 
 .. toctree::
    :maxdepth: 4
@@ -21,10 +21,7 @@ Module reference
    zpa_policy_access_forwarding_rule
    zpa_policy_access_rule
    zpa_policy_access_rule_info
-   zpa_policy_forward_rule
-   zpa_policy_forward_rule_info
-   zpa_policy_timeout_rule
-   zpa_policy_timeout_rule_info
+   zpa_policy_access_timeout_rule
    zpa_posture_profile_info
    zpa_provisioning_key
    zpa_provisioning_key_info
