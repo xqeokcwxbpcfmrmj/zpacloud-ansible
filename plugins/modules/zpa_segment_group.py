@@ -60,7 +60,28 @@ options:
     choices: ["present", "absent"]
     type: str
 
+<<<<<<< HEAD
 """
+=======
+'''
+
+EXAMPLES = r'''
+- name: segment group
+  hosts: localhost
+  tasks:
+    - name: Create an Segment group
+      willguibr.zpacloud.zpa_segment_group:
+        state: absent
+        name: "Example Test"
+        description: "Example Test"
+        enabled: false
+        applications:
+          - id: 827277282
+      register: segment_group
+    - name: segment group
+      debug:
+        msg: "{{ segment_group }}"
+>>>>>>> master
 
 EXAMPLES = """
 - name: Create/Update/Delete a Server Group

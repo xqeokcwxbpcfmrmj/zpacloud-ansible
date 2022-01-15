@@ -44,6 +44,7 @@ options:
 """
 
 EXAMPLES = """
+<<<<<<< HEAD
     - name: Gather information about all scim groups by the IdP name
       willguibr.zpacloud.zpa_scim_attribute_header_info:
         idp_name: "IdP_Name"
@@ -51,11 +52,33 @@ EXAMPLES = """
     - name: Gather information about all scim groups by the IdP and group name
       willguibr.zpacloud.zpa_scim_attribute_header_info:
         name: DepartmentName
+=======
+- name: scim attribute
+  hosts: localhost
+  tasks:
+    - name: Gather information about scim attribute by attribute Name
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
+        name: DepartmentName_User-Okta
+        idp_name: "SGIO-User-Okta"
+      register: department_name
+    - name: department_name
+      debug:
+        msg: "{{ department_name }}"
+        
+    - name: Gather information about scim attribute by attribute ID
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
+        id: 216196257331285827
+>>>>>>> master
         idp_name: "SGIO-User-Okta"
         
+<<<<<<< HEAD
     - name: Gather information about all scim groups by the IdP and group ID
       willguibr.zpacloud.zpa_scim_attribute_header_info:
         id: 216196257331285827
+=======
+    - name: Gather information about all scim attribute by attributes
+      willguibr.zpacloud.zpa_scim_attribute_header_info:
+>>>>>>> master
         idp_name: "SGIO-User-Okta"
 """
 

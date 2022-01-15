@@ -39,6 +39,7 @@ options:
 """
 
 EXAMPLES = """
+<<<<<<< HEAD
     - name: Gather Details of All IdP Controllers
       willguibr.zpacloud.zpa_idp_controller_info:
 
@@ -49,6 +50,19 @@ EXAMPLES = """
     - name: Gather Details of a Specific IdP Controller by ID
       willguibr.zpacloud.zpa_idp_controller_info:
         id: "216196257331282583"
+=======
+- name: browser certificate
+  hosts: localhost
+  tasks:
+    - name: Gather information about all browser certificate
+      willguibr.zpacloud.zpa_ba_certificate_info:
+        #name: Corp-Trusted-Networks
+        id: 216196257331282234
+      register: certificates
+    - name: certificates
+      debug:
+        msg: "{{ certificates }}"
+>>>>>>> master
 
 """
 

@@ -36,9 +36,25 @@ options:
     type: str
 """
 
+<<<<<<< HEAD
 EXAMPLES = """
     - name: Gather Details of All Server Groups
       willguibr.zpacloud.zpa_server_group_info:
+=======
+EXAMPLES = '''
+- name: server group
+  hosts: localhost
+  tasks:
+    - name: Gather information about all server group
+      willguibr.zpacloud.zpa_server_group_info:
+        name: Browser Access Apps
+        #id: 216196257331291969
+      register: servers
+    - name: servers
+      debug:
+        msg: "{{ servers }}"
+'''
+>>>>>>> master
 
     - name: Gather Details of All Server Groups by Name
       willguibr.zpacloud.zpa_server_group_info:

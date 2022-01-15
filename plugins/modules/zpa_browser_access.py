@@ -10,7 +10,10 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_browser_access import BrowserAccessService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -140,6 +143,7 @@ options:
 """
 
 EXAMPLES = """
+<<<<<<< HEAD
   - name: Create an app segment
     willguibr.zpacloud.zpa_application_segment:
       state: absent
@@ -157,6 +161,32 @@ EXAMPLES = """
       segment_group_id: "216196257331291896"
       server_groups:
         - "216196257331291969"
+=======
+- name: App segment
+  hosts: localhost
+  tasks:
+    - name: Create an app segment
+      willguibr.zpacloud.zpa_application_segment:
+        state: absent
+        name: Example Application
+        description: Example Application Test
+        enabled: true
+        health_reporting: ON_ACCESS
+        bypass_type: NEVER
+        is_cname_enabled: true
+        tcp_port_range:
+          - from: "80"
+            to: "80"
+        domain_names:
+          - crm.example.com
+        segment_group_id: "216196257331291896"
+        server_groups:
+          #- "216196257331291969"
+      register: app_segment
+    - name: created/updated app segment
+      debug:
+        msg: "{{ app_segment }}"
+>>>>>>> master
 """
 
 RETURN = """

@@ -1,6 +1,7 @@
 - name: Create/Update/Delete a Browser Access Application Segment
   hosts: localhost
   tasks:
+<<<<<<< HEAD
 
     - name: Create a Server Group
       willguibr.zpacloud.zpa_server_group_info:
@@ -21,6 +22,20 @@
       willguibr.zpacloud.zpa_browser_access:
         name: Example
         description: Example
+=======
+    - name: Gather information about all App segment
+      willguibr.zpacloud.zpa_browser_access_info:
+        name: "Browser Access Apps"
+      register: app
+    - name: app segment
+      debug:
+        msg: "{{ app }}"
+    - name: Create an app segment
+      willguibr.zpacloud.zpa_browser_access:
+        # state: absent
+        name: Example Application
+        description: Example Application Test
+>>>>>>> master
         enabled: true
         health_reporting: ON_ACCESS
         bypass_type: NEVER

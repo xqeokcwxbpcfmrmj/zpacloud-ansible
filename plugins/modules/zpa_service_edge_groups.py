@@ -85,6 +85,7 @@ options:
     type: str
 """
 
+<<<<<<< HEAD
 EXAMPLES = """
 - name: Create/Update/Delete a Service Edge Group
   willguibr.zpacloud.zpa_service_edge_groups:
@@ -102,6 +103,33 @@ EXAMPLES = """
     upgrade_time_in_secs: "66600"
     override_version_profile: true
     version_profile_id: "0"
+=======
+EXAMPLES = '''
+- name: App Connector Groups
+  hosts: localhost
+  tasks:
+    - name: Create/update/delete an app connector group
+      willguibr.zpacloud.zpa_app_connector_groups:
+        state: "absent"
+        #id: "216196257331292046"
+        name: "Example"
+        description: "Example2"
+        enabled: true
+        city_country: "California, US"
+        country_code: "US"
+        latitude: "37.3382082"
+        longitude: "-121.8863286"
+        location: "San Jose, CA, USA"
+        upgrade_day: "SUNDAY"
+        upgrade_time_in_secs: "66600"
+        override_version_profile: true
+        version_profile_id: "0"
+        dns_query_type: "IPV4"
+      register: appconnectorg
+    - name: created appconnector group
+      debug:
+        msg: "{{ appconnectorg }}"
+>>>>>>> master
 
 """
 

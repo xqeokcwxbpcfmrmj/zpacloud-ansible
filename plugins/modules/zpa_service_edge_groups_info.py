@@ -37,6 +37,7 @@ options:
 
 """
 
+<<<<<<< HEAD
 EXAMPLES = """
 - name: Gather information about all Service Edge Groups
   willguibr.zpacloud.zpa_service_edge_groups_info:
@@ -49,6 +50,30 @@ EXAMPLES = """
   willguibr.zpacloud.zpa_service_edge_groups_info:
     id: "216196257331292046"
 """
+=======
+EXAMPLES = r'''
+- name: App Connector Groups
+  hosts: localhost
+  tasks:
+    - name: Gather information about all App Connector Groups
+      willguibr.zpacloud.zpa_app_connector_groups_info:
+        #name: "USA App Connector Group"
+    - name: Gather information about all App Connector Groups
+      willguibr.zpacloud.zpa_app_connector_groups_info:
+
+    - name: Gather information about App Connector Group with given ID
+      willguibr.zpacloud.zpa_app_connector_groups_info:
+        id: "198288282"
+      register: resp_out
+
+    - name: Gather information about App Connector Group with given name
+      willguibr.zpacloud.zpa_app_connector_groups_info:
+        name: "example"
+      register: resp_out
+    - debug:
+        msg: "{{ resp_out.name }}"
+'''
+>>>>>>> master
 
 RETURN = """
 data:

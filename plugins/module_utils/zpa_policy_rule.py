@@ -190,25 +190,224 @@ class PolicyRuleService:
                                 for item in _dict if item is not None)
         return _dict
 
-    def create(self, policy_rule, policy_set_id):
-        """Create new Policy rule"""
-        segmentGroupJson = self.mapAppToJSON(policy_rule)
-        response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule" % (self.customer_id, policy_set_id), data=segmentGroupJson)
+    def customValidate(self, operand, expectedLHS, expectedRHS, getByID):
+        if operand.get("lhs", "") == "" or not operand.get("lhs") in expectedLHS:
+            return self.lhsWarn(operand.get("objectType"), expectedLHS, operand.get("lhs"), None)
+        if operand.get("rhs", "") == "":
+            return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), None)
+        resp = getByID(operand.get("rhs"))
+        if resp == True:
+            return True
+        return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), resp)
+
+    def rhsWarn(self, objType, expected, rhs, err):
+        return "[WARN] when operand object type is %s RHS must be an existing %s, value is \"%s\", %s\n" % (objType, expected, rhs, err)
+
+    def lhsWarn(self, objType, expected, lhs, err):
+        return "[WARN] when operand object type is %s LHS must be an existing %s value is \"%s\", %s\n" % (objType, expected, lhs, err)
+
+    def reorder(self, rule_id, policy_set_id, order):
+        """reorder the Policy rule"""
+        response = self.rest.put(
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s/reorder/%s" % (self.customer_id, policy_set_id, rule_id, order))
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.getByID(response.json.get("id"), policy_set_id)
+        return self.getByID(rule_id, policy_set_id)
+
+    def getAppSegmentByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getSegmentGroupByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getIDPControllerByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/idp/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getCloudConnectorGroupByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/cloudConnectorGroup/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def validClientType(self, id):
+        if id != "zpn_client_type_zapp" and id != "zpn_client_type_exporter" and id != "zpn_client_type_ip_anchoring" and id != "zpn_client_type_browser_isolation" and id != "zpn_client_type_machine_tunnel" and id != "zpn_client_type_edge_connector":
+            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' when object type is CLIENT_TYPE"
+        return True
+
+    def getMachineGroupByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getByPostureUDID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getTrustedNetworkByNetID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/network/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getSamlAttribute(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/samlAttribute/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getScimAttributeByID(self, id):
+        response = self.rest.get(
+            "/mgmtconfig/v1/admin/customers/%s/idp/scimattribute/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def getScimGroupByID(self, id):
+        response = self.rest.get(
+            "/userconfig/v1/customers/%s/scimgroup/%s" % (self.customer_id, id), fail_safe=True)
+        status_code = response.status_code
+        if status_code != 200:
+            return None
+        return True
+
+    def validateOperand(self, operand):
+        objType = operand.get("objectType")
+        if objType == "APP":
+            return self.customValidate(operand, ["id"], "application segment ID", lambda id: self.getAppSegmentByID(id))
+        elif objType == "APP_GROUP":
+            return self.customValidate(operand, ["id"], "Segment Group ID", lambda id: self.getSegmentGroupByID(id))
+        elif objType == "IDP":
+            return self.customValidate(operand, ["id"], "IDP ID", lambda id: self.getIDPControllerByID(id))
+        elif objType == "EDGE_CONNECTOR_GROUP":
+            return self.customValidate(operand, ["id"], "cloud connector group ID", lambda id: self.getCloudConnectorGroupByID(id))
+        elif objType == "CLIENT_TYPE":
+            return self.customValidate(operand, ["id"], "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector'", lambda id: self.validClientType(id))
+        elif objType == "MACHINE_GRP":
+            return self.customValidate(operand, ["id"], "machine group ID", lambda id: self.getMachineGroupByID(id))
+        elif objType == "POSTURE":
+            if operand.get("lhs") is None or operand.get("lhs") == "":
+                return self.lhsWarn(operand.get("objectType"), "valid posture network ID", operand.get("lhs"), None)
+            resp = self.getByPostureUDID(operand.get("lhs"))
+            if resp != True:
+                return self.lhsWarn(operand.get("objectType"), "valid posture network ID", operand.get("lhs"), resp)
+            if not operand.get("rhs") in ["true", "false"]:
+                return self.rhsWarn(operand.get("objectType"), "\"true\"/\"false\"", operand.get("rhs"), None)
+            return True
+        elif objType == "TRUSTED_NETWORK":
+            if operand.get("lhs") is None or operand.get("lhs") == "":
+                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), None)
+            resp = self.getTrustedNetworkByNetID(operand.get("lhs"))
+            if resp != True:
+                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), resp)
+            if operand.get("rhs") != "true":
+                return self.rhsWarn(operand.get("objectType"), "\"true\"", operand.get("rhs"), None)
+            return True
+        elif objType == "SAML":
+            if operand.get("lhs") is None or operand.get("lhs") == "":
+                return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), None)
+            resp = self.getSamlAttribute(operand.get("lhs"))
+            if resp != True:
+                return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), resp)
+            if operand.get("rhs") is None or operand.get("rhs") == "":
+                return self.rhsWarn(operand.get("objectType"), "SAML Attribute Value", operand.get("rhs"), None)
+            return True
+        elif objType == "SCIM":
+            if operand.get("lhs") is None or operand.get("lhs") == "":
+                return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), None)
+            resp = self.getScimAttributeByID(operand.get("lhs"))
+            if resp != True:
+                return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), resp)
+            if operand.get("rhs") is None or operand.get("rhs") == "":
+                return self.rhsWarn(operand.get("objectType"), "SCIM Attribute Value", operand.get("rhs"), None)
+            return True
+        elif objType == "SCIM_GROUP":
+            if operand.get("lhs") is None or operand.get("lhs") == "":
+                return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), None)
+            resp = self.getIDPControllerByID(operand.get("lhs"))
+            if resp != True:
+                return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), resp)
+            if operand.get("rhs") is None or operand.get("rhs") == "":
+                return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), None)
+            resp = self.getScimGroupByID(operand.get("rhs"))
+            if resp != True:
+                return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), resp)
+            return True
+        else:
+            return "[WARN] invalid operand object type %s\n" % (operand.get("objectType"))
+
+    def validateConditions(self, conditions):
+        for condition in conditions:
+            for operand in condition.get("operands"):
+                check = self.validateOperand(operand)
+                if check != True:
+                    return check
+        return True
+
+    def create(self, policy_rule, policy_set_id):
+        """Create new Policy rule"""
+        ruleJson = self.mapAppToJSON(policy_rule)
+        check = self.validateConditions(
+            [] if ruleJson is None else ruleJson.get("conditions"))
+        if check != True:
+            self.module.fail_json(
+                msg="validating policy rule conditions failed: %s" % (check))
+        response = self.rest.post(
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule" % (self.customer_id, policy_set_id), data=ruleJson)
+        status_code = response.status_code
+        if status_code > 299:
+            return None
+        rule = self.getByID(response.json.get("id"), policy_set_id)
+        if policy_rule.get("rule_order") is not None and policy_rule.get("rule_order") != "":
+            return self.reorder(rule.get("id"), policy_set_id, policy_rule.get("rule_order"))
+        return rule
 
     def update(self, policy_rule, policy_set_id):
         """update the Policy rule"""
-        segmentGroupJson = self.mapAppToJSON(policy_rule)
+        ruleJson = self.mapAppToJSON(policy_rule)
+        check = self.validateConditions(
+            [] if ruleJson is None else ruleJson.get("conditions"))
+        if check != True:
+            self.module.fail_json(
+                msg="validating policy rule conditions failed: %s" % (check))
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s" % (self.customer_id, policy_set_id, segmentGroupJson.get("id")), data=segmentGroupJson)
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s" % (self.customer_id, policy_set_id, ruleJson.get("id")), data=ruleJson)
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.getByID(segmentGroupJson.get("id"), policy_set_id)
+        rule = self.getByID(ruleJson.get("id"), policy_set_id)
+        if policy_rule.get("rule_order") is not None and policy_rule.get("rule_order") != "":
+            return self.reorder(rule.get("id"), policy_set_id, policy_rule.get("rule_order"))
+        return rule
 
     def delete(self, id, policy_set_id):
         """delete the Policy rule"""

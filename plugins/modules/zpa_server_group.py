@@ -10,7 +10,10 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -23,6 +26,7 @@ author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+<<<<<<< HEAD
     applications:
       type: list
       elements: str
@@ -73,6 +77,84 @@ options:
       choices: ["present", "absent"]
       type: str
 """
+=======
+  applications:
+    type: list
+    elements: str
+    required: False
+    description: "This field is a json array of server_group-connector-id objects only."
+  enabled:
+    type: bool
+    required: False
+    description: "This field defines if the server group is enabled or disabled."
+  dynamic_discovery:
+    type: bool
+    required: False
+    description: "This field controls dynamic discovery of the servers."
+  name:
+    type: str
+    required: True
+    description: "This field defines the name of the server group."
+  servers:
+    type: list
+    elements: str
+    required: False
+    description: "This field is a list of servers objects that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId."
+  app_connector_groups:
+    type: list
+    elements: str
+    required: False
+    description: "List of server_group-connector ID objects."
+  config_space:
+    type: str
+    required: False
+    description: ""
+    default: "DEFAULT"
+    choices: ["DEFAULT", "SIEM"]
+  description:
+    type: str
+    required: False
+    description: "This field is the description of the server group."
+  id:
+    type: str
+    description: ""
+  ip_anchored:
+    type: bool
+    required: False
+    description: ""
+  state:
+    description: "Whether the server group should be present or absent."
+    default: present
+    choices: ["present", "absent"]
+    type: str
+
+'''
+
+EXAMPLES = r'''
+- name: server group
+  hosts: localhost
+  tasks:
+    - name: Create an server group
+      willguibr.zpacloud.zpa_server_group:
+        state: absent
+        name: "Example Test amazzal"
+        description: "Example  Test amazzal"
+        enabled: false
+        dynamic_discovery: false
+        app_connector_groups:
+          - id: "216196257331291921"
+            name: "sks"
+        servers:
+          - id: "216196257331291921"
+            name: "sks"
+        applications:
+          - id: "216196257331291921"
+            name: "sks"
+      register: server_g
+    - name: server group
+      debug:
+        msg: "{{ server_g }}"
+>>>>>>> master
 
 EXAMPLES = """
 - name: Create/Update/Delete a Server Group

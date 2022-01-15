@@ -42,6 +42,7 @@ options:
 """
 
 EXAMPLES = """
+<<<<<<< HEAD
     - name: Gather Details of All CONNECTOR_GRP Provisioning Keys
       willguibr.zpacloud.zpa_provisioning_key_info:
         association_type: "CONNECTOR_GRP"
@@ -54,6 +55,14 @@ EXAMPLES = """
     - name: Gather Details of All CONNECTOR_GRP Provisioning Keys by ID
       willguibr.zpacloud.zpa_provisioning_key_info:
         id: "8691"
+=======
+- name: provisioning key
+  hosts: localhost
+  tasks:
+    - name: Gather information about all provisioning keys
+      willguibr.zpacloud.zpa_provisioning_key_info:
+        #id: "216196257331291981"
+>>>>>>> master
         association_type: "CONNECTOR_GRP"
         
     - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys

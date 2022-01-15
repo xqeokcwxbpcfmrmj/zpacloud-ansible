@@ -39,6 +39,13 @@ options:
 EXAMPLES = """
 - name: Gather information about all browser access application segments
   willguibr.zpacloud.zpa_browser_access_info:
+<<<<<<< HEAD
+=======
+  register: all_browser_access
+
+- debug:
+  msg: "{{ all_browser_access }}"
+>>>>>>> master
 
 - name: Browser Access Application Segment by Name
   willguibr.zpacloud.zpa_browser_access_info:

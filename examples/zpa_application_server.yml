@@ -2,18 +2,30 @@
   hosts: localhost
 
   tasks:
+<<<<<<< HEAD
     # - name: Gather information about all Application Servers
     #   willguibr.zpacloud.zpa_application_server_info:
     #     # name: "jenkins.securitygeek.io"
     #   register: app_server
     # - name: application server
+=======
+    - name: Gather information about all Application Servers
+      willguibr.zpacloud.zpa_application_server_info:
+        # name: "jenkins.securitygeek.io"
+      register: app_server
+    - name: application server
+>>>>>>> master
 
     #   debug:
     #     msg: "{{ app_server }}"
 
     - name: Create a segment group
       willguibr.zpacloud.zpa_application_server:
+<<<<<<< HEAD
         # state: absent
+=======
+        state: absent
+>>>>>>> master
         name: "Example Application Server"
         address: "test.securitygeek.io"
         enabled: true

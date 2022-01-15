@@ -4,6 +4,7 @@
   tasks:
     - name: Gather information about all customer version profile
 <<<<<<< HEAD
+<<<<<<< HEAD
       willguibr.zpacloud.zpa_customer_version_profile_info:
         name: "New Release"
         # id: 216196257331282234
@@ -13,6 +14,9 @@
         msg: "{{ data }}"
 =======
       willguibr.zpacloud_ansible.zpa_customer_version_profile_info:
+=======
+      willguibr.zpacloud.zpa_customer_version_profile_info:
+>>>>>>> master
         name: "New Release"
         # id: 216196257331282234
       register: version

@@ -38,12 +38,26 @@ options:
 """
 
 EXAMPLES = """
+<<<<<<< HEAD
     - name: Gather Details of All Machine Groups
       willguibr.zpacloud.zpa_posture_profile_info:
 
     - name: Gather Details of a Specific Machine Group by Name
       willguibr.zpacloud.zpa_posture_profile_info:
         name: "Corp_Machine_Group"
+=======
+- name: posture profile
+  hosts: localhost
+  tasks:
+    - name: Gather information about all posture profile
+      willguibr.zpacloud.zpa_posture_profile_info:
+        #name: CrowdStrike_ZPA_Pre-ZTA
+        id: 216196257331282234
+      register: postures
+    - name: postures
+      debug:
+        msg: "{{ postures }}"
+>>>>>>> master
 
     - name: Gather Details of a Specific Machine Group by ID
       willguibr.zpacloud.zpa_posture_profile_info:
