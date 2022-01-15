@@ -52,6 +52,6 @@ Status
 
 
 Authors
-~~~~~~~
+------
 
 - William Guilherme (@willguibr)
