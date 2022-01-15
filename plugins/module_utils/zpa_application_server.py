@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import re
-=======
->>>>>>> master
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
-
 
 class ApplicationServerService:
     def __init__(self, module, customer_id):
@@ -44,28 +39,20 @@ class ApplicationServerService:
                 return application_server
         return None
 
-    @staticmethod
-    def camelcaseToSnakeCase(obj):
-        new_obj = dict()
-        for key, value in obj.items():
-            if value is not None:
-                new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
-        return new_obj
-
-    def mapListJSONToList(self, entities):
-        if entities is None:
+    def mapApplicationServerRespJSONToListID(self, applicationServers):
+        if applicationServers is None:
             return []
         l = []
-        for s in entities:
-            l.append(self.camelcaseToSnakeCase(s))
+        for s in applicationServers:
+            l.append(s.get("id"))
         return l
 
-    def mapListToJSONList(self, entities):
-        if entities is None:
+    def mapApplicationServerToJSON(self, applicationServers):
+        if applicationServers is None:
             return []
         l = []
-        for e in entities:
-            l.append(dict(id=e.get("id")))
+        for id in applicationServers:
+            l.append(dict(id=id))
         return l
 
     def mapRespJSONToApp(self, resp_json):
@@ -78,7 +65,7 @@ class ApplicationServerService:
             "name": resp_json.get("name"),
             "description": resp_json.get("description"),
             "enabled": resp_json.get("enabled"),
-            "app_server_group_ids": self.mapListJSONToList(resp_json.get("appServerGroupIds")),
+            # "app_server_group_ids": self.mapApplicationServerRespJSONToListID(resp_json.get("appServerGroupIds")),
         }
 
     def mapAppToJSON(self, application_server):
@@ -91,7 +78,7 @@ class ApplicationServerService:
             "name": application_server.get("name"),
             "description": application_server.get("description"),
             "enabled": application_server.get("enabled"),
-            "appServerGroupIds": self.mapListToJSONList(application_server.get("app_server_group_ids")),
+            # "appServerGroupIds": self.mapApplicationServerToJSON(application_server.get("app_server_group_ids")),
         }
 
     def create(self, application_server):
@@ -101,8 +88,8 @@ class ApplicationServerService:
             "/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id), data=ApplicationServerJson)
         status_code = response.status_code
         if status_code > 299:
-           return None
-        return self.getByID(response.json.get("id"))
+            return None
+        return self.mapRespJSONToApp(response.json)
 
     def update(self, application_server):
         """update the Application Server"""
@@ -112,7 +99,7 @@ class ApplicationServerService:
         status_code = response.status_code
         if status_code > 299:
             return None
-        return self.getByID(ApplicationServerJson.get("id"))
+        return application_server
 
     def delete(self, id):
         """delete the Application Server"""

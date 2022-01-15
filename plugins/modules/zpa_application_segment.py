@@ -10,6 +10,7 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
 DOCUMENTATION = """

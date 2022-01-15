@@ -44,56 +44,28 @@ class ProfileVersionService:
         if resp_json is None:
             return {}
         return {
-<<<<<<< HEAD
-            "creation_time": resp_json.get("creationTime"),
-            "custom_scope_customer_ids": resp_json.get("customScopeCustomerIds"),
-            "custom_scope_request_customer_ids": resp_json.get("customScopeRequestCustomerIds"),
-            "customer_id": resp_json.get("customerId"),
-            "description": resp_json.get("description"),
-=======
             # "creation_time": resp_json.get("creationTime"),
             # "custome_id": resp_json.get("customerId"),
             # "description": resp_json.get("description"),
->>>>>>> master
             "id": resp_json.get("id"),
             # "modified_by": resp_json.get("modifiedBy"),
             # "modified_time": resp_json.get("modifiedTime"),
             "name": resp_json.get("name"),
-<<<<<<< HEAD
-            "upgrade_priority": resp_json.get("upgradePriority"),
-            "versions": resp_json.get("versions"),
-            "visibility_scope": resp_json.get("visibilityScope"),
-=======
             # "upgrade_priority": resp_json.get("upgradePriority"),
             # "visibility_scope": resp_json.get("visibilityScope"),
->>>>>>> master
         }
 
     def mapAppToJSON(self, version):
         if version is None:
             return {}
         return {
-<<<<<<< HEAD
-            "creationTime": version.get("creation_time"),
-            "customScopeCustomerIds": version.get("custom_scope_customer_ids"),
-            "customScopeRequestCustomerIds": version.get("custom_scope_request_customer_ids"),
-            "customerId": version.get("customer_id"),
-            "description": version.get("description"),
-=======
             # "creationTime": version.get("creation_time"),
             # "customerId": version.get("custome_id"),
             # "description": version.get("description"),
->>>>>>> master
             "id": version.get("id"),
             # "modifiedBy": version.get("modified_by"),
             # "modifiedTime": version.get("modified_time"),
             "name": version.get("name"),
-<<<<<<< HEAD
-            "upgradePriority": version.get("upgrade_priority"),
-            "versions": version.get("versions"),
-            "visibilityScope": version.get("visibility_scope"),
-=======
             # "upgradePriority": version.get("upgrade_priority"),
             # "visibilityScope": version.get("visibility_scope"),
->>>>>>> master
         }

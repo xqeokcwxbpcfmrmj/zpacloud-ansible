@@ -52,7 +52,7 @@ EXAMPLES = """
 
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: policy rule information
     returned: success

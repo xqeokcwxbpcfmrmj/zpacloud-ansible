@@ -39,10 +39,6 @@ options:
 """
 
 EXAMPLES = """
-<<<<<<< HEAD
-    - name: Gather Details of All Machine Groups
-      willguibr.zpacloud.zpa_machine_group_info:
-=======
 - name: trusted network
   hosts: localhost
   tasks:
@@ -54,7 +50,6 @@ EXAMPLES = """
     - name: networks
       debug:
         msg: "{{ networks }}"
->>>>>>> master
 
     - name: Gather Details of a Specific Machine Group by Name
       willguibr.zpacloud.zpa_machine_group_info:

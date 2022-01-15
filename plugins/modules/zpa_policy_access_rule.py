@@ -10,6 +10,7 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_rule import PolicyRuleService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
 DOCUMENTATION = r"""
@@ -106,7 +107,7 @@ options:
     description:  "This is the name of the policy."
 """
 
-EXAMPLES = '''
+EXAMPLES = """
     - name: Create/update/delete a policy rule
       willguibr.zpacloud.zpa_policy_access_rule:
         name: "test policy access rule"
@@ -127,9 +128,7 @@ EXAMPLES = '''
     - name: created policy access rule
       debug:
         msg: "{{ created_rule }}"
-
-
-'''
+"""
 
 RETURN = r"""
 data:

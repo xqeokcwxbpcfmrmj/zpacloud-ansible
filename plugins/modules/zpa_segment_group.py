@@ -10,6 +10,7 @@ from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import SegmentGroupService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -60,12 +61,9 @@ options:
     choices: ["present", "absent"]
     type: str
 
-<<<<<<< HEAD
 """
-=======
-'''
 
-EXAMPLES = r'''
+EXAMPLES = """
 - name: segment group
   hosts: localhost
   tasks:
@@ -81,7 +79,7 @@ EXAMPLES = r'''
     - name: segment group
       debug:
         msg: "{{ segment_group }}"
->>>>>>> master
+"""
 
 EXAMPLES = """
 - name: Create/Update/Delete a Server Group

@@ -36,12 +36,7 @@ options:
     type: str
 """
 
-<<<<<<< HEAD
 EXAMPLES = """
-    - name: Gather Detail Information of All Server Groups
-      willguibr.zpacloud.zpa_segment_group_info:
-=======
-EXAMPLES = '''
 - name: server group
   hosts: localhost
   tasks:
@@ -53,8 +48,6 @@ EXAMPLES = '''
     - name: servers
       debug:
         msg: "{{ servers }}"
-'''
->>>>>>> master
 
     - name: Gather Details of All Segment Groups by Name
       willguibr.zpacloud.zpa_segment_group_info:

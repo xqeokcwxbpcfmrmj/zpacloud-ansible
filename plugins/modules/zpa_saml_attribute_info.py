@@ -45,21 +45,15 @@ EXAMPLES = """
       
     - name: Gather information about saml attribute by attribute Name
       willguibr.zpacloud.zpa_saml_attribute_info:
-<<<<<<< HEAD
-        name: DepartmentName_User
-=======
         name: DepartmentName_User-Okta
       register: department_name
     - name: department_name
       debug:
         msg: "{{ department_name }}"
->>>>>>> master
         
     - name: Gather information about saml attribute by attribute ID
       willguibr.zpacloud.zpa_saml_attribute_info:
         id: 216196257331285827
-<<<<<<< HEAD
-=======
       register: attribute_id
     - name: attribute_id
       debug:
@@ -72,7 +66,6 @@ EXAMPLES = """
       debug:
         msg: "{{ saml_attributes }}"
 
->>>>>>> master
 """
 
 RETURN = """
