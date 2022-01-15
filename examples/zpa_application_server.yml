@@ -3,7 +3,7 @@
 
   tasks:
     - name: Gather information about all Application Servers
-      willguibr.zpacloud_ansible.zpa_application_server_info:
+      willguibr.zpacloud.zpa_application_server_info:
         # name: "jenkins.securitygeek.io"
       register: app_server
     - name: application server
@@ -12,7 +12,7 @@
         msg: "{{ app_server }}"
 
     - name: Create a segment group
-      willguibr.zpacloud_ansible.zpa_application_server:
+      willguibr.zpacloud.zpa_application_server:
         state: absent
         name: "Example Application Server"
         address: "test.securitygeek.io"

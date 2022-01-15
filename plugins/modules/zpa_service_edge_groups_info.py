@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -42,18 +42,18 @@ EXAMPLES = r'''
   hosts: localhost
   tasks:
     - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+      willguibr.zpacloud.zpa_app_connector_groups_info:
         #name: "USA App Connector Group"
     - name: Gather information about all App Connector Groups
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+      willguibr.zpacloud.zpa_app_connector_groups_info:
 
     - name: Gather information about App Connector Group with given ID
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+      willguibr.zpacloud.zpa_app_connector_groups_info:
         id: "198288282"
       register: resp_out
 
     - name: Gather information about App Connector Group with given name
-      willguibr.zpacloud_ansible.zpa_app_connector_groups_info:
+      willguibr.zpacloud.zpa_app_connector_groups_info:
         name: "example"
       register: resp_out
     - debug:

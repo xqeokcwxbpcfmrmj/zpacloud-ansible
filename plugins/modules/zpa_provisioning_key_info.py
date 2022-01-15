@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -47,7 +47,7 @@ EXAMPLES = """
   hosts: localhost
   tasks:
     - name: Gather information about all provisioning keys
-      willguibr.zpacloud_ansible.zpa_provisioning_key_info:
+      willguibr.zpacloud.zpa_provisioning_key_info:
         #id: "216196257331291981"
         association_type: "CONNECTOR_GRP"
       register: keys

@@ -8,8 +8,8 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
 DOCUMENTATION = r"""
@@ -94,7 +94,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Create/update/delete an app connector group
-      willguibr.zpacloud_ansible.zpa_app_connector_groups:
+      willguibr.zpacloud.zpa_app_connector_groups:
         state: "absent"
         #id: "216196257331292046"
         name: "Example"

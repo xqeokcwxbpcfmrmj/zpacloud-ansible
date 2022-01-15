@@ -8,8 +8,8 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
 DOCUMENTATION = r"""
@@ -88,7 +88,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Create/update/delete a Provisioning Key
-      willguibr.zpacloud_ansible.zpa_provisioning_key:
+      willguibr.zpacloud.zpa_provisioning_key:
         name             : "New York Provisioning Key"
         association_type : "CONNECTOR_GRP"
         max_usage        : "10"

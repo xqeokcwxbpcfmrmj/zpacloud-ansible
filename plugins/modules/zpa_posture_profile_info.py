@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_posture_profile import PostureProfileService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_posture_profile import PostureProfileService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -43,7 +43,7 @@ EXAMPLES = """
   hosts: localhost
   tasks:
     - name: Gather information about all posture profile
-      willguibr.zpacloud_ansible.zpa_posture_profile_info:
+      willguibr.zpacloud.zpa_posture_profile_info:
         #name: CrowdStrike_ZPA_Pre-ZTA
         id: 216196257331282234
       register: postures

@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_browser_access import BrowserAccessService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_browser_access import BrowserAccessService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -38,14 +38,14 @@ options:
 
 EXAMPLES = """
 - name: Gather information about all browser access application segments
-  willguibr.zpacloud_ansible.zpa_browser_access_info:
+  willguibr.zpacloud.zpa_browser_access_info:
   register: all_browser_access
 
 - debug:
   msg: "{{ all_browser_access }}"
 
 - name: Browser Access Application Segment by Name
-  willguibr.zpacloud_ansible.zpa_browser_access_info:
+  willguibr.zpacloud.zpa_browser_access_info:
     name: "Example"
   register: ba_app_segment_name
   
@@ -53,7 +53,7 @@ EXAMPLES = """
     msg: "{{ ba_app_segment_name }}"
     
 - name: Browser Access Application Segment by ID
-  willguibr.zpacloud_ansible.zpa_browser_access_info:
+  willguibr.zpacloud.zpa_browser_access_info:
     id: "198288282"
   register: ba_app_segment_id
 

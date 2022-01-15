@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_idp_controller import IDPControllerService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import IDPControllerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -43,7 +43,7 @@ EXAMPLES = """
   hosts: localhost
   tasks:
     - name: Gather information about all browser certificate
-      willguibr.zpacloud_ansible.zpa_ba_certificate_info:
+      willguibr.zpacloud.zpa_ba_certificate_info:
         #name: Corp-Trusted-Networks
         id: 216196257331282234
       register: certificates

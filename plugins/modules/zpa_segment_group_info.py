@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_segment_group import SegmentGroupService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import SegmentGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -41,7 +41,7 @@ EXAMPLES = '''
   hosts: localhost
   tasks:
     - name: Gather information about all server group
-      willguibr.zpacloud_ansible.zpa_segment_group_info:
+      willguibr.zpacloud.zpa_segment_group_info:
         name: Browser Access Apps
         #id: 216196257331291969
       register: servers
