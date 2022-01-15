@@ -4,10 +4,10 @@
 zpa_app_connector_groups -- Create/Update/Delete an App Connector Group.
 ========================================================================
 
-.. automodule:: zpa_app_connector_groups
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. contents::
+   :local:
+   :depth: 1
+
 
 
 Synopsis
