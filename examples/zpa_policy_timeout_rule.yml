@@ -2,7 +2,7 @@
   hosts: localhost
   tasks:
     # - name: Gather information about all timeout policy rules
-    #   willguibr.zpacloud_ansible.zpa_policy_timeout_rule_info:
+    #   willguibr.zpacloud.zpa_policy_timeout_rule_info:
         #id: "216196257331292020"
     #     name: "Test"
     #   register: policy
@@ -10,7 +10,7 @@
     #   debug:
     #     msg: "{{ policy }}"
     - name: Timeout Policy - Test
-      willguibr.zpacloud_ansible.zpa_policy_timeout_rule:
+      willguibr.zpacloud.zpa_policy_timeout_rule:
         name: "Timeout Policy - Test"
         description: "Timeout Policy - Test"
         action: "RE_AUTH"

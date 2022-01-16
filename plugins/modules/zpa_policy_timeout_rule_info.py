@@ -6,8 +6,8 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_policy_timeout_rule import PolicyTimeOutRuleService
-from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_timeout_rule import PolicyTimeOutRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
@@ -42,7 +42,7 @@ EXAMPLES = """
   hosts: localhost
   tasks:
     - name: Gather information about all policy rules
-      willguibr.zpacloud_ansible.zpa_policy_access_rule_info:
+      willguibr.zpacloud.zpa_policy_access_rule_info:
         #id: "216196257331292020"
         name: "All Other Services"
       register: policy
