@@ -45,9 +45,6 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
 ]
-autodoc_typehints = "none"
-add_module_names = False
-autodoc_class_signature = "separated"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -85,7 +82,7 @@ html_theme = "sphinx_rtd_theme"
 html_context = {
     "display_github": True,
     "github_user": "willguibr",
-    "github_repo": "zpacloud-ansible",
+    "github_repo": "zpacloud_ansible",
     "github_version": "master",
     "conf_py_path": "/docs/source/",
 }
