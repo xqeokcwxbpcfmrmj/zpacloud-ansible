@@ -1,10 +1,10 @@
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+from ansible_collections.willguibr.zpacloud_ansible.plugins.module_utils.zpa_client import (
     ZPAClientHelper,
 )
 import re
 
 
-class PolicyRuleService:
+class PolicyTimeOutRuleService:
     def __init__(self, module, customer_id):
         self.module = module
         self.customer_id = customer_id
@@ -186,11 +186,11 @@ class PolicyRuleService:
         if isinstance(_dict, dict):
             for key, value in list(_dict.items()):
                 if isinstance(value, (list, dict, tuple, set)):
-                    _dict[key] = PolicyRuleService.delete_none(value)
+                    _dict[key] = PolicyTimeOutRuleService.delete_none(value)
                 elif value is None or key is None:
                     del _dict[key]
         elif isinstance(_dict, (list, set, tuple)):
-            _dict = type(_dict)(PolicyRuleService.delete_none(item)
+            _dict = type(_dict)(PolicyTimeOutRuleService.delete_none(item)
                                 for item in _dict if item is not None)
         return _dict
 
