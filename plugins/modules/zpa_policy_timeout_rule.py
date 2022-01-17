@@ -153,26 +153,26 @@ def core(module):
     policy_set_id = global_policy_set.get("id")
     policy = dict()
     params = [
-        "default_rule",
+        # "default_rule",
         "description",
         "policy_type",
         "custom_msg",
         "policy_set_id",
         "id",
         "reauth_default_rule",
-        "lss_default_rule",
-        "bypass_default_rule",
+        # "lss_default_rule",
+        # "bypass_default_rule",
         "reauth_idle_timeout",
         "reauth_timeout",
         "action_id",
         "name",
-        "app_connector_groups",
+        # "app_connector_groups",
         "action",
         "priority",
         "operator",
         "rule_order",
         "conditions",
-        "app_server_groups",
+        # "app_server_groups",
     ]
     for param_name in params:
         policy[param_name] = module.params.get(param_name, None)
@@ -200,23 +200,23 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=False)
+    # id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
+    #     type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
-        default_rule=dict(type='bool', required=False),
+        # default_rule=dict(type='bool', required=False),
         description=dict(type='str', required=False),
         policy_type=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
         # policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
         reauth_default_rule=dict(type='bool', required=False),
-        lss_default_rule=dict(type='bool', required=False),
-        bypass_default_rule=dict(type='bool', required=False),
+        # lss_default_rule=dict(type='bool', required=False),
+        # bypass_default_rule=dict(type='bool', required=False),
         reauth_idle_timeout=dict(type='str', required=False),
         reauth_timeout=dict(type='str', required=False),
         action_id=dict(type='str', required=False),
         name=dict(type='str', required=True),
-        app_connector_groups=id_name_spec,
+        # app_connector_groups=id_name_spec,
         action=dict(type='str', required=False, choices=["RE_AUTH"]),
         priority=dict(type='str', required=False),
         operator=dict(type='str', required=False),
@@ -241,7 +241,7 @@ def main():
                                                                            type='str', required=True),
                                                                    ), required=False),
                                                                    ), required=False),
-        app_server_groups=id_name_spec,
+        # app_server_groups=id_name_spec,
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

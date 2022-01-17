@@ -266,7 +266,7 @@ class PolicyRuleService:
 
     def getByPostureUDID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/posture/%s" % (self.customer_id, id), fail_safe=True)
         status_code = response.status_code
         if status_code != 200:
             return None

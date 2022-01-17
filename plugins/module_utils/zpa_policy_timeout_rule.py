@@ -132,41 +132,41 @@ class PolicyTimeOutRuleService:
         if resp_json is None:
             return {}
         return {
-            "default_rule": resp_json.get("defaultRule"),
+            # "default_rule": resp_json.get("defaultRule"),
             "description": resp_json.get("description"),
             "policy_type": resp_json.get("policyType"),
             "custom_msg": resp_json.get("customMsg"),
             "policy_set_id": resp_json.get("policySetId"),
             "id": resp_json.get("id"),
             "reauth_default_rule": resp_json.get("reauthDefaultRule"),
-            "lss_default_rule": resp_json.get("lssDefaultRule"),
-            "bypass_default_rule": resp_json.get("reauthDefaultRule"),
+            # "lss_default_rule": resp_json.get("lssDefaultRule"),
+            # "bypass_default_rule": resp_json.get("reauthDefaultRule"),
             "reauth_idle_timeout": resp_json.get("reauthIdleTimeout"),
             "reauth_timeout": resp_json.get("reauthTimeout"),
             "action_id": resp_json.get("actionId"),
             "name": resp_json.get("name"),
-            "app_connector_groups":  self.mapListJSONToList(resp_json.get("appConnectorGroups")),
+            # "app_connector_groups":  self.mapListJSONToList(resp_json.get("appConnectorGroups")),
             "action": resp_json.get("action"),
             "priority": resp_json.get("priority"),
             "operator": resp_json.get("operator"),
             "rule_order": resp_json.get("ruleOrder"),
             "conditions": self.mapConditionsToList(resp_json.get("conditions")),
-            "app_server_groups": self.mapListJSONToList(resp_json.get("appServerGroups")),
+            # "app_server_groups": self.mapListJSONToList(resp_json.get("appServerGroups")),
         }
 
     def mapAppToJSON(self, policy_rule):
         if policy_rule is None:
             return {}
         return self.delete_none({
-            "defaultRule": policy_rule.get("default_rule"),
+            # "defaultRule": policy_rule.get("default_rule"),
             "description": policy_rule.get("description"),
             "policyType": policy_rule.get("policy_type"),
             "customMsg": policy_rule.get("custom_msg"),
             "policySetId": policy_rule.get("policy_set_id"),
             "id": policy_rule.get("id"),
             "reauthDefaultRule": policy_rule.get("reauth_default_rule"),
-            "lssDefaultRule": policy_rule.get("lss_default_rule"),
-            "reauthDefaultRule": policy_rule.get("bypass_default_rule"),
+            # "lssDefaultRule": policy_rule.get("lss_default_rule"),
+            # "reauthDefaultRule": policy_rule.get("bypass_default_rule"),
             "reauthIdleTimeout": policy_rule.get("reauth_idle_timeout"),
             "reauthTimeout": policy_rule.get("reauth_timeout"),
             "actionId": policy_rule.get("action_id"),
@@ -176,8 +176,8 @@ class PolicyTimeOutRuleService:
             "operator": policy_rule.get("operator"),
             "ruleOrder": policy_rule.get("rule_order"),
             "conditions": self.mapConditionsToJSONList(policy_rule.get("conditions")),
-            "appServerGroups": self.mapListToJSONObjList(policy_rule.get("app_server_groups")),
-            "appConnectorGroups":  self.mapListToJSONObjList(policy_rule.get("app_connector_groups")),
+            # "appServerGroups": self.mapListToJSONObjList(policy_rule.get("app_server_groups")),
+            # "appConnectorGroups":  self.mapListToJSONObjList(policy_rule.get("app_connector_groups")),
         })
 
     @staticmethod
@@ -243,42 +243,42 @@ class PolicyTimeOutRuleService:
             return None
         return True
 
-    def getCloudConnectorGroupByID(self, id):
-        response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/cloudConnectorGroup/%s" % (self.customer_id, id), fail_safe=True)
-        status_code = response.status_code
-        if status_code != 200:
-            return None
-        return True
+    # def getCloudConnectorGroupByID(self, id):
+    #     response = self.rest.get(
+    #         "/mgmtconfig/v1/admin/customers/%s/cloudConnectorGroup/%s" % (self.customer_id, id), fail_safe=True)
+    #     status_code = response.status_code
+    #     if status_code != 200:
+    #         return None
+    #     return True
 
     def validClientType(self, id):
-        if id != "zpn_client_type_zapp" and id != "zpn_client_type_exporter" and id != "zpn_client_type_ip_anchoring" and id != "zpn_client_type_browser_isolation" and id != "zpn_client_type_machine_tunnel" and id != "zpn_client_type_edge_connector":
-            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' when object type is CLIENT_TYPE"
+        if id != "zpn_client_type_zapp" and id != "zpn_client_type_exporter" and id != "zpn_client_type_browser_isolation":
+            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation' when object type is CLIENT_TYPE"
         return True
 
-    def getMachineGroupByID(self, id):
-        response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
-        status_code = response.status_code
-        if status_code != 200:
-            return None
-        return True
+    # def getMachineGroupByID(self, id):
+    #     response = self.rest.get(
+    #         "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+    #     status_code = response.status_code
+    #     if status_code != 200:
+    #         return None
+    #     return True
 
     def getByPostureUDID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v2/admin/customers/%s/posture/%s" % (self.customer_id, id), fail_safe=True)
         status_code = response.status_code
         if status_code != 200:
             return None
         return True
 
-    def getTrustedNetworkByNetID(self, id):
-        response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/network/%s" % (self.customer_id, id), fail_safe=True)
-        status_code = response.status_code
-        if status_code != 200:
-            return None
-        return True
+    # def getTrustedNetworkByNetID(self, id):
+    #     response = self.rest.get(
+    #         "/mgmtconfig/v1/admin/customers/%s/network/%s" % (self.customer_id, id), fail_safe=True)
+    #     status_code = response.status_code
+    #     if status_code != 200:
+    #         return None
+    #     return True
 
     def getSamlAttribute(self, id):
         response = self.rest.get(
@@ -312,30 +312,30 @@ class PolicyTimeOutRuleService:
             return self.customValidate(operand, ["id"], "Segment Group ID", lambda id: self.getSegmentGroupByID(id))
         elif objType == "IDP":
             return self.customValidate(operand, ["id"], "IDP ID", lambda id: self.getIDPControllerByID(id))
-        elif objType == "EDGE_CONNECTOR_GROUP":
-            return self.customValidate(operand, ["id"], "cloud connector group ID", lambda id: self.getCloudConnectorGroupByID(id))
+        # elif objType == "EDGE_CONNECTOR_GROUP":
+        #     return self.customValidate(operand, ["id"], "cloud connector group ID", lambda id: self.getCloudConnectorGroupByID(id))
         elif objType == "CLIENT_TYPE":
-            return self.customValidate(operand, ["id"], "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector'", lambda id: self.validClientType(id))
-        elif objType == "MACHINE_GRP":
-            return self.customValidate(operand, ["id"], "machine group ID", lambda id: self.getMachineGroupByID(id))
+            return self.customValidate(operand, ["id"], "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation'", lambda id: self.validClientType(id))
+        # elif objType == "MACHINE_GRP":
+        #     return self.customValidate(operand, ["id"], "machine group ID", lambda id: self.getMachineGroupByID(id))
         elif objType == "POSTURE":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid posture network ID", operand.get("lhs"), None)
+                return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), None)
             resp = self.getByPostureUDID(operand.get("lhs"))
             if resp != True:
-                return self.lhsWarn(operand.get("objectType"), "valid posture network ID", operand.get("lhs"), resp)
+                return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), resp)
             if not operand.get("rhs") in ["true", "false"]:
                 return self.rhsWarn(operand.get("objectType"), "\"true\"/\"false\"", operand.get("rhs"), None)
             return True
-        elif objType == "TRUSTED_NETWORK":
-            if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), None)
-            resp = self.getTrustedNetworkByNetID(operand.get("lhs"))
-            if resp != True:
-                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), resp)
-            if operand.get("rhs") != "true":
-                return self.rhsWarn(operand.get("objectType"), "\"true\"", operand.get("rhs"), None)
-            return True
+        # elif objType == "TRUSTED_NETWORK":
+        #     if operand.get("lhs") is None or operand.get("lhs") == "":
+        #         return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), None)
+        #     resp = self.getTrustedNetworkByNetID(operand.get("lhs"))
+        #     if resp != True:
+        #         return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), resp)
+        #     if operand.get("rhs") != "true":
+        #         return self.rhsWarn(operand.get("objectType"), "\"true\"", operand.get("rhs"), None)
+        #     return True
         elif objType == "SAML":
             if operand.get("lhs") is None or operand.get("lhs") == "":
                 return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), None)
