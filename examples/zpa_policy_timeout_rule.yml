@@ -9,7 +9,29 @@
         rule_order: 1
         reauth_idle_timeout: 600
         reauth_timeout: 172800
-        state: absent
+        operator: "AND"
+        conditions:
+          - negated: false
+            operator: "OR"
+            operands:
+              - name: "app_segment"
+                object_type: "APP"
+                lhs: "id"
+                rhs: "216196257331292105"
+            operands:
+              - name: "segment_group"
+                object_type: "APP_GROUP"
+                lhs: "id"
+                rhs: "216196257331292103"
+        conditions:
+          - negated: false
+            operator: "OR"
+            operands:
+              - name: "zpn_client_type_exporter"
+                object_type: "CLIENT_TYPE"
+                lhs: "id"
+                rhs: "zpn_client_type_exporter"
+        # state: absent
       register: created_rule
     - debug:
         msg: "{{ created_rule }}"
