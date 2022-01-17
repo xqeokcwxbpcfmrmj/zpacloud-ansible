@@ -8,9 +8,8 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_rule import PolicyRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_timeout_rule import PolicyTimeOutRuleService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-
 __metaclass__ = type
 
 DOCUMENTATION = r"""
@@ -107,7 +106,7 @@ options:
     description:  "This is the name of the policy."
 """
 
-EXAMPLES = """
+EXAMPLES = '''
     - name: Create/update/delete a policy rule
       willguibr.zpacloud.zpa_policy_access_rule:
         name: "test policy access rule"
@@ -128,7 +127,9 @@ EXAMPLES = """
     - name: created policy access rule
       debug:
         msg: "{{ created_rule }}"
-"""
+
+
+'''
 
 RETURN = r"""
 data:
@@ -145,7 +146,7 @@ data:
 def core(module):
     state = module.params.get("state", None)
     customer_id = module.params.get("customer_id", None)
-    service = PolicyRuleService(module, customer_id)
+    service = PolicyTimeOutRuleService(module, customer_id)
     global_policy_set = service.getByPolicyType("TIMEOUT_POLICY")
     if global_policy_set is None or global_policy_set.get("id") is None:
         module.fail_json(msg="Unable to get global policy set")
@@ -202,24 +203,24 @@ def main():
     id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
         type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
-        action=dict(type='str', required=True, choices=["RE_AUTH"]),
-        action_id=dict(type='str', required=False),
-        app_connector_groups=id_name_spec,
-        custom_msg=dict(type='str', required=False),
-        description=dict(type='str', required=False),
-        name=dict(type='str', required=True),
-        bypass_default_rule=dict(type='bool', required=False),
-        operator=dict(type='str', required=False),
-        #policy_set_id=dict(type='str', required=True),
-        policy_type=dict(type='str', required=False),
-        priority=dict(type='str', required=False),
-        reauth_default_rule=dict(type='bool', required=False),
-        reauth_idle_timeout=dict(type='str', required=False),
-        reauth_timeout=dict(type='str', required=True),
-        rule_order=dict(type='str', required=False),
         default_rule=dict(type='bool', required=False),
+        description=dict(type='str', required=False),
+        policy_type=dict(type='str', required=False),
+        custom_msg=dict(type='str', required=False),
+        # policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
+        reauth_default_rule=dict(type='bool', required=False),
         lss_default_rule=dict(type='bool', required=False),
+        bypass_default_rule=dict(type='bool', required=False),
+        reauth_idle_timeout=dict(type='str', required=False),
+        reauth_timeout=dict(type='str', required=False),
+        action_id=dict(type='str', required=False),
+        name=dict(type='str', required=True),
+        app_connector_groups=id_name_spec,
+        action=dict(type='str', required=False, choices=["RE_AUTH"]),
+        priority=dict(type='str', required=False),
+        operator=dict(type='str', required=False),
+        rule_order=dict(type='str', required=False),
         conditions=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
                                                                    negated=dict(
                                                                        type='bool', required=False),
