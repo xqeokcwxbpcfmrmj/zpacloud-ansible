@@ -136,6 +136,11 @@ options:
     elements: str
     required: True
     description: "List of domains and IPs."
+  clientless_apps:
+    type: list
+    elements: dict
+    required: False
+    description: ""
 """
 
 EXAMPLES = """
@@ -150,6 +155,21 @@ EXAMPLES = """
         enabled: true
         health_reporting: ON_ACCESS
         bypass_type: NEVER
+        clientless_apps:
+          - name: "crm.example.com"
+            application_protocol: "HTTP"
+            application_port: "8080"
+            certificate_id: "216196257331282583"
+            trust_untrusted_cert: true
+            enabled: true
+            domain: "crm.example.com"
+          - name: "crm2.example.com"
+            application_protocol: "HTTP"
+            application_port: "8082"
+            certificate_id: "216196257331282583"
+            trust_untrusted_cert: true
+            enabled: true
+            domain: "crm.example.com"
         is_cname_enabled: true
         tcp_port_range:
           - from: "80"
@@ -168,6 +188,7 @@ EXAMPLES = """
 RETURN = """
 # The newly created browser access application segment resource record.
 """
+
 
 def core(module):
     state = module.params.get("state", None)
@@ -213,7 +234,7 @@ def core(module):
     if state == "present":
         if existing_app is not None:
             """Update"""
-            service.update(existing_app)
+            existing_app = service.update(existing_app)
             module.exit_json(changed=True, data=existing_app)
         else:
             """Create"""
@@ -265,6 +286,29 @@ def main():
         server_groups=id_name_spec,
         segment_group_name=dict(type='str', required=False),
         domain_names=dict(type='list', elements='str', required=True),
+        clientless_apps=dict(
+            type='list',
+            elements='dict',
+            options=dict(
+                path=dict(type='str', required=False),
+                trust_untrusted_cert=dict(type='bool', required=False),
+                allow_options=dict(type='bool', required=False),
+                description=dict(type='str', required=False),
+                id=dict(type='str'),
+                cname=dict(type='str', required=False),
+                hidden=dict(type='bool', required=False),
+                app_id=dict(type='str'),
+                application_port=dict(type='str', required=False),
+                application_protocol=dict(type='str', required=True),
+                name=dict(type='str', required=True),
+                certificate_id=dict(type='str', required=True),
+                certificate_name=dict(type='str', required=False),
+                domain=dict(type='str', required=False),
+                enabled=dict(type='bool', required=False),
+                local_domain=dict(type='str', required=False),
+            ),
+            required=False
+        ),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present")
     )
