@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_rule import PolicyRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import PolicyForwardingRuleService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
@@ -145,38 +145,33 @@ data:
 def core(module):
     state = module.params.get("state", None)
     customer_id = module.params.get("customer_id", None)
-    service = PolicyRuleService(module, customer_id)
-    global_policy_set = service.getByPolicyType("TIMEOUT_POLICY")
+    service = PolicyForwardingRuleService(module, customer_id)
+    global_policy_set = service.getByPolicyType("BYPASS_POLICY")
     if global_policy_set is None or global_policy_set.get("id") is None:
         module.fail_json(msg="Unable to get global policy set")
     policy_set_id = global_policy_set.get("id")
     policy = dict()
     params = [
-        "default_rule",
-        "description",
-        "policy_type",
-        "custom_msg",
-        "policy_set_id",
         "id",
-        "reauth_default_rule",
-        "lss_default_rule",
-        "bypass_default_rule",
-        "reauth_idle_timeout",
-        "reauth_timeout",
-        "action_id",
         "name",
-        "app_connector_groups",
+        "description",
         "action",
+        "action_id",
+        "default_rule",
+        "default_rule_name",
+        "bypass_default_rule",
+        "policy_type",
+        "policy_set_id",
+        "custom_msg",
         "priority",
         "operator",
         "rule_order",
         "conditions",
-        "app_server_groups",
     ]
     for param_name in params:
         policy[param_name] = module.params.get(param_name, None)
     existing_policy = service.getByIDOrName(
-        policy.get("id"), policy.get("name"), policy_set_id, "TIMEOUT_POLICY")
+        policy.get("id"), policy.get("name"), policy_set_id, "BYPASS_POLICY")
     if existing_policy is not None:
         id = existing_policy.get("id")
         existing_policy.update(policy)
@@ -199,27 +194,20 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
+        id=dict(type='str'),
+        name=dict(type='str', required=True),
+        description=dict(type='str', required=False),
         action=dict(type='str', required=False, choices=["INTERCEPT", "INTERCEPT_ACCESSIBLE", "BYPASS"], default="INTERCEPT"),
         action_id=dict(type='str', required=False),
-        app_connector_groups=id_name_spec,
+        default_rule=dict(type='bool', required=False),
+        default_rule_name=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
-        description=dict(type='str', required=False),
-        name=dict(type='str', required=True),
         bypass_default_rule=dict(type='bool', required=False),
         operator=dict(type='str', required=False),
-        #policy_set_id=dict(type='str', required=True),
         policy_type=dict(type='str', required=False),
         priority=dict(type='str', required=False),
-        reauth_default_rule=dict(type='bool', required=False),
-        reauth_idle_timeout=dict(type='str', required=False),
-        reauth_timeout=dict(type='str', required=False),
         rule_order=dict(type='str', required=False),
-        default_rule=dict(type='bool', required=False),
-        id=dict(type='str'),
-        lss_default_rule=dict(type='bool', required=False),
         conditions=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
                                                                    negated=dict(
                                                                        type='bool', required=False),
@@ -237,10 +225,9 @@ def main():
                                                                                                                             rhs_list=dict(
                                                                        type='list', elements='str', required=False),
                                                                        object_type=dict(
-                                                                           type='str', required=True, choices=["APP", "APP_GROUP", "SAML", "IDP", "CLIENT_TYPE", "POSTURE", "SCIM", "SCIM_GROUP"]),
+                                                                           type='str', required=True),
                                                                    ), required=False),
                                                                    ), required=False),
-        app_server_groups=id_name_spec,
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )
