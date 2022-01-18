@@ -16,7 +16,7 @@ jobs:
     - name: Make buildDocs executable
       shell: bash
       run: |
-        chmod +x scripts/buildDocs.sh
+        chmod +x docs/buildDocs.sh
         ./scripts/buildDocs.sh
     - name: Prereqs
       env:
