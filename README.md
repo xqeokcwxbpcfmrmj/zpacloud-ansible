@@ -7,9 +7,9 @@ Zscaler Private Access cloud, and API interactions with Ansible.
 
 -   Free software: Apache 2.0 License
 -   Documentation:
-    <https://willguibr.github.io/zpacloud/>
+    <https://willguibr.github.io/zpacloud-ansible/>
 -   Repo:
-    <https://github.com/willguibr/zpacloud>
+    <https://github.com/willguibr/zpacloud-ansible>
 -   Example Playbooks:
     <https://github.com/willguibr/zpacloud-playbooks>
 
