@@ -17,7 +17,7 @@ jobs:
       shell: bash
       run: |
         chmod +x docs/buildDocs.sh
-        ./scripts/buildDocs.sh
+        ./docs/buildDocs.sh
     - name: Prereqs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
