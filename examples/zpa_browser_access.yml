@@ -1,63 +1,40 @@
-- name: Create/Update/Delete a Browser Access Application Segment
+- name: App segment
   hosts: localhost
   tasks:
-<<<<<<< HEAD
-
-    - name: Create a Server Group
-      willguibr.zpacloud.zpa_server_group_info:
-        name: "All Other Services"
-      register: server_group_id
-
-    - name: Create a Segment Group
-      willguibr.zpacloud.zpa_segment_group_info:
-        name: "All Other Services"
-      register: segment_group_id
-
-    - name: Gather Details of a Specific Browser Certificates by Name
-      willguibr.zpacloud.zpa_ba_certificate_info:
-        name: sales.securitygeek.io
-      register: certificate_name
-
-    - name: Create/Update/Delete a Browser Access Application Segment
-      willguibr.zpacloud.zpa_browser_access:
-        name: Example
-        description: Example
-=======
     - name: Gather information about all App segment
       willguibr.zpacloud.zpa_browser_access_info:
-        name: "Browser Access Apps"
+        #name: "Browser Access Apps"
       register: app
     - name: app segment
       debug:
         msg: "{{ app }}"
     - name: Create an app segment
       willguibr.zpacloud.zpa_browser_access:
-        # state: absent
+        state: absent
         name: Example Application
         description: Example Application Test
->>>>>>> master
         enabled: true
         health_reporting: ON_ACCESS
         bypass_type: NEVER
         is_cname_enabled: true
+        clientless_apps:
+          - name: "crm2.example.com"
+            application_protocol: "HTTP"
+            application_port: "8089"
+            certificate_id: "216196257331282583"
+            trust_untrusted_cert: true
+            enabled: true
+            domain: "crm2.example.com"
         tcp_port_range:
-          - from: "80"
-            to: "80"
+          - from: "8088"
+            to: "8090"
         domain_names:
           - crm1.example.com
           - crm2.example.com
-        segment_group_id: "{{ segment_group_id.data.id }}"
+        segment_group_id: "216196257331292103"
         server_groups:
-          - id: "{{ server_group_id.data.id }}"
-        clientless_apps:
-            name: "sales.securitygeek.io"
-            application_protocol: "HTTP"
-            application_port: "80"
-            certificate_id: "{{ certificate_name.data.id }}"
-            trust_untrusted_cert: true
-            enabled: true
-            domain: "sales.securitygeek.io"
-      register: browser_access_app
-
-    - debug:
-        msg: "{{ browser_access_app }}"
+          #- "216196257331291969"
+      register: app_segment
+    - name: created/updated app segment
+      debug:
+        msg: "{{ app_segment }}"
