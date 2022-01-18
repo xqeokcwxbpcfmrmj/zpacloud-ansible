@@ -64,13 +64,13 @@ body:
 
 - type: textarea
   attributes:
-    label: Community.general Version
+    label: willguibr.zpacloud Version
     description: >-
-      Paste verbatim output from "ansible-galaxy collection list community.general"
+      Paste verbatim output from "ansible-galaxy collection list willguibr.zpacloud"
       between tripple backticks.
     value: |
       ```console (paste below)
-      $ ansible-galaxy collection list community.general
+      $ ansible-galaxy collection list willguibr.zpacloud
 
       ```
   validations:
