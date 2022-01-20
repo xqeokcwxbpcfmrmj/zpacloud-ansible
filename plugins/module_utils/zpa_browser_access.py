@@ -100,12 +100,6 @@ class BrowserAccessService:
             d = self.camelcaseToSnakeCase(app)
             l.append(d)
         return l
-<<<<<<< HEAD
-<<<<<<< HEAD
-    
-=======
-=======
->>>>>>> master
 
     def mapClientlessAppsToJSONList(self, apps):
         if apps is None:
@@ -116,10 +110,6 @@ class BrowserAccessService:
             l.append(d)
         return l
 
-<<<<<<< HEAD
->>>>>>> fix-browser-access-app
-=======
->>>>>>> master
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
             return {}
