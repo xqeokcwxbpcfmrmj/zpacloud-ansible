@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 from re import T
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import IDPControllerService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
@@ -16,57 +16,54 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_idp_controller_info
+short_description: Get details (ID and/or Name) of an idp controller resource.
 description:
-  - Provides details about the (ID and/or Name) of an idp controller resource.
-module: zpa_trusted_network_info
-short_description: Provides details about the (ID and/or Name) of an idp controller resource.
+  - This module to retrieve a IdP Controller detail from the ZPA Cloud.
+author:
+  - William Guilherme (@willguibr)
 version_added: "1.0.0"
-requirements:
-  - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
       - Name of the Identity Provider.
-    required: false
+    required: true
     type: str
   id:
     description:
-      - ID of the of the Identity Provider.
+      - ID of the Identity Provider.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: browser certificate
-  hosts: localhost
-  tasks:
-    - name: Gather information about all browser certificate
-      willguibr.zpacloud.zpa_ba_certificate_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: certificates
-    - name: certificates
-      debug:
-        msg: "{{ certificates }}"
+- name: Gather Details of All IdP Controllers
+  willguibr.zpacloud.zpa_idp_controller_info:
+  register: idp_controllers
 
+- debug:
+  msg: "{{ idp_controllers }}"
+
+- name: Gather Details of a Specific IdP Controller by Name
+  willguibr.zpacloud.zpa_idp_controller_info:
+    name: User_IdP_Name
+  register: idp_name
+
+- debug:
+  msg: "{{ idp_name }}"
+
+- name: Gather Details of a Specific IdP Controller by ID
+  willguibr.zpacloud.zpa_idp_controller_info:
+    id: "216196257331282583"
+  register: idp_id
+
+- debug:
+  msg: "{{ idp_id }}"  
 """
 
 RETURN = """
-data:
-    description: List of Identity Providers
-    returned: success
-    elements: dict
-    type: list
-        "data": [
-            {
-                "id": "216196257331285825",
-                "name": "IdP_Name"
-            }
-        ]
+# Default return values
 """
-
 
 def core(module):
     idp_name = module.params.get("name", None)

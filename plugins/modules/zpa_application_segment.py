@@ -23,103 +23,165 @@ author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-    name:
-      type: str
-      required: True
-      description: "Name of the application."
+  name:
+    description: 
+      - Name of the application.
+    required: true
+    type: str
+  description:
     description:
-      type: str
-      required: False
-      description: "Description of the application."
-    default_max_age:
-      type: str
-      required: False
-      default: ""
-      description: "default_max_age"
-    ip_anchored:
-      type: bool
-      required: False
-      description: "Whether Source IP Anchoring for use with ZIA, is enabled or disabled for the app."
-    tcp_port_range:
-      type: list
-      elements: dict
-      required: True
-      description: List of tcp port range pairs, e.g. [‘22’, ‘22’] for port 22-22, [‘80’, ‘100’] for 80-100.
-    udp_port_range:
-      type: list
-      elements: dict
-      required: True
-      description: "List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000."
-    double_encrypt:
-      type: bool
-      required: False
-      description: "Whether Double Encryption is enabled or disabled for the app."
-    icmp_access_type:
-      type: str
-      required: False
-      default: "NONE"
-      choices: ["PING_TRACEROUTING", "PING", "NONE"]
-      description: "icmp access type."
-    default_idle_timeout:
-      type: str
-      required: False
-      default: ""
-      description: "default idle timeout."
-    passive_health_enabled:
-      type: bool
-      required: False
-      description: "passive health enabled."
-    bypass_type:
-      type: str
-      required: False
-      description: "Indicates whether users can bypass ZPA to access applications."
-      choices: ["ALWAYS", "NEVER", "ON_NET"]
-    is_cname_enabled:
-      type: bool
-      required: False
-      description: "Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors."
-    config_space:
-      type: str
-      required: False
-      default: "DEFAULT"
-      choices: ["DEFAULT", "SIEM"]
-      description: "config space."
-    health_reporting:
-      type: str
-      required: False
-      description: "Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS."
-      default: "NONE"
-      choices: ["NONE", "ON_ACCESS", "CONTINUOUS"]
-    log_features:
-      type: str
-      required: False
-      choices: ["skip_discovery", "full_wildcard"]
-      description: "log features."
-    server_groups:
-      type: list
-      elements: dict
-      required: True
-      description: "List of the server group ID objects of type {"id":"82828"}"
-    segment_group_id:
-      type: str
-      required: True
-      description: "segment group id"
-    segment_group_name:
-      type: str
-      required: False
-      description: "segment group name."
-    health_check_type:
-      type: str
-      description: "health check type."
-    enabled:
-      type: bool
-      required: False
-      description: "Whether this application is enabled or not."
-    domain_names:
-      type: list
-      elements: str
-      required: True
-      description: "List of domains and IPs."
+      - Description of the application.
+    required: false
+    type: str
+  default_max_age:
+    description:
+      - default_max_age
+    required: false
+    type: str
+  ip_anchored:
+    description:
+      - Whether Source IP Anchoring for use with ZIA, is enabled or disabled for the app.
+    type: bool
+    required: false
+  tcp_port_range:
+    type: list
+    elements: dict
+    description:
+      - List of tcp port range pairs, e.g. [22, 22] for port 22-22, [80, 100] for 80-100.
+    required: true
+    suboptions:
+      from:
+        type: str
+        required: false
+        description:
+          - List of valid TCP ports. The application segment API supports multiple TCP and UDP port ranges.
+      to:
+        type: str
+        required: false
+        description:
+          - List of valid TCP ports. The application segment API supports multiple TCP and UDP port ranges.
+  udp_port_range:
+    type: list
+    elements: dict
+    description:
+      - List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000.
+    required: true
+    suboptions:
+      from:
+        type: str
+        required: false
+        description:
+          - List of valid UDP ports. The application segment API supports multiple TCP and UDP port ranges.
+      to:
+        type: str
+        required: false
+        description:
+          - List of valid UDP ports. The application segment API supports multiple TCP and UDP port ranges.
+  double_encrypt:
+    description:
+      - Whether Double Encryption is enabled or disabled for the app.
+    type: bool
+    required: false
+  icmp_access_type:
+    description:
+      - icmp access type.
+    type: str
+    required: false
+    choices:
+      - PING_TRACEROUTING
+      - PING
+      - NONE
+    default: NONE
+  default_idle_timeout:
+    description:
+      - default idle timeout.
+    type: str
+    required: false
+  passive_health_enabled:
+    description:
+      - passive health enabled.
+    type: bool
+    required: false
+  bypass_type:
+    description:
+      - Indicates whether users can bypass ZPA to access applications.
+    type: str
+    required: false
+    choices:
+      - ALWAYS
+      - NEVER
+      - ON_NET
+    default: NEVER
+  is_cname_enabled:
+    description:
+      - Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors.
+    type: bool
+    required: false 
+  config_space:
+    description:
+      - config space.
+    type: str
+    required: false
+    choices:
+      - DEFAULT
+      - SIEM
+    default: DEFAULT
+  health_reporting:
+    description:
+      - Whether health reporting for the app is Continuous or On Access. Supported values are NONE, ON_ACCESS, CONTINUOUS
+    type: str
+    required: false
+    choices:
+      - NONE
+      - ON_ACCESS
+      - CONTINUOUS
+    default: NONE
+  log_features:
+    description:
+      - log features.
+    type: str
+    required: false
+    choices:
+      - skip_discovery
+      - full_wildcard
+  server_groups:
+    description:
+      - ID of the server group.
+    type: list
+    elements: dict
+    required: true
+    suboptions:
+      id:
+        type: str
+        required: true
+        description:
+          - ID of the server group.
+  segment_group_id:
+    description:
+      - ID of the segment group.
+    type: str
+    required: true
+  segment_group_name:
+    description:
+      - segment group name.
+    type: str
+    required: false
+  health_check_type:
+    description:
+      - health check type.
+    type: str
+    required: false
+  enabled:
+    description:
+      - Whether this application is enabled or not.
+    type: bool
+    required: false
+  domain_names:
+    description:
+      - List of domains and IPs.
+    type: list
+    elements: str
+    required: true
 """
 
 EXAMPLES = """

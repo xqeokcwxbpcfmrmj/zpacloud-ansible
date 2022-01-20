@@ -16,105 +16,32 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_segment_group
-short_description: Create a segment group
+short_description: Create/Update/Delete a Segment Group
 description:
-  - This module will create, retrieve, update or delete a specific segment group
+    - This module will create/update/delete a segment group resource.
 author:
-  - William Guilherme (@willguibr)
-version_added: "1.0.0"
+    - William Guilherme (@willguibr)
+version_added: '1.0.0'
 options:
-  applications:
-    type: list
-    elements: str
-    required: False
-    description: "This field is a json array of segment_group-connector-id objects only.
-  config_space:
-    type: str
-    required: False
-    description: ""
-    default: "DEFAULT"
-    choices: ["DEFAULT", "SIEM"]
-  description:
-    type: str
-    required: False
-    description: "This field is the description of the server group."
-  enabled:
-    type: bool
-    required: False
-    description: "This field defines if the server group is enabled or disabled."
   name:
+    description:
+        - Name of the server group.
+    required: false
     type: str
-    required: True
-    description: "This field defines the name of the server group."
-  policy_migrated:
-    type: bool
-    required: False
-  tcp_keep_alive_enabled:
-    type: str
-    required: False
   id:
+    description:
+        - ID of the server group.
+    required: false
     type: str
-    description: ""
-  state:
-    description: "Whether the server group should be present or absent."
-    default: present
-    choices: ["present", "absent"]
+  config_space:
+    description:
+        - ID of the server group.
     type: str
-
-"""
-
-EXAMPLES = """
-- name: segment group
-  hosts: localhost
-  tasks:
-    - name: Create an Segment group
-      willguibr.zpacloud.zpa_segment_group:
-        state: absent
-        name: "Example Test"
-        description: "Example Test"
-        enabled: false
-        applications:
-          - id: 827277282
-      register: segment_group
-    - name: segment group
-      debug:
-        msg: "{{ segment_group }}"
-"""
-
-EXAMPLES = """
-- name: Create/Update/Delete a Server Group
-  willguibr.zpacloud.zpa_segment_group:
-    config_space: "DEFAULT"
-    name: Example Segment Group
-    description: Example Segment Group
-    enabled: true
-    policy_migrated: true
-    tcp_keep_alive_enabled: "1"
-"""
-
-RETURN = """
-data:
-    description: Segment Group
-    returned: success
-    type: dict
-    sample: {
-                "applications": [
-                    {
-                      "id": "216196257331291981",
-                      "name" : "88788"
-                    }
-                ],
-                "config_space": "DEFAULT",
-                "description": "Browser Access Apps",
-                "dynamic_discovery": false,
-                "enabled": true,
-                "id": "216196257331291969",
-                "ip_anchored": false,
-                "name": "Browser Access Apps",
-                "servers": [
-                    "216196257331291921"
-                ]
-            }
+    choices:
+        - SIEM
+        - DEFAULT
+    default: DEFAULT
+                    
 """
 
 

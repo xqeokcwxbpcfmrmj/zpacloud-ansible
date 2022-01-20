@@ -121,11 +121,7 @@ def main():
         description=dict(type='str', required=False),
         address=dict(type='str', required=True),
         enabled=dict(type='bool', required=False),
-<<<<<<< HEAD
-        app_server_group_ids=id_name_spec,
-=======
         app_server_group_ids=dict(type='list', elements='str', required=False),
->>>>>>> master
         config_space=dict(type='str', required=False,
                           default="DEFAULT", choices=["DEFAULT", "SIEM"]),
         state=dict(type="str", choices=[
