@@ -13,12 +13,12 @@ from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client impo
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
-module: zpa_policy
-short_description: Create/ an Policy Rule
+module: zpa_policy_forwarding_rule
+short_description: Create/Update/Delete Policy Forwarding Rule.
 description:
-  - This module will create, retrieve, update or delete a specific Policy Rule
+  - This module will create, update or delete a specific Policy Forwarding Rule
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
@@ -34,11 +34,17 @@ options:
   action:
     type: str
     required: False
-    description:  "  This is for providing the rule action."
+    description:
+      - This is for providing the rule action.
+    choices:
+      - INTERCEPT
+      - INTERCEPT_ACCESIBLE
+      - BYPASS
   action_id:
     type: str
     required: False
-    description:  "This field defines the description of the server."
+    description:
+      - This field defines the description of the server.
   priority:
     type: str
     required: False
@@ -57,77 +63,139 @@ options:
   default_rule:
     type: bool
     required: False
-    description:  "This is for providing a customer message for the user."
+    description:
+      - This is for providing a customer message for the user.
   operator:
+    description:
+      - This denotes the operation type.
     type: str
     required: False
-    description: ""
-  app_connector_groups:
-    type: list
-    elements: dict
-    required: False
-    description:  "List of app-connector IDs."
-  reauth_default_rule:
-    type: bool
-    required: False
-    description: ""
-  description:
-    type: str
-    required: False
-    description:  "This is the description of the access policy."
-  conditions:
-    type: list
-    elements: dict
-    required: False
-    description:  "This is for proviidng the set of conditions for the policy."
-  reauth_idle_timeout:
-    type: str
-    required: False
-    description: ""
-  app_server_groups:
-    type: list
-    elements: dict
-    required: False
-    description:  "List of the server group IDs."
-  reauth_timeout:
-    type: str
-    required: False
-    description: ""
+    choices:
+      - AND
+      - OR
   custom_msg:
     type: str
     required: False
     description:  "This is for providing a customer message for the user."
-  lss_default_rule:
-    type: bool
-    required: False
-    description: ""
   name:
     type: str
     required: True
     description:  "This is the name of the policy."
+  description:
+    type: str
+    required: false
+    description:
+      - This is the description of the access policy.
+  conditions:
+    type: list
+    elements: dict
+    required: false
+    description:
+      - This is for proviidng the set of conditions for the policy.
+    suboptions:
+      negated:
+        type: bool
+        required: false
+        description:
+          - ""
+      operator:
+        description:
+          - This denotes the operation type.
+        type: str
+        required: false
+        choices:
+          - AND
+          - OR
+        suboptions:
+          operands:
+            type: list
+            elements: str
+            required: false
+            description:
+              - This signifies the various policy criterias.
+            suboptions:
+              idp_id:
+                type: str
+                required: false
+                description:
+                  - ""
+              lhs:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              name:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              rhs:
+                type: str
+                required: false
+                description:
+                  - This denotes the value for the given object type. Its value depends upon the key.
+              object_type:
+                type: str
+                required: false
+                description:
+                  - This is for specifying the policy criteria.
+                choices:
+                  - APP
+                  - APP_GROUP
+                  - BYPASS
+                  - SAML
+                  - IDP
+                  - CLIENT_TYPE
+                  - TRUSTED_NETWORK
+                  - MACHINE_GRP
+                  - POSTURE
+                  - SCIM
+                  - SCIM_GROUP
+                  - EDGE_CONNECTOR_GROUP
 """
 
 EXAMPLES = """
-    - name: Create/update/delete a policy rule
-      willguibr.zpacloud.zpa_policy_access_rule:
-        name: "test policy access rule"
-        description: "test policy access rule"
-        action: "ALLOW"
-        rule_order: 2
-        operator: "AND"
-        conditions:
-          - negated: false
-            operator: "OR"
-            operands:
-              - name: "test policy access rule"
-                object_type: "APP"
-                lhs: "id"
-                rhs: "216196257331291979"
-        state: present
-      register: created_rule
-    - name: created policy access rule
-      debug:
-        msg: "{{ created_rule }}"
+- name: Forwarding Policy - Test
+  willguibr.zpacloud.zpa_policy_forwarding_rule:
+    name: "Forwarding Policy - Test"
+    description: "Forwarding Policy - Test"
+    action: "BYPASS"
+    rule_order: 1
+    operator: "AND"
+    conditions:
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "app_segment"
+            object_type: "APP"
+            lhs: "id"
+            rhs: "216196257331292105"
+          - name: "segment_group"
+            object_type: "APP_GROUP"
+            lhs: "id"
+            rhs: "216196257331292103"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "zpn_client_type_exporter"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_exporter"
+          - name: "zpn_client_type_browser_isolation"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_browser_isolation"
+          - name: "zpn_client_type_zapp"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_zapp"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "CrowdStrike_ZPA_ZTA_80"
+            object_type: "POSTURE"
+            lhs: "{{ postures.data[0].posture_udid }}"
+            rhs: "false"
 """
 
 RETURN = r"""

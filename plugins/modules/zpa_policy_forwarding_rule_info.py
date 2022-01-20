@@ -14,45 +14,46 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_policy_forwarding_rule_info
+short_description: Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
 description:
   - Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
-module: zpa_policy_rule_info
-short_description: Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-      - Name of the policy rule.
-    required: false
+      - Name of the policy forwarding rule.
+    required: true
     type: str
   id:
     description:
-      - ID of the policy rule.
+      - ID of the policy forwarding rule.
     required: false
     type: str
 """
 
 EXAMPLES = """
-- name: policy rule
-  hosts: localhost
-  tasks:
-    - name: Gather information about all policy rules
-      willguibr.zpacloud.zpa_policy_access_rule_info:
-        #id: "216196257331292020"
-        name: "All Other Services"
-      register: policy
-    - name: policy rule
-      debug:
-        msg: "{{ policy }}"
+- name: Get Information About All Policy Forwarding Rules
+    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
+    register: all_forwarding_rules
 
+- name: Get information About Forwarding Rules by Name
+    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
+        name: "All Other Services"
+    register: forwarding_rule_name
+    
+- name: Get information About Forwarding Rules by ID
+    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
+        id: "216196257331292020"
+    register: forwarding_rule_id
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: policy rule information
     returned: success
