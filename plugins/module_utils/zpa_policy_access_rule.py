@@ -4,7 +4,7 @@ from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client impo
 import re
 
 
-class PolicyRuleService:
+class PolicyAccessRuleService:
     def __init__(self, module, customer_id):
         self.module = module
         self.customer_id = customer_id

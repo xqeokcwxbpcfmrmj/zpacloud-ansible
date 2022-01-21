@@ -3,7 +3,7 @@ from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client impo
 )
 
 
-class TrustedNetworkService:
+class TrustedNetworksService:
     def __init__(self, module, customer_id):
         self.module = module
         self.customer_id = customer_id
