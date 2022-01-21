@@ -38,26 +38,28 @@ options:
 """
 
 EXAMPLES = """
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
-    - name: Gather information about all App Connector Groups
-      willguibr.zpacloud.zpa_app_connector_groups_info:
+- name: Gather information about all App Connector Groups
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+  register: all_service_edges
+  
+- debug:
+    msg: "{{ all_service_edges }}"}
+    
+- name: Get information about Service Edge Connector Group by ID
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+    id: "198288282"
+  register: service_edge_id
 
-    - name: Gather information about App Connector Group with given ID
-      willguibr.zpacloud.zpa_app_connector_groups_info:
-        id: "198288282"
-      register: resp_out
+- debug:
+    msg: "{{ service_edge_id }}"
 
-    - name: Gather information about App Connector Group with given name
-      willguibr.zpacloud.zpa_app_connector_groups_info:
-        name: "example"
-      register: resp_out
-    - debug:
-        msg: "{{ resp_out.name }}"
+- name: Get information about Service Edge Connector Group by Name
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+    name: "Example"
+  register: service_edge_name
+  
+- debug:
+    msg: "{{ service_edge_name }}"}
 """
 
 RETURN = """

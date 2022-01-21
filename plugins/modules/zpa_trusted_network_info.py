@@ -39,32 +39,28 @@ options:
 """
 
 EXAMPLES = """
-<<<<<<< HEAD
-- name: Gather information about all trusted network
+- name: Get Information About All Trusted Networks
   willguibr.zpacloud.zpa_trusted_network_info:
-    #name: Corp-Trusted-Networks
-    id: 216196257331282234
+  register: all_networks
+  
+- debug:
+    msg: "{{ all_networks }}"
     
-- name: Gather information about a trusted network by Name
+- name: Get information about Trusted Networks by Name
   willguibr.zpacloud.zpa_trusted_network_info:
     name: Corp-Trusted-Networks
-=======
-- name: trusted network
-  hosts: localhost
-  tasks:
-    - name: Gather information about all trusted network
-      willguibr.zpacloud.zpa_trusted_network_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: networks
-    - name: networks
-      debug:
-        msg: "{{ networks }}"
->>>>>>> master
+  register: network_id
+  
+- debug:
+    msg: "{{ network_id }}"
 
-- name: Gather information about a trusted network by ID
+- name: Get information about Trusted Networks by ID
   willguibr.zpacloud.zpa_trusted_network_info:
     id: 216196257331282234
+  register: network_id
+
+- debug:
+    msg: "{{ network_id }}"
 """
 
 RETURN = """

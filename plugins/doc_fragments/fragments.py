@@ -10,11 +10,11 @@ __metaclass__ = type
 
 class ModuleDocFragment(object):
         # Standard files documentation fragment
-    DOCUMENTATION = r"""
+    DOCUMENTATION = """
     
     """
     
-    STATE = r"""
+    STATE = """
 options:
     state:
         description:
@@ -26,7 +26,7 @@ options:
             - absent
 """
 
-    ENABLED_STATE = r"""
+    ENABLED_STATE = """
 options:
     state:
         description:

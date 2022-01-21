@@ -50,16 +50,16 @@ tags:
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: 'https://github.com/willguibr/zpacloud'
+repository: 'https://github.com/willguibr/zpacloud-ansible'
 
 # The URL to any online docs
-documentation: 'https://willguibr.github.io/zpacloud/'
+documentation: 'https://willguibr.github.io/zpacloud-ansible/'
 
 # The URL to the homepage of the collection/project
-homepage: 'https://github.com/willguibr/zpacloud'
+homepage: 'https://github.com/willguibr/zpacloud-ansible'
 
 # The URL to the collection issue tracker
-issues: 'https://github.com/willguibr/zpacloud/issues'
+issues: 'https://github.com/willguibr/zpacloud-ansible/issues'
 
 # Ignore these files
 build_ignore:
