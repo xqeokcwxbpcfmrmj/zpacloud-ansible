@@ -16,7 +16,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_trusted_network_info
+module: zpa_trusted_networks_info
 author: William Guilherme (@willguibr)
 description:
   - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
