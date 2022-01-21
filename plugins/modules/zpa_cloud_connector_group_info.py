@@ -37,17 +37,16 @@ options:
 """
 
 EXAMPLES = """
-- name: Gather Information Details of All Cloud Connector Groups
+- name: Get Information Details of All Cloud Connector Groups
   willguibr.zpacloud.zpa_cloud_connector_group_info:
 
-- name: Gather Information Details of a Cloud Connector Group by Name
+- name: Get Information Details of a Cloud Connector Group by Name
   willguibr.zpacloud.zpa_cloud_connector_group_info:
     name: zs-cc-vpc-096108eb5d9e68d71-ca-central-1a
 
-- name: Gather Information Details of a Cloud Connector Group by ID
+- name: Get Information Details of a Cloud Connector Group by ID
   willguibr.zpacloud.zpa_cloud_connector_group_info:
-    id: "216196257331292017"
-    
+    id: "216196257331292017"  
 """
 
 RETURN = """

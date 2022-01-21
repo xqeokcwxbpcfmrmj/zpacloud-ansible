@@ -155,10 +155,10 @@ options:
 """
 
 EXAMPLES = """
-- name: Forwarding Policy - Test
+- name: Policy Forwarding Rule - Example
   willguibr.zpacloud.zpa_policy_forwarding_rule:
-    name: "Forwarding Policy - Test"
-    description: "Forwarding Policy - Test"
+    name: "Policy Forwarding Rule - Example"
+    description: "Policy Forwarding Rule - Example"
     action: "BYPASS"
     rule_order: 1
     operator: "AND"
@@ -200,13 +200,12 @@ EXAMPLES = """
 
 RETURN = r"""
 data:
-    description: Policy Rule
+    description: Policy Forwarding Rule
     returned: success
     type: dict
     sample:
         {
         }
-
 """
 
 

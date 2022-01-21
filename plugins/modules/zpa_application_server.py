@@ -15,10 +15,10 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_application_servers
+module: zpa_application_server
 short_description: Create/Update/Delete an application server.
 description:
-    - Create server group objects in the ZPA portal
+    - Create/Update/Delete an application server.
 author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
@@ -59,7 +59,9 @@ EXAMPLES = """
     description: Example
     address: example.acme.com
     enabled: true
+"""
 
+EXAMPLES = """
 - name: Create Second Application Server
     willguibr.zpacloud.zpa_application_server:
     name: Example1

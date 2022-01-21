@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
-description:
-  - Provides details about a specific (ID and/or Name) of a Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
 module: zpa_provisioning_key_info
 short_description: Provides details about a specific (ID and/or Name) of a Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
+description:
+  - Provides details about a specific (ID and/or Name) of a Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -37,83 +37,40 @@ options:
     type: str
   association_type:
     type: str
-    required: True
+    required: true
     description: "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
 """
 
 EXAMPLES = """
-- name: provisioning key
-  hosts: localhost
-  tasks:
-    - name: Gather information about all provisioning keys
-      willguibr.zpacloud.zpa_provisioning_key_info:
-        #id: "216196257331291981"
-        association_type: "CONNECTOR_GRP"
-        
-    - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys
-      willguibr.zpacloud.zpa_provisioning_key_info:
-        association_type: "SERVICE_EDGE_GRP"
+- name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys
+  willguibr.zpacloud.zpa_provisioning_key_info:
+    association_type: "SERVICE_EDGE_GRP"
+  register: all_edge_grp_key_name
 
-    - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by Name
-      willguibr.zpacloud.zpa_provisioning_key_info:
-        name: "Example App Connector Group"
-        association_type: "SERVICE_EDGE_GRP"
+- debug:
+    msg: "{{ all_edge_grp_key_name }}"
 
-    - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by ID
-      willguibr.zpacloud.zpa_provisioning_key_info:
-        id: "8691"
-        association_type: "SERVICE_EDGE_GRP"
+- name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by Name
+  willguibr.zpacloud.zpa_provisioning_key_info:
+    name: "Example Service Edge Group"
+    association_type: "SERVICE_EDGE_GRP"
+  register: edge_grp_key_name
+
+- debug:
+    msg: "{{ edge_grp_key_name }}"
+
+- name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by ID
+  willguibr.zpacloud.zpa_provisioning_key_info:
+    id: "8691"
+    association_type: "SERVICE_EDGE_GRP"
+  register: edge_grp_key_id
+
+- debug:
+    msg: "{{ edge_grp_key_id }}"
 """
 
 RETURN = """
-data:
-    description: Provisioning Key Information
-    returned: success
-    elements: dict
-    type: list
-    sample:
-        [
-          {
-            "app_connector_group_id": null,
-            "app_connector_group_name": "Canada LSS App Connector Group",
-            "creation_time": "1641586556",
-            "enabled": true,
-            "enrollment_cert_id": "6573",
-            "enrollment_cert_name": "Connector",
-            "expiration_in_epoch_sec": null,
-            "id": "9003",
-            "ip_acl": null,
-            "max_usage": "10",
-            "modified_by": "216196257331282070",
-            "modified_time": null,
-            "name": "New York Provisioning Key",
-            "provisioning_key": "3|api.private.zscaler.com|297XDkU9fv6G/d7s9WS...",
-            "ui_config": null,
-            "usage_count": "0",
-            "zcomponent_id": "216196257331291903",
-            "zcomponent_name": "Canada LSS App Connector Group",
-          },
-          {
-            "app_connector_group_id": null,
-            "app_connector_group_name": "USA App Connector Group",
-            "creation_time": "1639693617",
-            "enabled": true,
-            "enrollment_cert_id": "6573",
-            "enrollment_cert_name": "Connector",
-            "expiration_in_epoch_sec": null,
-            "id": "8691",
-            "ip_acl": null,
-            "max_usage": "2",
-            "modified_by": "216196257331282070",
-            "modified_time": null,
-            "name": "USA App Connector Group",
-            "provisioning_key": "3|api.private.zscaler.com|Wy3HzPKWJr88i6u...",
-            "ui_config": null,
-            "usage_count": "0",
-            "zcomponent_id": "216196257331291906",
-            "zcomponent_name": "USA App Connector Group",
-          },
-      ]
+# Returns information on a specified provisioning key resource.
 """
 
 def core(module):

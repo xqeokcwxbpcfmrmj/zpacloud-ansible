@@ -16,10 +16,10 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
+module: zpa_trusted_network_info
 author: William Guilherme (@willguibr)
 description:
   - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
-module: zpa_trusted_network_info
 short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
 version_added: "1.0.0"
 requirements:
@@ -41,45 +41,18 @@ options:
 EXAMPLES = """
 - name: Get Information About All Trusted Networks
   willguibr.zpacloud.zpa_trusted_network_info:
-  register: all_networks
-  
-- debug:
-    msg: "{{ all_networks }}"
     
 - name: Get information about Trusted Networks by Name
   willguibr.zpacloud.zpa_trusted_network_info:
     name: Corp-Trusted-Networks
-  register: network_id
-  
-- debug:
-    msg: "{{ network_id }}"
 
 - name: Get information about Trusted Networks by ID
   willguibr.zpacloud.zpa_trusted_network_info:
     id: 216196257331282234
-  register: network_id
-
-- debug:
-    msg: "{{ network_id }}"
 """
 
 RETURN = """
-data:
-    description: Trusted Network information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-      {
-          "id": "216196257331282234",
-          "modified_time": "1631935891",
-          "creation_time": "1625992655",
-          "modified_by": "72057594037928115",
-          "name": "Corp-Trusted-Networks",
-          "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
-          "zscaler_cloud": "zscalerthree"
-      }
-    ]
+# Returns information on a specified Trusted Network.
 """
 
 

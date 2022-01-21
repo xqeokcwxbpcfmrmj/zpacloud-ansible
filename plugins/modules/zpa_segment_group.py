@@ -40,10 +40,23 @@ options:
     choices:
         - SIEM
         - DEFAULT
-    default: DEFAULT
-                    
+    default: DEFAULT               
 """
 
+EXAMPLES = """
+- name: Create/Update/Delete a Segment Group
+    willguibr.zpacloud.zpa_segment_group:
+        name: Example Segment Group
+        config_space: "DEFAULT"
+        description: Example Segment Group
+        enabled: true
+        policy_migrated: true
+        tcp_keep_alive_enabled: "1"
+"""
+
+RETURN = """
+# The newly created segment group resource record.
+"""
 
 def core(module):
     state = module.params.get("state", None)

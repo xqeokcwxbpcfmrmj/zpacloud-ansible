@@ -8,17 +8,17 @@ from __future__ import (absolute_import, division, print_function)
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_rule import PolicyRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_access_rule import PolicyAccessRuleService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
-module: zpa_policy
-short_description: Create/ an Policy Rule
+module: zpa_policy_access_rule
+short_description: Create/Update/Delete a Policy Access Rule
 description:
-  - This module will create, retrieve, update or delete a specific Policy Rule
+  - This module will create, update or delete a specific Policy Access Rule
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
@@ -108,10 +108,10 @@ options:
 """
 
 EXAMPLES = """
-    - name: Create/update/delete a policy rule
+    - name: Create/Update/Delete a Policy Access Rule
       willguibr.zpacloud.zpa_policy_access_rule:
-        name: "test policy access rule"
-        description: "test policy access rule"
+        name: "Policy Access Rule - Example"
+        description: "Policy Access Rule - Example"
         action: "ALLOW"
         rule_order: 2
         operator: "AND"
@@ -119,7 +119,7 @@ EXAMPLES = """
           - negated: false
             operator: "OR"
             operands:
-              - name: "test policy access rule"
+              - name: "app_segment"
                 object_type: "APP"
                 lhs: "id"
                 rhs: "216196257331291979"
@@ -130,7 +130,7 @@ EXAMPLES = """
         msg: "{{ created_rule }}"
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: Policy Rule
     returned: success
@@ -138,14 +138,13 @@ data:
     sample:
         {
         }
-
 """
 
 
 def core(module):
     state = module.params.get("state", None)
     customer_id = module.params.get("customer_id", None)
-    service = PolicyRuleService(module, customer_id)
+    service = PolicyAccessRuleService(module, customer_id)
     global_policy_set = service.getByPolicyType("ACCESS_POLICY")
     if global_policy_set is None or global_policy_set.get("id") is None:
         module.fail_json(msg="Unable to get global policy set")

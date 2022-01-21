@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_scim_group_info
+short_description: Provides details about a specific scim group from a given IDP
 description:
   - Provides details about a specific scim group from a given IDP
-module: zpa_scim_attribute_header_info
-short_description: Provides details about a specific scim group from a given IDP
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -40,64 +40,26 @@ options:
       - ID of the scim group.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: scim attribute
-  hosts: localhost
-  tasks:
-    - name: Gather information about scim attribute by attribute Name
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        name: DepartmentName_User-Okta
-        idp_name: "SGIO-User-Okta"
-      register: department_name
-    - name: department_name
-      debug:
-        msg: "{{ department_name }}"
-        
-    - name: Gather information about scim attribute by attribute ID
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        id: 216196257331285827
-        idp_name: "SGIO-User-Okta"
-        
-    - name: Gather information about all scim attribute by attributes
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        idp_name: "SGIO-User-Okta"
+- name: Get Information About All SCIM Groups from an IdP
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    idp_name: "IdP_Name"
+    
+- name: Get Information About a SCIM Group by ID
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    id: 216196257331285827
+    idp_name: "IdP_Name"
+    
+- name: Get Information About a SCIM Group by Name 
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    name: "Finance"
+    idp_name: "IdP_Name"
 """
 
 RETURN = """
-data:
-    description: scim group information
-    returned: success
-    elements: dict
-    type: list
-    data: [
-            {
-                "creation_time": 1631718444,
-                "id": 293479,
-                "idp_group_id": null,
-                "idp_id": 216196257331285825,
-                "modified_time": 1639601338,
-                "name": "Executives"
-            },
-            {
-                "creation_time": 1631718391,
-                "id": 293478,
-                "idp_group_id": null,
-                "idp_id": 216196257331285825,
-                "modified_time": 1639601336,
-                "name": "Finance"
-            },
-            {
-                "creation_time": 1631718383,
-                "id": 293477,
-                "idp_group_id": null,
-                "idp_id": 216196257331285825,
-                "modified_time": 1639601333,
-                "name": "Sales"
-            }
-    ]
+# Returns information on a specified posture profile.
 """
 
 

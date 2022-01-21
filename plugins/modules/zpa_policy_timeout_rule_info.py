@@ -14,132 +14,56 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
+module: zpa_policy_timeout_rule_info
 author: William Guilherme (@willguibr)
 description:
-  - Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
-module: zpa_policy_rule_info
-short_description: Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
+  - Provides details about a specific policy timeout rule created in the Zscaler Private Access portal.
+short_description: Provides details about a specific policy timeout rule created in the Zscaler Private Access portal.
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
   name:
     description:
-      - Name of the policy rule.
+      - Name of the policy timeout rule.
     required: false
     type: str
   id:
     description:
-      - ID of the policy rule.
+      - ID of the policy timeout rule.
     required: false
     type: str
 """
 
 EXAMPLES = """
-- name: policy rule
-  hosts: localhost
-  tasks:
-    - name: Gather information about all policy rules
-      willguibr.zpacloud.zpa_policy_access_rule_info:
-        #id: "216196257331292020"
-        name: "All Other Services"
-      register: policy
-    - name: policy rule
-      debug:
-        msg: "{{ policy }}"
+- name: Gather information about all policy rules
+    willguibr.zpacloud.zpa_policy_timeout_rule_info:
+    register: all_timeout_rules
 
+- debug:
+    msg: "{{ all_timeout_rules }}"
+    
+- name: Get Information About a Specific Timeout Rule by Name
+    willguibr.zpacloud.zpa_policy_timeout_rule_info:
+        name: "Example"
+    register: timeout_rule_name
+
+- debug:
+    msg: "{{ timeout_rule_name }}"
+    
+- name: Get Information About a Specific Timeout Rule by ID
+    willguibr.zpacloud.zpa_policy_timeout_rule_info:
+        id: "216196257331292020"
+    register: timeout_rule_id
+    
+- debug:
+    msg: "{{ timeout_rule_id }}"
 """
 
-RETURN = r"""
-data:
-    description: policy rule information
-    returned: success
-    elements: dict
-    type: list
-    sample:
-        [
-            {
-                "action": "ALLOW",
-                "action_id": null,
-                "app_connector_groups": [
-                    {
-                        "city_country": "Langley, CA",
-                        "country_code": "CA",
-                        "creation_time": "1639693615",
-                        "description": "Canada App Connector Group",
-                        "dns_query_type": "IPV4",
-                        "enabled": true,
-                        "id": "216196257331291924",
-                        "location": "Langley City, BC, Canada",
-                        "lss_app_connector_group": false,
-                        "modified_by": "216196257331282070",
-                        "name": "Canada App Connector Group",
-                        "override_version_profile": true,
-                        "version_profile_id": "2"
-                    }
-                ],
-                "app_server_groups": [
-                    {
-                        "config_space": "DEFAULT",
-                        "creation_time": "1639693619",
-                        "description": "All Other Services",
-                        "dynamic_discovery": true,
-                        "enabled": true,
-                        "id": "216196257331291967",
-                        "modified_by": "216196257331282070",
-                        "name": "All Other Services"
-                    }
-                ],
-                "bypass_default_rule": null,
-                "conditions": [
-                    {
-                        "creation_time": "1640027085",
-                        "id": "1004465",
-                        "modified_by": "216196257331282070",
-                        "modified_time": "1640027085",
-                        "negated": false,
-                        "operands": [
-                            {
-                                "creation_time": "1640027085",
-                                "id": "1004466",
-                                "lhs": "id",
-                                "modified_by": "216196257331282070",
-                                "name": "All Other Services",
-                                "object_type": "APP",
-                                "rhs": "216196257331291979"
-                            },
-                            {
-                                "creation_time": "1640027085",
-                                "id": "1004467",
-                                "lhs": "id",
-                                "modified_by": "216196257331282070",
-                                "name": "All Other Services",
-                                "object_type": "APP_GROUP",
-                                "rhs": "216196257331291913"
-                            }
-                        ],
-                        "operator": "OR"
-                    }
-                ],
-                "custom_msg": null,
-                "default_rule": false,
-                "description": "All Other Services",
-                "id": "216196257331292020",
-                "lss_default_rule": null,
-                "name": "All Other Services",
-                "operator": "AND",
-                "policy_set_id": null,
-                "policy_type": "1",
-                "priority": "1",
-                "reauth_default_rule": null,
-                "reauth_idle_timeout": null,
-                "reauth_timeout": null,
-                "rule_order": "12"
-            }
-        ]
-
+RETURN = """
+# Returns information on a specified policy timeout rule.
 """
 
 

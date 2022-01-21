@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_enrollement_certificate_info
+short_description: Provides details about (ID and/or Name) of an enrollment certificate resource.
 description:
-  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
-module: zpa_trusted_network_info
-short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+  - This module is used to retrieve Enrollment Certificate detail from the ZPA Cloud.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -64,33 +64,7 @@ EXAMPLES = """
 """
 
 RETURN = """
-data:
-    description: ZPA enrollment certificate
-    returned: success
-    elements: dict
-    type: list
-    data: [
-            {
-              "id": "12345",
-              "name": "Root",
-            },
-            {
-              "id": "12345",
-              "name": "Client",
-            },
-            {
-              "id": "1234567890",
-              "name": "Connector",
-            },
-            {
-              "id": "6574",
-              "name": "Service Edge",
-            },
-            {
-                "id": "10242",
-                "name": "Isolation Client",
-            }
-    ]
+# Returns information on a specified Enrollment Certificate.
 """
 
 def core(module):

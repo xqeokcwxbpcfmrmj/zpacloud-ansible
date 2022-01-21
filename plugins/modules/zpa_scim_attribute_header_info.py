@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_scim_attribute_header_info
 description:
   - Provides details about a specific scim attribute header from a given IDP
-module: zpa_scim_attribute_header_info
 short_description: Provides details about a specific scim attribute header from a given IDP
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -40,60 +40,26 @@ options:
       - ID of the scim attribute.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: scim attribute
-  hosts: localhost
-  tasks:
-    - name: Gather information about all SCIM Attribute of IDP SGIO-User-Okta
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        idp_name: SGIO-User-Okta
-      register: scim
-    - name: scim
-      debug:
-        msg: "{{ scim }}"
-    - name: Gather information about the SCIM Attribute named costCenter
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        name: costCenter
-        idp_name: SGIO-User-Okta
-      register: scim2
-    - name: scim2
-      debug:
-        msg: "{{ scim2 }}"
-    - name: Gather information about the SCIM Attribute with ID 216196257331285842
-      willguibr.zpacloud.zpa_scim_attribute_header_info:
-        id: 216196257331285842
-        idp_name: SGIO-User-Okta
+- name: Get Information About All SCIM Attribute of an IDP
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    idp_name: IdP_Name
+    
+- name: Get Information About the SCIM Attribute by Name
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    name: costCenter
+    idp_name: IdP_Name
+    
+- name: Get Information About the SCIM Attribute by ID
+  willguibr.zpacloud.zpa_scim_attribute_header_info:
+    id: 216196257331285842
+    idp_name: IdP_Name
 """
 
 RETURN = """
-data:
-    description: saml attribute information
-    returned: success
-    elements: dict
-    type: list
-    data: [
-            {
-              "canonical_values": null,
-              "case_sensitive": false,
-              "creation_time": "1631718085",
-              "data_type": "String",
-              "description": null,
-              "id": "216196257331285842",
-              "idp_id": "216196257331285825",
-              "modified_by": "216196257331281958",
-              "modified_time": null,
-              "multivalued": false,
-              "mutability": "readWrite",
-              "name": "costCenter",
-              "required": false,
-              "returned": "default",
-              "schema_uri": "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
-              "uniqueness": false
-            }
-    ]
+# Returns information on a specified SCIM Attribute Header.
 """
 
 

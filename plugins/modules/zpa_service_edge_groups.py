@@ -14,7 +14,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_app_connector_groups
+module: zpa_service_edge_groups
 short_description: Create/Update/Delete an Service Edge Group.
 description:
   - This module will Create/Update/Delete an Service Edge Group.
@@ -30,16 +30,16 @@ options:
     description: "Description of the Service Edge Group."
     type: str
   city_country:
-    description: "City Country of the App Connector Group."
+    description: "City Country of the Service Edge Group."
     type: str
   country_code:
-    description: "Country code of the App Connector Group."
+    description: "Country code of the Service Edge Group."
     type: str
   description:
-    description: "Description of the App Connector Group."
+    description: "Description of the Service Edge Group."
     type: str
   dns_query_type:
-    description: "Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the App Connector Group."
+    description: "Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the Service Edge Group."
     default: IPV4_IPV6
     choices: ["IPV4_IPV6", "IPV4", "IPV6"]
     type: str
@@ -86,71 +86,25 @@ options:
 """
 
 EXAMPLES = """
-- name: App Connector Groups
-  hosts: localhost
-  tasks:
-    - name: Create/update/delete an app connector group
-      willguibr.zpacloud.zpa_app_connector_groups:
-        state: "absent"
-        #id: "216196257331292046"
-        name: "Example"
-        description: "Example2"
-        enabled: true
-        city_country: "California, US"
-        country_code: "US"
-        latitude: "37.3382082"
-        longitude: "-121.8863286"
-        location: "San Jose, CA, USA"
-        upgrade_day: "SUNDAY"
-        upgrade_time_in_secs: "66600"
-        override_version_profile: true
-        version_profile_id: "0"
-        dns_query_type: "IPV4"
-      register: appconnectorg
-    - name: created appconnector group
-      debug:
-        msg: "{{ appconnectorg }}"
-
+- name: Create/Update/Delete a Service Edge Group
+  willguibr.zpacloud.zpa_service_edge_groups:
+    name: "Example"
+    description: "Example2"
+    enabled: true
+    city_country: "California, US"
+    country_code: "US"
+    latitude: "37.3382082"
+    longitude: "-121.8863286"
+    location: "San Jose, CA, USA"
+    upgrade_day: "SUNDAY"
+    upgrade_time_in_secs: "66600"
+    override_version_profile: true
+    version_profile_id: "0"
+    dns_query_type: "IPV4"
 """
 
 RETURN = """
-data:
-    description: App Connector Group
-    returned: success
-    type: dict
-    sample: [
-            {
-              "city_country": "Langley, CA",
-              "country_code": "CA",
-              "description": "Canada Service Edge Group",
-              "enabled": true,
-              "geolocation_id": null,
-              "id": "216196257331291917",
-              "is_public": "FALSE",
-              "latitude": "49.1041779",
-              "location": "Langley City, BC, Canada",
-              "longitude": "-122.6603519",
-              "name": "Canada Service Edge Group",
-              "override_version_profile": true,
-              "service_edges": [],
-              "trusted_networks": [
-                  {
-                      "creation_time": "1625992655",
-                      "id": "216196257331282234",
-                      "modified_by": "72057594037928115",
-                      "modified_time": "1631935891",
-                      "name": "Corp-Trusted-Networks",
-                      "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
-                      "zscaler_cloud": "zscalerthree"
-                  }
-              ],
-              "upgrade_day": "SUNDAY",
-              "upgrade_time_in_secs": "66600",
-              "version_profile_id": "2",
-              "version_profile_name": "New Release",
-              "version_profile_visibility_scope": "ALL"
-            }
-    ]
+# The newly created service edge group resource record.
 """
 
 def core(module):

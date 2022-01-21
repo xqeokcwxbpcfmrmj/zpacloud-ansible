@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_server_info
-short_description: Gather information about an server group
+short_description: Gather information about an application server
 description:
-    - This module can be used to gather information about an server group.
+    - This module can be used to gather information about an application server
 author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
@@ -39,30 +39,18 @@ options:
 EXAMPLES = """
 - name: Gather Information Details of All Application Servers
     willguibr.zpacloud.zpa_application_server_info:
-    register: all_app_server
-
-- debug:
-    msg: "{{ all_app_server }}"
 
 - name: Gather Information Details of an Application Server by Name
     willguibr.zpacloud.zpa_application_server_info:
     name: server1.acme.com
-    register: app_server_name
-
-- debug:
-    msg: "{{ app_server_name }}"
 
 - name: Gather Information Details of an Application Server by ID
     willguibr.zpacloud.zpa_application_server_info:
     id: "216196257331291921"
-    register: app_server_id
-
-- debug:
-    msg: "{{ app_server_id }}"
 """
 
 RETURN = """
-# Default return values
+# Returns information on a specified Application Server.
 """
 
 def core(module):

@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
-description:
-  - Provides details about a specific saml attributes from a given IDP
 module: zpa_saml_attribute_info
 short_description: Provides details about a specific saml attributes from a given IDP
+description:
+  - Provides details about a specific saml attributes from a given IDP
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -39,54 +39,20 @@ options:
 """
 
 EXAMPLES = """
-
-    - name: Gather information about all saml attribute by attributes
-      willguibr.zpacloud.zpa_saml_attribute_info:
-      
-    - name: Gather information about saml attribute by attribute Name
-      willguibr.zpacloud.zpa_saml_attribute_info:
-        name: DepartmentName_User-Okta
-      register: department_name
-    - name: department_name
-      debug:
-        msg: "{{ department_name }}"
-        
-    - name: Gather information about saml attribute by attribute ID
-      willguibr.zpacloud.zpa_saml_attribute_info:
-        id: 216196257331285827
-      register: attribute_id
-    - name: attribute_id
-      debug:
-        msg: "{{ attribute_id }}"
-        
-    - name: Gather information about all saml attribute by attributes
-      willguibr.zpacloud.zpa_saml_attribute_info:
-      register: saml_attributes
-    - name: saml_attributes
-      debug:
-        msg: "{{ saml_attributes }}"
-
+- name: Get Information About All SAML Attributes
+  willguibr.zpacloud.zpa_saml_attribute_info:
+  
+- name: Get Information About Saml Attribute by Attribute Name
+  willguibr.zpacloud.zpa_saml_attribute_info:
+    name: DepartmentName_User
+    
+- name: Get Information About Saml Attribute by Attribute ID
+  willguibr.zpacloud.zpa_saml_attribute_info:
+    id: 216196257331285827
 """
 
 RETURN = """
-data:
-    description: saml attribute information
-    returned: success
-    elements: dict
-    type: list
-    data: [
-            {
-              "creation_time": "1631718008",
-              "id": "216196257331285827",
-              "idp_id": "216196257331285825",
-              "idp_name": "User-Okta",
-              "modified_by": "216196257331281958",
-              "modified_time": null,
-              "name": "DepartmentName-User-Okta",
-              "saml_name": "DepartmentName",
-              "user_attribute": false
-            },
-    ]
+# Returns information on a specified SAML attribute.
 """
 
 

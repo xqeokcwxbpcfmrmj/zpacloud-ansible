@@ -73,66 +73,34 @@ options:
     type: str
 
 """
-
 EXAMPLES = """
-- name: server group
-  hosts: localhost
-  tasks:
-    - name: Create an server group
-      willguibr.zpacloud.zpa_server_group:
-        state: absent
-        name: "Example Test amazzal"
-        description: "Example  Test amazzal"
-        enabled: false
-        dynamic_discovery: false
-        app_connector_groups:
-          - id: "216196257331291921"
-            name: "sks"
-        servers:
-          - id: "216196257331291921"
-            name: "sks"
-        applications:
-          - id: "216196257331291921"
-            name: "sks"
-      register: server_g
-    - name: server group
-      debug:
-        msg: "{{ server_g }}"
-
-"""
-
-EXAMPLES = """
-- name: Create/Update/Delete a Server Group
+- name: Create/Update/Delete a Server Group - Dynamic Discovery ON
   willguibr.zpacloud.zpa_server_group:
-    name: "All Other Services"
-    description: "All Other Services"
-    enabled: false
+    name: "Example"
+    description: "Example"
+    enabled: true
     dynamic_discovery: true
     app_connector_groups:
       - id: "216196257331291924"
+"""
+
+EXAMPLES = """
+- name: Create/Update/Delete a Server Group - Dynamic Discovery Off
+  willguibr.zpacloud.zpa_server_group:
+    name: "Example"
+    description: "Example"
+    enabled: false
+    dynamic_discovery: false
+    app_connector_groups:
+      - id: "216196257331291921"
     servers:
       - id: "216196257331291921"
     applications:
-      - id: "216196257331291981"
+      - id: "216196257331291921"
 """
 
 RETURN = """
-data:
-    description: App Connector Group
-    returned: success
-    type: dict
-    sample: {
-                "app_connector_groups": [
-                    {"id": "216196257331291924", "name":"XXX"}
-                ],
-                "config_space": "DEFAULT",
-                "description": "All Other Services",
-                "dynamic_discovery": true,
-                "enabled": true,
-                "id": "216196257331291969",
-                "ip_anchored": false,
-                "name": "Browser Access Apps",
-            }
+# The newly created server group resource record.
 """
 
 

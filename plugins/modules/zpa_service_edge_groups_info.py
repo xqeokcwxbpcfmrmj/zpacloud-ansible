@@ -16,7 +16,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_app_connector_groups_info
+module: zpa_service_edge_groups_info
 short_description: Get details (ID and/or Name) of a Service Edge Group.
 description:
   - This module can be used to Get details (ID and/or Name) of a Service Edge Group.
@@ -38,69 +38,20 @@ options:
 """
 
 EXAMPLES = """
-- name: Gather information about all App Connector Groups
-  willguibr.zpacloud.zpa_app_connector_groups_info:
-  register: all_service_edges
-  
-- debug:
-    msg: "{{ all_service_edges }}"}
+- name: Get information about all Service Edge Groups
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     
 - name: Get information about Service Edge Connector Group by ID
-  willguibr.zpacloud.zpa_app_connector_groups_info:
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     id: "198288282"
-  register: service_edge_id
-
-- debug:
-    msg: "{{ service_edge_id }}"
 
 - name: Get information about Service Edge Connector Group by Name
-  willguibr.zpacloud.zpa_app_connector_groups_info:
+  willguibr.zpacloud.zpa_service_edge_groups_info:
     name: "Example"
-  register: service_edge_name
-  
-- debug:
-    msg: "{{ service_edge_name }}"}
 """
 
 RETURN = """
-data:
-    description: App Connector Group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-            {
-              "city_country": "Langley, CA",
-              "country_code": "CA",
-              "description": "Canada Service Edge Group",
-              "enabled": true,
-              "geolocation_id": null,
-              "id": "216196257331291917",
-              "is_public": "FALSE",
-              "latitude": "49.1041779",
-              "location": "Langley City, BC, Canada",
-              "longitude": "-122.6603519",
-              "name": "Canada Service Edge Group",
-              "override_version_profile": true,
-              "service_edges": [],
-              "trusted_networks": [
-                  {
-                      "creation_time": "1625992655",
-                      "id": "216196257331282234",
-                      "modified_by": "72057594037928115",
-                      "modified_time": "1631935891",
-                      "name": "Corp-Trusted-Networks",
-                      "network_id": "869fbea4-799d-422a-984f-d40fbe53bc02",
-                      "zscaler_cloud": "zscalerthree"
-                  }
-              ],
-              "upgrade_day": "SUNDAY",
-              "upgrade_time_in_secs": "66600",
-              "version_profile_id": "2",
-              "version_profile_name": "New Release",
-              "version_profile_visibility_scope": "ALL"
-            }
-    ]
+# Returns information on a specified Service Edge Group.
 """
 
 

@@ -37,53 +37,20 @@ options:
 """
 
 EXAMPLES = """
-- name: server group
-  hosts: localhost
-  tasks:
-    - name: Gather information about all server group
-      willguibr.zpacloud.zpa_segment_group_info:
-        name: Browser Access Apps
-        #id: 216196257331291969
-      register: servers
-    - name: servers
-      debug:
-        msg: "{{ servers }}"
+- name: Get Detail Information of All Segment Groups
+    willguibr.zpacloud.zpa_segment_group_info:
 
-    - name: Gather Details of All Segment Groups by Name
-      willguibr.zpacloud.zpa_segment_group_info:
-        name: Example1
+- name: Get Details of a Segment Group by Name
+    willguibr.zpacloud.zpa_segment_group_info:
+    name: "Example"
 
-    - name: Gather Details of All Segment Groups by ID
-      willguibr.zpacloud.zpa_segment_group_info:
-        id: "216196257331291969"
+- name: Get Details of a Segment Group by ID
+    willguibr.zpacloud.zpa_segment_group_info:
+    id: "216196257331291969"
 """
 
 RETURN = """
-data:
-    description: server group information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-            {
-                "app_connector_groups": [
-                    "216196257331291924"
-                ],
-                "applications": [
-                    "216196257331291974"
-                ],
-                "config_space": "DEFAULT",
-                "description": "SGIO Domain Controllers",
-                "dynamic_discovery": true,
-                "enabled": true,
-                "id": "216196257331291964",
-                "ip_anchored": false,
-                "name": "SGIO Domain Controllers",
-                "servers": [
-                    "216196257331291974"
-                ]
-            }
-    ]
+# Returns information on a specified segment group.
 """
 
 

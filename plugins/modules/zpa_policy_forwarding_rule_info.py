@@ -40,107 +40,18 @@ options:
 EXAMPLES = """
 - name: Get Information About All Policy Forwarding Rules
     willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-    register: all_forwarding_rules
-
+  
 - name: Get information About Forwarding Rules by Name
     willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-        name: "All Other Services"
-    register: forwarding_rule_name
+      name: "All Other Services"
     
 - name: Get information About Forwarding Rules by ID
     willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-        id: "216196257331292020"
-    register: forwarding_rule_id
+      id: "216196257331292020"
 """
 
 RETURN = """
-data:
-    description: policy rule information
-    returned: success
-    elements: dict
-    type: list
-    sample:
-        [
-            {
-                "action": "ALLOW",
-                "action_id": null,
-                "app_connector_groups": [
-                    {
-                        "city_country": "Langley, CA",
-                        "country_code": "CA",
-                        "creation_time": "1639693615",
-                        "description": "Canada App Connector Group",
-                        "dns_query_type": "IPV4",
-                        "enabled": true,
-                        "id": "216196257331291924",
-                        "location": "Langley City, BC, Canada",
-                        "lss_app_connector_group": false,
-                        "modified_by": "216196257331282070",
-                        "name": "Canada App Connector Group",
-                        "override_version_profile": true,
-                        "version_profile_id": "2"
-                    }
-                ],
-                "app_server_groups": [
-                    {
-                        "config_space": "DEFAULT",
-                        "creation_time": "1639693619",
-                        "description": "All Other Services",
-                        "dynamic_discovery": true,
-                        "enabled": true,
-                        "id": "216196257331291967",
-                        "modified_by": "216196257331282070",
-                        "name": "All Other Services"
-                    }
-                ],
-                "bypass_default_rule": null,
-                "conditions": [
-                    {
-                        "creation_time": "1640027085",
-                        "id": "1004465",
-                        "modified_by": "216196257331282070",
-                        "modified_time": "1640027085",
-                        "negated": false,
-                        "operands": [
-                            {
-                                "creation_time": "1640027085",
-                                "id": "1004466",
-                                "lhs": "id",
-                                "modified_by": "216196257331282070",
-                                "name": "All Other Services",
-                                "object_type": "APP",
-                                "rhs": "216196257331291979"
-                            },
-                            {
-                                "creation_time": "1640027085",
-                                "id": "1004467",
-                                "lhs": "id",
-                                "modified_by": "216196257331282070",
-                                "name": "All Other Services",
-                                "object_type": "APP_GROUP",
-                                "rhs": "216196257331291913"
-                            }
-                        ],
-                        "operator": "OR"
-                    }
-                ],
-                "custom_msg": null,
-                "default_rule": false,
-                "description": "All Other Services",
-                "id": "216196257331292020",
-                "lss_default_rule": null,
-                "name": "All Other Services",
-                "operator": "AND",
-                "policy_set_id": null,
-                "policy_type": "1",
-                "priority": "1",
-                "reauth_default_rule": null,
-                "reauth_idle_timeout": null,
-                "reauth_timeout": null,
-                "rule_order": "12"
-            }
-        ]
-
+# Returns information on a specified policy forwarding rule.
 """
 
 

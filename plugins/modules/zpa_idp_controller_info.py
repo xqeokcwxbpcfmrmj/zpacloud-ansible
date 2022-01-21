@@ -37,32 +37,20 @@ options:
 """
 
 EXAMPLES = """
-- name: Gather Details of All IdP Controllers
+- name: Get Details of All IdP Controllers
   willguibr.zpacloud.zpa_idp_controller_info:
-  register: idp_controllers
 
-- debug:
-  msg: "{{ idp_controllers }}"
-
-- name: Gather Details of a Specific IdP Controller by Name
+- name: Get Details of a Specific IdP Controller by Name
   willguibr.zpacloud.zpa_idp_controller_info:
     name: User_IdP_Name
-  register: idp_name
 
-- debug:
-  msg: "{{ idp_name }}"
-
-- name: Gather Details of a Specific IdP Controller by ID
+- name: Get Details of a Specific IdP Controller by ID
   willguibr.zpacloud.zpa_idp_controller_info:
-    id: "216196257331282583"
-  register: idp_id
-
-- debug:
-  msg: "{{ idp_id }}"  
+    id: "216196257331282583"  
 """
 
 RETURN = """
-# Default return values
+# Returns information on a specified Identity Provider.
 """
 
 def core(module):

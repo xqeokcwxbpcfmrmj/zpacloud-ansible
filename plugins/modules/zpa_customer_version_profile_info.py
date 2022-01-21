@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
-description:
-  - Get details (ID and/or Name) of a customer version profile.
 module: zpa_customer_version_profile_info
 short_description: Get details (ID and/or Name) of a customer version profile.
+description:
+  - Get details (ID and/or Name) of a customer version profile.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 2.0
@@ -38,17 +38,16 @@ options:
 """
 
 EXAMPLES = """
-- name: Gather Information Details of All Customer Version Profiles
+- name: Get Information Details of All Customer Version Profiles
   willguibr.zpacloud.zpa_customer_version_profile_info:
 
-- name: Gather Information Details of a Cloud Connector Group by Name
+- name: Get Information Details of a Customer Version Profiles by Name
   willguibr.zpacloud.zpa_customer_version_profile_info:
     name: "New Release"
 
-- name: Gather Information Details of a Cloud Connector Group by ID
+- name: Get Information Details of a Customer Version Profiles by ID
   willguibr.zpacloud.zpa_customer_version_profile_info:
     id: "2"
-
 """
 
 RETURN = """

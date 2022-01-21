@@ -35,30 +35,18 @@ options:
 EXAMPLES = """"
 - name: Gather Details of All Application Segments
   willguibr.zpacloud.zpa_application_segment_info:
-  register: all_app_segments
-
-- debug:
-    msg: "{{ all_app_segments }}"
 
 - name: Gather Details of a Specific Application Segments by Name
   willguibr.zpacloud.zpa_application_segment_info:
     name: "Example Application Segment"
-  register: app_segment_name
-  
-- debug:
-    msg: "{{ app_segment_name }}"
 
 - name: Gather Details of a Specific Application Segments by ID
   willguibr.zpacloud.zpa_application_segment_info:
     id: "216196257331291981"
-  register: app_segment_id
-  
-- debug:
-    msg: "{{ app_segment_id }}"
 """
 
 RETURN = """
-# Default return values
+# Returns information on a specified Application Segment.
 """
 
 

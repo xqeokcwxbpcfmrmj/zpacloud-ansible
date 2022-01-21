@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
-description:
-  - Provides details about an (ID and/or Name) of a posture profile resource.
 module: zpa_posture_profile_info
 short_description: Provides details about an (ID and/or Name) of a posture profile resource.
+description:
+  - Provides details about an (ID and/or Name) of a posture profile resource.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -38,43 +38,32 @@ options:
 """
 
 EXAMPLES = """
-- name: posture profile
-  hosts: localhost
-  tasks:
-    - name: Gather information about all posture profile
-      willguibr.zpacloud.zpa_posture_profile_info:
-        #name: CrowdStrike_ZPA_Pre-ZTA
-        id: 216196257331282234
-      register: postures
-    - name: postures
-      debug:
-        msg: "{{ postures }}"
+- name: Get Information About All Posture Profiles
+  willguibr.zpacloud.zpa_posture_profile_info:
+  register: all_posture_profiles
+  
+  debug:
+    msg: "{{ all_posture_profiles }}"
 
-    - name: Gather Details of a Specific Machine Group by ID
-      willguibr.zpacloud.zpa_posture_profile_info:
-        id: "216196257331282583"
+- name: Get Details of a Specific Posture Profile by ID
+  willguibr.zpacloud.zpa_posture_profile_info:
+    id: "216196257331282583"
+  register: posture_profile_id
+  
+  debug:
+    msg: "{{ posture_profile_id }}"
+     
+- name: Get Details of a Specific Posture Profile by Name
+  willguibr.zpacloud.zpa_posture_profile_info:
+    name: CrowdStrike_ZPA_Pre-ZTA
+  register: posture_profile_name
+  
+  debug:
+    msg: "{{ posture_profile_name }}"
 """
 
 RETURN = """
-data:
-    description: Posture Profile information
-    returned: success
-    elements: dict
-    type: list
-    sample: [
-      {
-        "creation_time": "1638237193",
-        "domain": null,
-        "id": "216196257331291092",
-        "master_customer_id": null,
-        "modified_by": "72057594037928115",
-        "modified_time": "1638237193",
-        "name": "Microsoft Windows Defender",
-        "posture_udid": "e7ac7e3f-2098-42fc-a659-030bdca2c4a7",
-        "zscaler_cloud": "zscalerthree",
-        "zscaler_customer_id": null
-      }
-    ]
+# Returns information on a specified posture profile.
 """
 
 

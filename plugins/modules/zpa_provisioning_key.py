@@ -85,50 +85,48 @@ options:
 """
 
 EXAMPLES = """
-- name: App Provisioning Key
-  hosts: localhost
-  tasks:
-    - name: Create/update/delete a Provisioning Key
-      willguibr.zpacloud.zpa_provisioning_key:
-        name             : "New York Provisioning Key"
-        association_type : "CONNECTOR_GRP"
-        max_usage        : "10"
-        enrollment_cert_id : 92828292
-        zcomponent_id : 2828227
-      register: key
-    - name: created key
-      debug:
-        msg: "{{ key }}"
+- name: Get ID Information of a Connector Enrollment Certificate
+  willguibr.zpacloud_ansible.zpa_enrollement_certificate_info:
+    name: "Connector"
+  register: connector_cert_id
 
+- name: Get ID Information of an App Connector Group
+  willguibr.zpacloud.zpa_app_connector_groups_info:
+    name: "Example"
+  register: app_connector_group
+  
+- name: Create/Update/Delete App Connector Group Provisioning Key
+  willguibr.zpacloud_ansible.zpa_provisioning_key:
+    name: "App Connector Group Provisioning Key"
+    association_type: "CONNECTOR_GRP"
+    max_usage: "10"
+    enrollment_cert_id: "{{ connector_cert_id.data[0].id }}"
+    zcomponent_id: "{{ app_connector_group.data[0].id }}"
+  register: provisioning_key
+"""
+
+EXAMPLES = """
+- name: Get ID Information of a Service Edge Group Enrollment Certificate
+  willguibr.zpacloud_ansible.zpa_enrollement_certificate_info:
+    name: "Service Edge"
+  register: enrollment_cert_service_edge
+
+- name: Get ID Information of an Service Edge Group
+  willguibr.zpacloud.zpa_service_edge_groups_info:
+    name: "Example"
+  register: service_edge_group
+  
+- name: Create/Update/Delete App Connector Group Provisioning Key
+  willguibr.zpacloud_ansible.zpa_provisioning_key:
+    name: "App Connector Group Provisioning Key"
+    association_type: "CONNECTOR_GRP"
+    max_usage: "10"
+    enrollment_cert_id: "{{ enrollment_cert_service_edge.data[0].id }}"
+    zcomponent_id: "{{ service_edge_group.data[0].id }}"
 """
 
 RETURN = """
-data:
-    description: Provisioning Key
-    returned: success
-    type: dict
-    sample:
-        {
-            "app_connector_group_id": null,
-            "app_connector_group_name": "USA App Connector Group",
-            "creation_time": "1639693617",
-            "enabled": true,
-            "enrollment_cert_id": "6573",
-            "enrollment_cert_name": "Connector",
-            "expiration_in_epoch_sec": null,
-            "id": "8691",
-            "ip_acl": null,
-            "max_usage": "2",
-            "modified_by": "216196257331282070",
-            "modified_time": null,
-            "name": "USA App Connector Group",
-            "provisioning_key": "3|api.private.zscaler.com|Wy3HzPKWJr88i6uA...",
-            "ui_config": null,
-            "usage_count": "0",
-            "zcomponent_id": "216196257331291906",
-            "zcomponent_name": "USA App Connector Group",
-        }
-
+# The newly created app connector group or service edge group provisioning key resource record.
 """
 
 

@@ -16,11 +16,11 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: William Guilherme (@willguibr)
+module: zpa_machine_group_info
+short_description: Provides details about (ID and/or Name) of a machine group resource.
 description:
   - Provides details about (ID and/or Name) of a machine group resource.
-module: zpa_trusted_network_info
-short_description: Provides details about (ID and/or Name) of a machine group resource.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -35,49 +35,25 @@ options:
       - ID of the machine group.
     required: false
     type: str
-
 """
 
 EXAMPLES = """
-- name: trusted network
-  hosts: localhost
-  tasks:
-    - name: Gather information about all trusted network
-      willguibr.zpacloud.zpa_trusted_network_info:
-        #name: Corp-Trusted-Networks
-        id: 216196257331282234
-      register: networks
-    - name: networks
-      debug:
-        msg: "{{ networks }}"
+- name: Get Details of All Machine Groups
+  willguibr.zpacloud.zpa_machine_group_info:
 
-    - name: Gather Details of a Specific Machine Group by Name
-      willguibr.zpacloud.zpa_machine_group_info:
-        name: "Corp_Machine_Group"
+- name: Get Details of a Specific Machine Group by Name
+  willguibr.zpacloud.zpa_machine_group_info:
+    name: "Corp_Machine_Group"
 
-    - name: Gather Details of a Specific Machine Group by ID
-      willguibr.zpacloud.zpa_machine_group_info:
-        id: "216196257331282583"
+- name: Get Details of a Specific Machine Group by ID
+  willguibr.zpacloud.zpa_machine_group_info:
+    id: "216196257331282583"
 """
 
 RETURN = """
-data:
-    description: Machine Group Information
-    returned: success
-    elements: dict
-    type: list
-    "sample": [
-        {
-            "creation_time": "1638488366",
-            "description": null,
-            "enabled": true,
-            "id": "216196257331291115",
-            "modified_by": "216196257331281958",
-            "modified_time": null,
-            "name": "SGIO-MGR01"
-        }
-    ]
+# Returns information on a specified Machine Group.
 """
+
 
 
 def core(module):

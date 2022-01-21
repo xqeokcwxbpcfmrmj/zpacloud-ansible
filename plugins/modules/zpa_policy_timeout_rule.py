@@ -12,12 +12,12 @@ from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_time
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
-module: zpa_policy
-short_description: Create/ an Policy Rule
+module: zpa_policy_timeout_rule
+short_description: Create/Update/Delete Policy Timeout Rule.
 description:
-  - This module will create, retrieve, update or delete a specific Policy Rule
+  - This module will create, update or delete a specific Policy Timeout Rule.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
@@ -96,50 +96,69 @@ options:
     type: str
     required: False
     description:  "This is for providing a customer message for the user."
-  lss_default_rule:
-    type: bool
-    required: False
-    description: ""
   name:
     type: str
     required: True
     description:  "This is the name of the policy."
 """
 
-EXAMPLES = '''
-    - name: Create/update/delete a policy rule
-      willguibr.zpacloud.zpa_policy_access_rule:
-        name: "test policy access rule"
-        description: "test policy access rule"
-        action: "ALLOW"
-        rule_order: 2
-        operator: "AND"
-        conditions:
-          - negated: false
-            operator: "OR"
-            operands:
-              - name: "test policy access rule"
-                object_type: "APP"
-                lhs: "id"
-                rhs: "216196257331291979"
-        state: present
-      register: created_rule
-    - name: created policy access rule
-      debug:
-        msg: "{{ created_rule }}"
+EXAMPLES = """
+- name: "Policy Timeout Rule - Example"
+  willguibr.zpacloud.zpa_policy_timeout_rule:
+    name: "Policy Timeout Rule - Example"
+    description: "Policy Timeout Rule - Example"
+    action: "RE_AUTH"
+    rule_order: 1
+    reauth_idle_timeout: 600
+    reauth_timeout: 172800
+    operator: "AND"
+    conditions:
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "app_segment"
+            object_type: "APP"
+            lhs: "id"
+            rhs: "216196257331292105"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "segment_group"
+            object_type: "APP_GROUP"
+            lhs: "id"
+            rhs: "216196257331292103"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "zpn_client_type_exporter"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_exporter"
+          - name: "zpn_client_type_browser_isolation"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_browser_isolation"
+          - name: "zpn_client_type_zapp"
+            object_type: "CLIENT_TYPE"
+            lhs: "id"
+            rhs: "zpn_client_type_zapp"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "CrowdStrike_ZPA_ZTA_40"
+            object_type: "POSTURE"
+            lhs: "13ba3d97-aefb-4acc-9e54-6cc230dee4a5"
+            rhs: "true"
+"""
 
-
-'''
-
-RETURN = r"""
+RETURN = """
 data:
-    description: Policy Rule
+    description: Policy Timeout Rule
     returned: success
     type: dict
     sample:
         {
         }
-
 """
 
 
