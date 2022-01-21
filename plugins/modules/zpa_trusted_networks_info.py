@@ -6,7 +6,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_trusted_network import TrustedNetworkService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_trusted_networks import TrustedNetworksService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -60,7 +60,7 @@ def core(module):
     app_name = module.params.get("name", None)
     app_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = TrustedNetworkService(module, customer_id)
+    service = TrustedNetworksService(module, customer_id)
     apps = []
     if app_id is not None:
         app = service.getByID(app_id)

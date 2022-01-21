@@ -6,7 +6,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_rule import PolicyRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_access_rule import PolicyAccessRuleService
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
@@ -14,7 +14,7 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_access_rule_info
 description:
@@ -59,7 +59,7 @@ def core(module):
     policy_rule_name = module.params.get("name", None)
     policy_rule_id = module.params.get("id", None)
     customer_id = module.params.get("customer_id", None)
-    service = PolicyRuleService(module, customer_id)
+    service = PolicyAccessRuleService(module, customer_id)
     global_policy_set = service.getByPolicyType("ACCESS_POLICY")
     if global_policy_set is None or global_policy_set.get("id") is None:
         module.fail_json(msg="Unable to get global policy set")
