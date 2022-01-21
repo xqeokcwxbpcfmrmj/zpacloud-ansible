@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_scim_attribute_header_info
+short_description: Retrieves scim attribute header from a given IDP
 description:
-  - Provides details about a specific scim attribute header from a given IDP
-short_description: Provides details about a specific scim attribute header from a given IDP
+  - This module will allow the retrieval of information about scim attribute header from a given IDP
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_posture_profile_info
-short_description: Provides details about an (ID and/or Name) of a posture profile resource.
+short_description: Retrieves details of a posture profile resource.
 description:
-  - Provides details about an (ID and/or Name) of a posture profile resource.
+  - This module will allow the retrieval of information about a posture profile resource.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
@@ -40,26 +40,14 @@ options:
 EXAMPLES = """
 - name: Get Information About All Posture Profiles
   willguibr.zpacloud.zpa_posture_profile_info:
-  register: all_posture_profiles
-  
-  debug:
-    msg: "{{ all_posture_profiles }}"
 
 - name: Get Details of a Specific Posture Profile by ID
   willguibr.zpacloud.zpa_posture_profile_info:
     id: "216196257331282583"
-  register: posture_profile_id
-  
-  debug:
-    msg: "{{ posture_profile_id }}"
      
 - name: Get Details of a Specific Posture Profile by Name
   willguibr.zpacloud.zpa_posture_profile_info:
     name: CrowdStrike_ZPA_Pre-ZTA
-  register: posture_profile_name
-  
-  debug:
-    msg: "{{ posture_profile_name }}"
 """
 
 RETURN = """

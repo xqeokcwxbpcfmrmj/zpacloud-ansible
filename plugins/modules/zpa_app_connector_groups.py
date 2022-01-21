@@ -15,10 +15,10 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_app_connector_groups_info
-short_description: Gather information about an app connector group
+module: zpa_app_connector_groups
+short_description: Create an App Connector Group in the ZPA Cloud.
 description:
-  - This module can be used to gather information about an app connector group.
+  - This module creates/update/delete an App Connector Group in the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

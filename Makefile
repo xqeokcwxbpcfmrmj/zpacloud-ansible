@@ -1,6 +1,6 @@
 # Taken from: https://github.com/sensu/sensu-go-ansible/blob/master/Makefile
 
-# Make sure we have ansible_collections/willguibr/zpacloud
+# Make sure we have ansible_collections/willguibr/zpacloud_enhanced
 # as a prefix. This is ugly as heck, but it works. I suggest all future
 # developer to treat next few lines as an opportunity to learn a thing or two
 # about GNU make ;)

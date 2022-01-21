@@ -17,8 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_segment_info
-short_description: "Gather details of all or specific Application Segments"
-description: "This module can be used to gather information about all or specific application segment."
+short_description: Retrieve an application segment information.
+description: 
+    - This module will allow the retrieval of information about an application segment.
 author: "William Guilherme (@willguibr)"
 version_added: "1.0.0"
 options:
@@ -33,14 +34,14 @@ options:
 """
 
 EXAMPLES = """"
-- name: Gather Details of All Application Segments
+- name: Retrieve Details of All Application Segments
   willguibr.zpacloud.zpa_application_segment_info:
 
-- name: Gather Details of a Specific Application Segments by Name
+- name: Retrieve Details of a Specific Application Segments by Name
   willguibr.zpacloud.zpa_application_segment_info:
     name: "Example Application Segment"
 
-- name: Gather Details of a Specific Application Segments by ID
+- name: Retrieve Details of a Specific Application Segments by ID
   willguibr.zpacloud.zpa_application_segment_info:
     id: "216196257331291981"
 """

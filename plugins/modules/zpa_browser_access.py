@@ -14,10 +14,10 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: zpa_application_segment
-short_description: Create an application segment
+module: zpa_browser_access
+short_description: Create a Browser Access Application Segment.
 description:
-  - This module will create, retrieve, update or delete a specific application segment
+  - This module create/update/delete a Browser Access Application Segment in the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
@@ -144,45 +144,37 @@ options:
 """
 
 EXAMPLES = """
-- name: App segment
-  hosts: localhost
-  tasks:
-    - name: Create an app segment
-      willguibr.zpacloud.zpa_application_segment:
-        state: absent
-        name: Example Application
-        description: Example Application Test
+- name: Create an app segment
+  willguibr.zpacloud.zpa_browser_access:
+    name: Example Application
+    description: Example Application Test
+    enabled: true
+    health_reporting: ON_ACCESS
+    bypass_type: NEVER
+    clientless_apps:
+      - name: "crm.example.com"
+        application_protocol: "HTTP"
+        application_port: "8080"
+        certificate_id: "216196257331282583"
+        trust_untrusted_cert: true
         enabled: true
-        health_reporting: ON_ACCESS
-        bypass_type: NEVER
-        clientless_apps:
-          - name: "crm.example.com"
-            application_protocol: "HTTP"
-            application_port: "8080"
-            certificate_id: "216196257331282583"
-            trust_untrusted_cert: true
-            enabled: true
-            domain: "crm.example.com"
-          - name: "crm2.example.com"
-            application_protocol: "HTTP"
-            application_port: "8082"
-            certificate_id: "216196257331282583"
-            trust_untrusted_cert: true
-            enabled: true
-            domain: "crm.example.com"
-        is_cname_enabled: true
-        tcp_port_range:
-          - from: "80"
-            to: "80"
-        domain_names:
-          - crm.example.com
-        segment_group_id: "216196257331291896"
-        server_groups:
-          #- "216196257331291969"
-      register: app_segment
-    - name: created/updated app segment
-      debug:
-        msg: "{{ app_segment }}"
+        domain: "crm.example.com"
+      - name: "crm2.example.com"
+        application_protocol: "HTTP"
+        application_port: "8082"
+        certificate_id: "216196257331282583"
+        trust_untrusted_cert: true
+        enabled: true
+        domain: "crm.example.com"
+    is_cname_enabled: true
+    tcp_port_range:
+      - from: "80"
+        to: "80"
+    domain_names:
+      - crm.example.com
+    segment_group_id: "216196257331291896"
+    server_groups:
+      - "216196257331291969"
 """
 
 RETURN = """

@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups_info
-short_description: Gather information about an app connector group
+short_description: Retrieves an app connector group information
 description:
-  - This module can be used to gather information about an app connector group.
+  - This module will allow the retrieval of information about an app connector group.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
@@ -37,14 +37,14 @@ options:
 """
 
 EXAMPLES = """
-- name: Gather Details of all App Connector Groups
+- name: Retrieve Details of all App Connector Groups
   willguibr.zpacloud.zpa_app_connector_groups_info:
 
-- name: Gather Details of a Specific App Connector Groups by Name
+- name: Retrieve Details of a Specific App Connector Groups by Name
   willguibr.zpacloud.zpa_app_connector_groups_info:
     name: "Example App Connector Group"
 
-- name: Gather Details of a Specific App Connector Groups by ID
+- name: Retrieve Details of a Specific App Connector Groups by ID
   willguibr.zpacloud.zpa_app_connector_groups_info:
     id: "216196257331292046"
 """

@@ -16,9 +16,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_segment
-short_description: Create/Update/Delete an App Connector Group.
+short_description: Create an application segment in the ZPA Cloud.
 description:
-    - This module will Create/Update/Delete an application segment
+    - This module will create/update/delete an application segment
 author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"

@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_service_edge_groups_info
-short_description: Get details (ID and/or Name) of a Service Edge Group.
+short_description: Retrieves information about a Service Edge Group.
 description:
-  - This module can be used to Get details (ID and/or Name) of a Service Edge Group.
+    - This module will allow the retrieval of information about a Service Edge Group resource.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

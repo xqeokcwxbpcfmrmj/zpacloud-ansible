@@ -14,12 +14,12 @@ from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_ba_certificate_info
-short_description: This module can be used to gather information about a browser access certificate.
-description:
-  - Returns information on a specified Browser Access certificate.
+short_description: Retrieves browser access certificate information.
+description: 
+    - This module will allow the retrieval of information about a browser access certificate.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

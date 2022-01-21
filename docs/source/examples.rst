@@ -2,279 +2,253 @@
 Examples
 ========
 
-Add security policy to Firewall or Panorama
-===========================================
+What is Zscaler Private Access
+==============================
 
-Security policies allow you to enforce rules and take action, and can
-be as general or specific as needed. The policy rules are compared
-against the incoming traffic in sequence, and because the first rule
-that matches the traffic is applied, the more specific rules must
-precede the more general ones.
+The Zscaler Private Access (ZPA) service enables organizations to provide access to internal applications and services while ensuring the security of their networks.
+ZPA is an easier to deploy, more cost-effective, and more secure alternative to VPNs. Unlike VPNs, which require users to connect to your network to access your enterprise applications,
+ZPA allows you to give users policy-based secure access only to the internal apps they need to get their work done. With ZPA, application access does not require network access.
 
-Firewall
---------
+App Connector Group
+===================
 
-.. code-block:: yaml
-
-  - name: Add test rule 1 to the firewall
-    panos_security_rule:
-      provider: '{{ provider }}'
-      rule_name: 'Ansible test 1'
-      description: 'An Ansible test rule'
-      source_zone: ['internal']
-      destination_zone: ['external']
-      source_ip: ['1.2.3.4']
-      source_user: ['any']
-      destination_ip: ['any']
-      category: ['any']
-      application: ['any']
-      service: ['service-http']
-      hip_profiles: ['any']
-      action: 'allow'
-      commit: 'False'
-
-
-Panorama
---------
+The following module allows for interaction with the ZPA App Connector Group API endpoints.
+This module creates an app connector group, which in turn must be associated with a provisioning key resource.
 
 .. code-block:: yaml
 
-  - name: Add test pre-rule to Panorama
-    panos_security_rule:
-      provider: '{{ provider }}'
-      rule_name: 'Ansible test 1'
-      description: 'An Ansible test pre-rule'
-      source_zone: ['internal']
-      destination_zone: ['external']
-      source_ip: ['1.2.3.4']
-      source_user: ['any']
-      destination_ip: ['any']
-      category: ['any']
-      application: ['any']
-      service: ['service-http']
-      hip_profiles: ['any']
-      action: 'allow'
-      device_group: 'DeviceGroupA'
-      commit: False
+    - name: Create First App Connector Group
+      willguibr.zpacloud.zpa_app_connector_groups:
+        name: "Example1"
+        description: "Example1"
+        enabled: true
+        city_country: "California, US"
+        country_code: "US"
+        latitude: "37.3382082"
+        longitude: "-121.8863286"
+        location: "San Jose, CA, USA"
+        upgrade_day: "SUNDAY"
+        upgrade_time_in_secs: "66600"
+        override_version_profile: true
+        version_profile_id: "0"
+        dns_query_type: "IPV4"
 
-
-Add NAT policy to Firewall or Panorama
-======================================
-
-If you define Layer 3 interfaces on the firewall, you can configure a
-Network Address Translation (NAT) policy to specify whether source or
-destination IP addresses and ports are converted between public and
-private addresses and ports. For example, private source addresses can
-be translated to public addresses on traffic sent from an internal
-(trusted) zone to a public (untrusted) zone. NAT is also supported on
-virtual wire interfaces.
-
-Firewall
---------
-
-.. code-block:: yaml
-
-  - name: Add the service object to the firewall first
-    panos_service_object:
-      provider: '{{ provider }}'
-      name: 'service-tcp-221'
-      protocol: 'tcp'
-      destination_port: '221'
-      description: 'SSH on port 221'
-      commit: false
-
-  - name: Create dynamic NAT rule on the firewall
-    panos_nat_rule:
-      provider: '{{ provider }}'
-      rule_name: 'Web SSH inbound'
-      source_zone: ['external']
-      destination_zone: 'external'
-      source_ip: ['any']
-      destination_ip: ['10.0.0.100']
-      service: 'service-tcp-221'
-      snat_type: 'dynamic-ip-and-port'
-      snat_interface: ['ethernet1/2']
-      dnat_address: '10.0.1.101'
-      dnat_port: '22'
-
-
-Panorama
---------
-
-.. code-block:: yaml
-
-  - name: Add the necessary service object to Panorama first
-    panos_object:
-      provider: '{{ provider }}'
-      name: 'service-tcp-221'
-      protocol: 'tcp'
-      destination_port: '221'
-      description: 'SSH on port 221'
-      commit: false
-      device_group: 'shared_services_11022'
-
-  - name: Create dynamic NAT rule on Panorama
-    panos_nat_rule:
-      provider: '{{ provider }}'
-      rule_name: 'Web SSH inbound'
-      source_zone: ['external']
-      destination_zone: 'external'
-      source_ip: ['any']
-      destination_ip: ['10.0.0.100']
-      service: 'service-tcp-221'
-      snat_type: 'dynamic-ip-and-port'
-      snat_interface: ['ethernet1/2']
-      dnat_address: '10.0.1.101'
-      dnat_port: '22'
-      device_group: 'shared_services_11022'
-
-Change firewall admin password using SSH
-========================================
-
-Change admin password of PAN-OS device using SSH with SSH key. This is
-used in particular when NGFW is deployed in the cloud (such as AWS).
-
-.. code-block:: yaml
-
-  - name: Change user password using ssh protocol
-    panos_admpwd:
-      ip_address: '{{ ip_address }}'
-      username: '{{ username }}'
-      newpassword: '{{ new_password }}'
-      key_filename: '{{ key_filename }}'
-
-
-Generates self-signed certificate
-=================================
-
-This module generates a self-signed certificate that can be used by
-GlobalProtect client, SSL connector, or otherwise. Root certificate
-must be preset on the system first. This module depends on paramiko
-for ssh.
-
-.. code-block:: yaml
-
-  - name: generate self signed certificate
-    panos_cert_gen_ssh:
-      ip_address: "{{ ip_address }}"
-      username: "{{ username }}"
-      password: "{{ password }}"
-      cert_cn: "{{ cn }}"
-      cert_friendly_name: "{{ friendly_name }}"
-      signed_by: "{{ signed_by }}"
-
-
-Check if FW is ready
-====================
-
-Check if PAN-OS device is ready for being configured (no pending
-jobs). The check could be done once or multiple times until the device
-is ready.
-
-.. code-block:: yaml
-
-  - name: Wait for FW reboot
-    panos_check:
-      provider: '{{ provider }}'
-    register: result
-    until: not result|failed
-    retries: 50
-    delay: 5
-
-
-Import configuration
-====================
-
-Import file into PAN-OS device.
-
-.. code-block:: yaml
-
-    - name: import configuration file into PAN-OS
-      panos_import:
-        ip_address: "{{ ip_address }}"
-        username: "{{ username }}"
-        password: "{{ password }}"
-        file: "{{ config_file }}"
-        category: "configuration"
-
-
-DHCP on data port
-=================
-
-Configure data-port (DP) network interface for DHCP. By default DP
-interfaces are static.
-
-.. code-block:: yaml
-
-    - name: enable DHCP client on ethernet1/1 in zone external
-      panos_interface:
-        provider: '{{ provider }}'
-        if_name: "ethernet1/1"
-        zone_name: "external"
-        create_default_route: "yes"
-        commit: False
-
-
-Load configuration
+Service Edge Group
 ==================
 
-This is example playbook that imports and loads firewall
-configuration from a configuration file
+The following module allows for interaction with the ZPA Service Edge Group API endpoints.
+This module creates an service edge group, which in turn must be associated with a provisioning key resource.
 
 .. code-block:: yaml
 
-    - name: import config
-      hosts: my-firewall
-      connection: local
-      gather_facts: False
+   - name: Create/Update/Delete Service Edge Group
+      willguibr.zpacloud.zpa_service_edge_groups:
+        name: "Example"
+        description: "Example1"
+        enabled: true
+        city_country: "California, US"
+        country_code: "US"
+        latitude: "37.3382082"
+        longitude: "-121.8863286"
+        location: "San Jose, CA, USA"
+        upgrade_day: "SUNDAY"
+        upgrade_time_in_secs: "66600"
+        override_version_profile: true
+        version_profile_id: "0"
 
-      vars:
-        cfg_file: candidate-template-empty.xml
+Provisioning Key
+================
 
-      roles:
-        - role: PaloAltoNetworks.paloaltonetworks
+The following module allows for interaction with the ZPA Provisioning Key API endpoints.
+This module creates a provisioning key resource, which is a text string that is generated when a new App Connector
+or Private Service Edge is added.
 
-      tasks:
-      - name: Grab the credentials from ansible-vault
-        include_vars: 'firewall-secrets.yml'
-        no_log: 'yes'
+.. code-block:: yaml
 
-      - name: wait for SSH (timeout 10min)
-        wait_for: port=22 host='{{ provider.ip_address }}' search_regex=SSH timeout=600
+    - name: Create/Update/Delete App Connector Group Provisioning Key
+      willguibr.zpacloud.zpa_provisioning_key:
+        name: "App Connector Group Provisioning Key"
+        association_type: "CONNECTOR_GRP"
+        max_usage: "10"
+        enrollment_cert_id: 6573
+        zcomponent_id: 216196257331291903
 
-      - name: checking if device ready
-        panos_check:
-          provider: '{{ provider }}'
-        register: result
-        until: not result|failed
-        retries: 10
-        delay: 10
+    - name: Create/Update/Delete Service Edge Connector Group Provisioning Key
+      willguibr.zpacloud.zpa_provisioning_key:
+        name: "Service Edge Connector Group Provisioning Key"
+        association_type: "CONNECTOR_GRP"
+        max_usage: "10"
+        enrollment_cert_id: 6573
+        zcomponent_id: 216196257331291903
 
-      - name: import configuration
-        panos_import:
-          ip_address: '{{ provider.ip_address }}'
-          username: '{{ provider.username }}'
-          password: '{{ provider.password }}'
-          file: '{{cfg_file}}'
-          category: 'configuration'
-        register: result
 
-      - name: load configuration
-        panos_loadcfg:
-          ip_address: '{{ provider.ip_address }}'
-          username: '{{ provider.username }}'
-          password: '{{ provider.password }}'
-          file: '{{result.filename}}'
-          commit: False
+Application Segment
+===================
 
-      - name: set admin password
-        panos_administrator:
-          provider: '{{ provider }}'
-          admin_username: 'admin'
-          admin_password: '{{ provider.password }}'
-          superuser: True
-          commit: False
+The following module allows for interaction with the ZPA Application Segments endpoints.
+The module creates an application segment resource, which is a grouping of defined applications.
 
-      - name: commit (blocks until finished)
-        panos_commit:
-          provider: '{{ provider }}'
+.. code-block:: yaml
+
+    - name: Create First Application Segment
+      willguibr.zpacloud.zpa_application_segment:
+        name: Example Application
+        description: Example Application Test
+        enabled: true
+        health_reporting: ON_ACCESS
+        bypass_type: NEVER
+        is_cname_enabled: true
+        tcp_port_range:
+          - from: "8080"
+            to: "8085"
+        domain_names:
+          - server1.example.com
+          - server2.example.com
+        segment_group_id: "{{ segment_group_id }}"
+        server_groups:
+          - id: "{{ server_group_id }}"
+
+Browser Access Application Segment
+==================================
+
+The following module allows for interaction with the ZPA Application Segments endpoints.
+The module creates a Browser Access Application Segment resource, which allows you to leverage 
+a web browser for user authentication and application access over ZPA, without requiring users 
+to install the Zscaler Client Connector (formerly Zscaler App or Z App) on their devices.
+
+.. code-block:: yaml
+
+    - name: Browser Access Application Segment
+      willguibr.zpacloud.zpa_browser_access:
+        name: Example
+        description: Example
+        enabled: true
+        health_reporting: ON_ACCESS
+        bypass_type: NEVER
+        is_cname_enabled: true
+        tcp_port_range:
+          - from: "80"
+            to: "80"
+        domain_names:
+          - crm1.example.com
+          - crm2.example.com
+        segment_group_id: "{{ segment_group_id }}"
+        server_groups:
+          - id: "{{ server_group_id }}"
+        clientless_apps:
+            name: "sales.acme.com"
+            application_protocol: "HTTP"
+            application_port: "80"
+            certificate_id: "{{ certificate_id }}"
+            trust_untrusted_cert: true
+            enabled: true
+            domain: "sales.acme.com"
+          
+Server Group
+============
+
+The following module allows for interaction with the ZPA Server Groups endpoints.
+The module creates a Server Group resource, which can be created to manually define servers,
+or it can be created with the option of `dynamic_discovery` enabled so that ZPA discovers the appropriate servers,
+for each application as users request them.
+
+.. code-block:: yaml
+
+    - name: Create/Update/Delete a Server Group (Dynamic Discovery ON)
+      willguibr.zpacloud.zpa_server_group:
+        name: "Example"
+        description: "Example"
+        enabled: false
+        dynamic_discovery: true
+        app_connector_groups:
+          - id: "216196257331291924"
+
+    - name: Create/Update/Delete a Server Group (Dynamic Discovery OFF)
+      willguibr.zpacloud.zpa_server_group:
+        name: "Example"
+        description: "Example"
+        enabled: false
+        dynamic_discovery: false
+        app_connector_groups:
+          - id: "216196257331291924"
+        servers:
+          - id: "216196257331291921"
+
+Segment Group
+=============
+
+The following module allows for interaction with the ZPA Segment Groups endpoints.
+
+.. code-block:: yaml
+
+    - name: Create/Update/Delete a Segment Groups
+      willguibr.zpacloud.zpa_segment_group:
+        config_space: "DEFAULT"
+        name: Example Segment Group
+        description: Example Segment Group
+        enabled: true
+        policy_migrated: true
+        tcp_keep_alive_enabled: "1"
+
+Policy Access Rule
+==================
+
+.. code-block:: yaml
+
+    - name: Create/update/delete a Policy Rule
+      willguibr.zpacloud_ansible.zpa_policy_access_rule:
+        name: "Example Policy Access Rule"
+        description: "Example Policy Access Rule"
+        action: "ALLOW"
+        rule_order: 1
+        operator: "AND"
+        conditions:
+          - negated: false
+            operator: "OR"
+            operands:
+              - name: "Example Policy Access Rule"
+                object_type: "APP"
+                lhs: "id"
+                rhs: "216196257331291979"
+
+Policy Access Timeout Rule
+==========================
+
+.. code-block:: yaml
+
+    - name: Create/update/delete a Policy Timeout Rule
+      willguibr.zpacloud_ansible.zpa_policy_access_timeout_rule:
+        name: "Example Policy Timeout Rule"
+        description: "Example Policy Timeout Rule"
+        action: "RE_AUTH"
+        rule_order: 1
+        operator: "AND"
+        conditions:
+          - negated: false
+            operator: "OR"
+            operands:
+              - name: "Application_Segment"
+                object_type: "APP"
+                lhs: "id"
+                rhs: "216196257331291979"
+
+Policy Access Forwarding Rule
+=============================
+
+.. code-block:: yaml
+
+    - name: Create/update/delete a Policy Forwarding Rule
+      willguibr.zpacloud_ansible.zpa_policy_access_forwarding_rule:
+        name: "Example Policy Forwarding Rule"
+        description: "Example Policy Forwarding Rule"
+        action: "BYPASS"
+        rule_order: 1
+        operator: "AND"
+        conditions:
+          - negated: false
+            operator: "OR"
+            operands:
+              - name: "Application_Segment"
+                object_type: "APP"
+                lhs: "id"
+                rhs: "216196257331291979"

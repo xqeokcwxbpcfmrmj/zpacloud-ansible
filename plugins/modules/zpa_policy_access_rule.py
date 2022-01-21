@@ -16,9 +16,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_access_rule
-short_description: Create/Update/Delete a Policy Access Rule
+short_description: Create a Policy Access Rule
 description:
-  - This module will create, update or delete a specific Policy Access Rule
+  - This module create/update/delete a Policy Access Rule in the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

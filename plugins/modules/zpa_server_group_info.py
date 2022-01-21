@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_server_group_info
-short_description: Gather information about an server group
+short_description: Retrieves information about an server group
 description:
-    - This module can be used to gather information about an server group.
+    - This module will allow the retrieval of information about a server group resource.
 author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'

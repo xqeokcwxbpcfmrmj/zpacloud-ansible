@@ -15,9 +15,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_server_group
-short_description: Create/Update/Delete a Server Group.
+short_description: Create a Server Group .
 description:
-    - This module will Create/Update/Delete a Server Group.
+  - This module create/update/delete a Server Group resource in the ZPA Cloud.
 author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"

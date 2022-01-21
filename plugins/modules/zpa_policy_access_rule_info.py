@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_access_rule_info
+short_description: Retrieves policy access rule information.
 description:
-  - Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
-short_description: Provides details about a specific policy rule created in the Zscaler Private Access Mobile Portal
+  - This module will allow the retrieval of information about a policy access rule.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

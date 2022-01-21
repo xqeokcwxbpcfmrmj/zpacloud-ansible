@@ -17,10 +17,10 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_timeout_rule_info
-author: William Guilherme (@willguibr)
+short_description: Retrieves policy timeout rule information.
 description:
-  - Provides details about a specific policy timeout rule created in the Zscaler Private Access portal.
-short_description: Provides details about a specific policy timeout rule created in the Zscaler Private Access portal.
+  - This module will allow the retrieval of information about a policy timeout rule.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
@@ -40,26 +40,14 @@ options:
 EXAMPLES = """
 - name: Gather information about all policy rules
     willguibr.zpacloud.zpa_policy_timeout_rule_info:
-    register: all_timeout_rules
-
-- debug:
-    msg: "{{ all_timeout_rules }}"
     
 - name: Get Information About a Specific Timeout Rule by Name
     willguibr.zpacloud.zpa_policy_timeout_rule_info:
         name: "Example"
-    register: timeout_rule_name
-
-- debug:
-    msg: "{{ timeout_rule_name }}"
     
 - name: Get Information About a Specific Timeout Rule by ID
     willguibr.zpacloud.zpa_policy_timeout_rule_info:
         id: "216196257331292020"
-    register: timeout_rule_id
-    
-- debug:
-    msg: "{{ timeout_rule_id }}"
 """
 
 RETURN = """

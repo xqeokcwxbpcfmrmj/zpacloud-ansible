@@ -15,7 +15,7 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_timeout_rule
-short_description: Create/Update/Delete Policy Timeout Rule.
+short_description: Create a Policy Timeout Rule.
 description:
   - This module will create, update or delete a specific Policy Timeout Rule.
 author:

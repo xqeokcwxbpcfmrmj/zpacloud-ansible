@@ -16,7 +16,7 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_forwarding_rule
-short_description: Create/Update/Delete Policy Forwarding Rule.
+short_description: Create a Policy Forwarding Rule.
 description:
   - This module will create, update or delete a specific Policy Forwarding Rule
 author:

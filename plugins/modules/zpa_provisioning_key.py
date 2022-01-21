@@ -16,9 +16,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_provisioning_key
-short_description: Create/ an Provisioning Key
+short_description: Create a Provisioning Key.
 description:
-  - This module will create, retrieve, update or delete a specific Provisioning Key
+  - This module will create/update/delete a specific Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

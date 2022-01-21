@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_idp_controller_info
-short_description: Get details (ID and/or Name) of an idp controller resource.
+short_description: Retrieves Identity Provider information.
 description:
-  - This module to retrieve a IdP Controller detail from the ZPA Cloud.
+  - This module will allow the retrieval of information about an Identity Provider (IdP) detail from the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

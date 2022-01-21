@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_provisioning_key_info
-short_description: Provides details about a specific (ID and/or Name) of a Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
+short_description: Retrieves details about a Provisioning Key.
 description:
-  - Provides details about a specific (ID and/or Name) of a Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
+  - This module will allow the retrieval of information abouta Provisioning Key by association type (CONNECTOR_GRP or SERVICE_EDGE_GRP).
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
@@ -45,28 +45,16 @@ EXAMPLES = """
 - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys
   willguibr.zpacloud.zpa_provisioning_key_info:
     association_type: "SERVICE_EDGE_GRP"
-  register: all_edge_grp_key_name
-
-- debug:
-    msg: "{{ all_edge_grp_key_name }}"
 
 - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by Name
   willguibr.zpacloud.zpa_provisioning_key_info:
     name: "Example Service Edge Group"
     association_type: "SERVICE_EDGE_GRP"
-  register: edge_grp_key_name
-
-- debug:
-    msg: "{{ edge_grp_key_name }}"
 
 - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys by ID
   willguibr.zpacloud.zpa_provisioning_key_info:
     id: "8691"
     association_type: "SERVICE_EDGE_GRP"
-  register: edge_grp_key_id
-
-- debug:
-    msg: "{{ edge_grp_key_id }}"
 """
 
 RETURN = """

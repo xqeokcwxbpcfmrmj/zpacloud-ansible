@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_saml_attribute_info
-short_description: Provides details about a specific saml attributes from a given IDP
+short_description: Retrieves saml attributes from a given IDP
 description:
-  - Provides details about a specific saml attributes from a given IDP
+  - This module will allow the retrieval of information about a saml attributes from a given IDP
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_machine_group_info
-short_description: Provides details about (ID and/or Name) of a machine group resource.
+short_description: Retrieves machine group information.
 description:
-  - Provides details about (ID and/or Name) of a machine group resource.
+  - This module will allow the retrieval of information about a machine group detail from the ZPA Cloud.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

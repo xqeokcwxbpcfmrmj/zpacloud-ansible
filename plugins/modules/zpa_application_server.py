@@ -16,9 +16,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_server
-short_description: Create/Update/Delete an application server.
+short_description: Create an application server in the ZPA Cloud.
 description:
-    - Create/Update/Delete an application server.
+    - This module creates/update/delete an application server in the ZPA Cloud.
 author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'

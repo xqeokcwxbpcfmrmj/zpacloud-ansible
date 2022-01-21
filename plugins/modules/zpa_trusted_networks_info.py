@@ -17,10 +17,10 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_trusted_networks_info
-author: William Guilherme (@willguibr)
+short_description: Retrieves information about a Trusted Network.
 description:
-  - Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
-short_description: Provides details about a specific trusted network created in the Zscaler Private Access Mobile Portal
+    - This module will allow the retrieval of information about Trusted Network resource.
+author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0

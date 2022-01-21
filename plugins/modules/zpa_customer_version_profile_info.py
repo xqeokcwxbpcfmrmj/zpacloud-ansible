@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_customer_version_profile_info
-short_description: Get details (ID and/or Name) of a customer version profile.
+short_description: Retrieves customer version profile information.
 description:
-  - Get details (ID and/or Name) of a customer version profile.
+  - This module will allow the retrieval of information about a customer version profile.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:

@@ -16,7 +16,7 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_segment_group
-short_description: Create/Update/Delete a Segment Group
+short_description: Create a Segment Group
 description:
     - This module will create/update/delete a segment group resource.
 author:

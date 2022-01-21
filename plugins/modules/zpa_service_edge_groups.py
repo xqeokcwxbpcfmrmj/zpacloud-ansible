@@ -15,9 +15,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_service_edge_groups
-short_description: Create/Update/Delete an Service Edge Group.
+short_description: Create a Service Edge Group.
 description:
-  - This module will Create/Update/Delete an Service Edge Group.
+  - This module create/update/delete a Service Edge Group resource in the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

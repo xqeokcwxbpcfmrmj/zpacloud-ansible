@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_application_server_info
-short_description: Gather information about an application server
+short_description: Retrieve an application server information.
 description:
-    - This module can be used to gather information about an application server
+    - This module will allow the retrieval of information about an application server.
 author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'

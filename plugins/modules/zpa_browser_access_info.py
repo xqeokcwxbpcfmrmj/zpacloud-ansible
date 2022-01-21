@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_browser_access_info
-short_description: Gather information about an app connector group
+short_description: Retrieves browser access application segment information.
 description:
-  - This module can be used to gather information about an app connector group.
+  - This module will allow the retrieval of information about a browser access application segment.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"

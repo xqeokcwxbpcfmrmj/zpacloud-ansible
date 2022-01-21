@@ -17,9 +17,9 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_enrollement_certificate_info
-short_description: Provides details about (ID and/or Name) of an enrollment certificate resource.
+short_description: Retrieves enrollment certificate information.
 description:
-  - This module is used to retrieve Enrollment Certificate detail from the ZPA Cloud.
+  - This module will allow the retrieval of information about a Enrollment Certificate detail from the ZPA Cloud.
 author: William Guilherme (@willguibr)
 version_added: "1.0.0"
 requirements:
