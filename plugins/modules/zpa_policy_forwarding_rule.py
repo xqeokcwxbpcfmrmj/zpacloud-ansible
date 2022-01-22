@@ -64,7 +64,12 @@ options:
     type: bool
     required: False
     description:
-      - This is for providing a customer message for the user.
+      - This enables the default client forwarding policy rule.
+  default_rule_name:
+    type: str
+    required: False
+    description:
+      - This is the name of the default client forwarding policy rule.
   operator:
     description:
       - This denotes the operation type.
@@ -76,11 +81,13 @@ options:
   custom_msg:
     type: str
     required: False
-    description:  "This is for providing a customer message for the user."
+    description:
+      - This is for providing a customer message for the user.
   name:
     type: str
     required: True
-    description:  "This is the name of the policy."
+    description:
+      - This is the name of the policy.
   description:
     type: str
     required: false
@@ -91,7 +98,7 @@ options:
     elements: dict
     required: false
     description:
-      - This is for proviidng the set of conditions for the policy.
+      - This is for providing the set of conditions for the policy.
     suboptions:
       negated:
         type: bool
@@ -170,6 +177,9 @@ EXAMPLES = """
             object_type: "APP"
             lhs: "id"
             rhs: "216196257331292105"
+      - negated: false
+        operator: "OR"
+        operands:
           - name: "segment_group"
             object_type: "APP_GROUP"
             lhs: "id"
@@ -198,14 +208,8 @@ EXAMPLES = """
             rhs: "false"
 """
 
-RETURN = r"""
-data:
-    description: Policy Forwarding Rule
-    returned: success
-    type: dict
-    sample:
-        {
-        }
+RETURN = """
+# The newly created access client forwarding policy rule resource record.
 """
 
 

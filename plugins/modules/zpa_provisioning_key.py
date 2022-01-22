@@ -25,63 +25,73 @@ version_added: "1.0.0"
 options:
   enabled:
     type: bool
-    required: False
-    description: "Whether the provisioning key is enabled or not. Supported values: true, false"
-    default: true
+    required: false
+    description:
+      - Whether the provisioning key is enabled or not.
   max_usage:
     type: str
-    required: True
-    description: "The maximum number of instances where this provisioning key can be used for enrolling an App Connector or Service Edge."
+    required: true
+    description:
+      - The maximum number of instances where this provisioning key can be used for enrolling an App Connector or Service Edge.
   enrollment_cert_id:
     type: str
     required: True
-    description: "ID of the enrollment certificate that can be used for this provisioning key."
+    description:
+      - ID of the enrollment certificate that can be used for this provisioning key.
   ui_config:
     type: str
-    required: False
+    required: false
     description: ""
   provisioning_key:
     type: str
-    description: "read only field. Ignored in PUT/POST calls."
+    description:
+      - read only field. Ignored in PUT/POST calls.
   association_type:
     type: str
-    required: True
-    description: "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
+    required: true
+    description:
+      - Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP.
   id:
     type: str
-    required: False
+    required: false
     description: ""
   name:
     type: str
-    required: True
-    description: "Name of the provisioning key."
+    required: true
+    description:
+      - Name of the provisioning key.
   usage_count:
     type: str
-    required: False
-    description: "The provisioning key utilization count."
+    required: false
+    description:
+      - The provisioning key utilization count.
   zcomponent_id:
     type: str
-    required: True
-    description: "ID of the existing App Connector or Service Edge Group."
+    required: true
+    description:
+      - ID of the existing App Connector or Service Edge Group.
   zcomponent_name:
     type: str
-    required: False
-    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+    required: false
+    description:
+      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
   enrollment_cert_name:
     type: str
-    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+    description:
+      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
   app_connector_group_id:
     type: str
-    required: False
+    required: false
     description: ""
   app_connector_group_name:
     type: str
-    description: "Read only property. Applicable only for GET calls, ignored in PUT/POST calls."
+    description:
+      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
   ip_acl:
     type: list
     elements: str
     description: ""
-    required: False
+    required: false
 """
 
 EXAMPLES = """

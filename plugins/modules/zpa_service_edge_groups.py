@@ -23,66 +23,138 @@ author:
 version_added: "1.0.0"
 options:
   name:
-    description: "Name of the Service Edge Group."
-    required: True
-    type: str
-  id:
-    description: "Description of the Service Edge Group."
-    type: str
-  city_country:
-    description: "City Country of the Service Edge Group."
-    type: str
-  country_code:
-    description: "Country code of the Service Edge Group."
-    type: str
+      description:
+        - Name of the Service Edge Group.
+      required: true
+      type: str
   description:
-    description: "Description of the Service Edge Group."
-    type: str
-  dns_query_type:
-    description: "Whether to enable IPv4 or IPv6, or both, for DNS resolution of all applications in the Service Edge Group."
-    default: IPV4_IPV6
-    choices: ["IPV4_IPV6", "IPV4", "IPV6"]
-    type: str
+      description:
+        - Description of the Service Edge Group.
+      type: str
   enabled:
-    description: "Whether this Service Edge Group is enabled or not."
-    required: False
-    default: True
-    type: bool
+      description:
+        - Whether this Service Edge Group is enabled or not.
+      required: false
+      default: true
+      type: bool
+  id:
+      description:
+        - Description of the Service Edge Group.
+      type: str
+  is_public:
+      description:
+        - Enable or disable public access for the Service Edge Group.
+      type: str
+      required: false
+      choices:
+        - DEFAULT
+        - TRUE
+        - FALSE
+      default: DEFAULT
+  city_country:
+      description:
+        - City Country of the Service Edge Group.
+      type: str
+      required: false
+  country_code:
+      description:
+        - Country code of the Service Edge Group.
+      type: str
+      required: false
   latitude:
-    description: "Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90."
-    type: str
+      description:
+        - Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90.
+      type: str
+      required: true
   location:
-    description: "Location of the Service Edge Group."
-    type: str
+      description:
+        - Location of the Service Edge Group.
+      type: str
+      required: true
   longitude:
-    description: "Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180."
-    type: str
+      description:
+        - Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180.
+      type: str
+      required: true
   upgrade_day:
-    description: "Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday)."
-    default: SUNDAY
-    type: str
+      description:
+        - Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday).
+      type: str
+      required: false
+      default: SUNDAY
   upgrade_time_in_secs:
-    description: "Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals."
-    default: 66600
-    type: str
+      description:
+        - Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals.
+      type: str
+      required: false
+      default: 66600
+  service_edges:
+      description:
+        - List of ID of the service edge connectors.
+      type: list
+      elements: dict
+      required: false
+      suboptions:
+        id:
+          description:
+            - List of ID of the service edge connectors.
+          type: str
+          required: false
+  trusted_networks:
+      description:
+        - List of Trusted networks for this Service Edge Group.
+      type: list
+      elements: dict
+      required: false
+      suboptions:
+        id:
+          description:
+            - List of Trusted networks for this Service Edge Group.
+          type: str
+          required: false
   override_version_profile:
-    description: "Whether the default version profile of the Service Edges Group is applied or overridden. Supported values: true, false."
-    required: False
-    default: False
-    type: bool
+      description:
+        - Whether the default version profile of the Service Edges Group is applied or overridden.
+      type: bool
+      required: false
+      choices:
+        - true
+        - false
+      default: true
   version_profile_id:
-    description: "ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true."
-    default: 0
-    choices: ["0", "1", "2"]
-    type: str
+      description:
+        - ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true.
+      type: str
+      required: false
+      choices:
+        - 0
+        - 1
+        - 2
+      default: 0
   version_profile_name:
-    description: "Name of the version profile."
-    type: str
+      description:
+        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
+      type: str
+      required: false
+  version_profile_visibility_scope:
+      description:
+        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
+      type: str
+      required: false
+      choices:
+        - ALL
+        - NONE
+        - CUSTOM
+      default: NONE
   state:
-    description: "Whether the Service Edge group should be present or absent."
-    default: present
-    choices: ["present", "absent"]
-    type: str
+      description:
+        - Whether the Service Edge group should be present or absent.
+      type: str
+      required: false
+      choices:
+        - present
+        - absent
+      default: present
 """
 
 EXAMPLES = """
