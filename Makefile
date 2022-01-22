@@ -73,7 +73,7 @@ sync-deps:	## Sync Pipfile.lock to requirements.txt
 	pipenv lock --requirements > requirements.txt
 
 test-release:	## Semantic release dry run
-	semantic-release --dry-run --no-ci --branches=zpa-develop
+	semantic-release --dry-run --no-ci --branches=develop
 
 doctest:
 	for i in $$(ls -1 plugins/modules | grep -v init); do \
@@ -82,3 +82,9 @@ doctest:
 	done
 
 .PHONY: install doctest
+
+install:
+	rm -f willguibr*
+	ansible-galaxy collection build . --force
+	ansible-galaxy collection install willguibr* --force
+	rm -f willguibr*
