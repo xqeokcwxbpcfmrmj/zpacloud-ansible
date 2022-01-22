@@ -44,10 +44,10 @@ before 2.9.10 are **not supported**.
 - [zpa_scim_attribute_header_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_scim_attribute_header_info.html) - Gather information details (ID and/or Name) of a scim attribute header.
 - [zpa_scim_group_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_scim_group_info.html) - Gather information details (ID and/or Name) of a scim group.
 - [zpa_segment_group](https://willguibr.github.io/zpacloud-ansible/modules/zpa_segment_group.html) - Create/Update/Delete a segment group.
-- [zpa_segment_group_info - Gather information details (ID and/or Name) of a segment group.
+- [zpa_segment_group_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_segment_group_info.html) - Gather information details (ID and/or Name) of a segment group.
 - [zpa_server_group](https://willguibr.github.io/zpacloud-ansible/modules/zpa_server_group.html) - Create/Update/Delete a segment group.
 - [zpa_server_group_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_server_group_info.html) - Gather information details (ID and/or Name) of a server group.
-- [zpa_service_edge_group_info - Gather information details (ID and/or Name) of a service edge group.
+- [zpa_service_edge_group_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_service_edge_group_info.html) - Gather information details (ID and/or Name) of a service edge group.
 - [zpa_service_edge_group](https://willguibr.github.io/zpacloud-ansible/modules/zpa_service_edge_group.html) - Create/Update/Delete an service edge group.
 - [zpa_trusted_network_info](https://willguibr.github.io/zpacloud-ansible/modules/zpa_trusted_network_info.html) - Gather information details (ID and/or Name) of a trusted network for use in a policy access and/or forwarding rules.
 
@@ -111,7 +111,7 @@ If you are using versions prior to Ansible 2.10 and this collection's existence,
 
   tasks:
     - name: Get Information Details of All Customer Version Profiles
-      willguibr.zpacloud.zpa_customer_version_profile_info:
+      zpa_customer_version_profile_info:
       register: version_profile_id
 
     - name: Create App Connector Group Example
