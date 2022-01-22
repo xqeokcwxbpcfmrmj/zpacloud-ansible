@@ -27,8 +27,7 @@ options:
     type: bool
     required: false
     description:
-      - Whether the provisioning key is enabled or not. Supported values: true, false
-    default: true
+      - Whether the provisioning key is enabled or not.
   max_usage:
     type: str
     required: true

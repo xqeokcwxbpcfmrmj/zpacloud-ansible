@@ -23,148 +23,138 @@ author:
 version_added: "1.0.0"
 options:
   name:
-    description:
-      - Name of the Service Edge Group.
-    required: true
-    type: str
+      description:
+        - Name of the Service Edge Group.
+      required: true
+      type: str
   description:
-    description:
-      - Description of the Service Edge Group.
-    type: str
+      description:
+        - Description of the Service Edge Group.
+      type: str
   enabled:
-    description:
-      - Whether this Service Edge Group is enabled or not.
-    required: false
-    default: true
-    type: bool
+      description:
+        - Whether this Service Edge Group is enabled or not.
+      required: false
+      default: true
+      type: bool
   id:
-    description:
-      - Description of the Service Edge Group.
-    type: str
+      description:
+        - Description of the Service Edge Group.
+      type: str
   is_public:
-    description:
-      - Enable or disable public access for the Service Edge Group.
-    type: str
-    required: false
-    choices:
-      - DEFAULT
-      - TRUE
-      - FALSE
-    default: DEFAULT
-  is_public:
-    description:
-      - Enable or disable public access for the Service Edge Group.
-    type: str
-    required: false
-    choices:
-      - DEFAULT
-      - TRUE
-      - FALSE
-    default: DEFAULT
+      description:
+        - Enable or disable public access for the Service Edge Group.
+      type: str
+      required: false
+      choices:
+        - DEFAULT
+        - TRUE
+        - FALSE
+      default: DEFAULT
   city_country:
-    description:
-      - City Country of the Service Edge Group.
-    type: str
-    required: false
+      description:
+        - City Country of the Service Edge Group.
+      type: str
+      required: false
   country_code:
-    description:
-      - Country code of the Service Edge Group.
-    type: str
-    required: false
+      description:
+        - Country code of the Service Edge Group.
+      type: str
+      required: false
   latitude:
-    description:
-      - Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90.
-    type: str
-    required: true
+      description:
+        - Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90.
+      type: str
+      required: true
   location:
-    description:
-      - Location of the Service Edge Group.
-    type: str
-    required: true
+      description:
+        - Location of the Service Edge Group.
+      type: str
+      required: true
   longitude:
-    description:
-      - Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180.
-    type: str
-    required: true
+      description:
+        - Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180.
+      type: str
+      required: true
   upgrade_day:
-    description:
-      - Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday).
-    type: str
-    required: false
-    default: SUNDAY
+      description:
+        - Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday).
+      type: str
+      required: false
+      default: SUNDAY
   upgrade_time_in_secs:
-    description:
-      - Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals.
-    type: str
-    required: false
-    default: 66600
+      description:
+        - Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals.
+      type: str
+      required: false
+      default: 66600
   service_edges:
-    description:
-      - List of ID of the service edge connectors.
-    type: list
-    elements: dict
-    required: false
-    suboptions:
-      id:
-        type: str
-        required: false
-        description:
-          - List of ID of the service edge connectors.
+      description:
+        - List of ID of the service edge connectors.
+      type: list
+      elements: dict
+      required: false
+      suboptions:
+        id:
+          description:
+            - List of ID of the service edge connectors.
+          type: str
+          required: false
   trusted_networks:
-    description:
-      - List of Trusted networks for this Service Edge Group.
-    type: list
-    elements: dict
-    required: false
-    suboptions:
-      id:
-        type: str
-        required: false
-        description:
-          - List of Trusted networks for this Service Edge Group.
+      description:
+        - List of Trusted networks for this Service Edge Group.
+      type: list
+      elements: dict
+      required: false
+      suboptions:
+        id:
+          description:
+            - List of Trusted networks for this Service Edge Group.
+          type: str
+          required: false
   override_version_profile:
-    description:
-      - Whether the default version profile of the Service Edges Group is applied or overridden. Supported values: true, false.
-    type: bool
-    required: false
-    choices:
-      - true
-      - false
-    default: true
+      description:
+        - Whether the default version profile of the Service Edges Group is applied or overridden.
+      type: bool
+      required: false
+      choices:
+        - true
+        - false
+      default: true
   version_profile_id:
-    description:
-      - ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true.
-    type: str
-    required: false
-    choices:
-      - 0
-      - 1
-      - 2
-    default: 0
+      description:
+        - ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true.
+      type: str
+      required: false
+      choices:
+        - 0
+        - 1
+        - 2
+      default: 0
   version_profile_name:
-    description:
-      - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
-    type: str
-    required: false
+      description:
+        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
+      type: str
+      required: false
   version_profile_visibility_scope:
-    description:
-      - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
-    type: str
-    required: false
-    choices:
-      - ALL
-      - NONE
-      - CUSTOM
-    default: NONE
+      description:
+        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
+      type: str
+      required: false
+      choices:
+        - ALL
+        - NONE
+        - CUSTOM
+      default: NONE
   state:
-    description:
-      - Whether the Service Edge group should be present or absent.
-    type: str
-    required: false
-    choices:
-      - present
-      - absent
-    default: present
+      description:
+        - Whether the Service Edge group should be present or absent.
+      type: str
+      required: false
+      choices:
+        - present
+        - absent
+      default: present
 """
 
 EXAMPLES = """
