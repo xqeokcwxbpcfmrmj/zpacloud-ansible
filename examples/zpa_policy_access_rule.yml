@@ -1,14 +1,14 @@
 - name: policy rule
   hosts: localhost
+
   tasks:
-    - name: Gather information about all policy rules
-      willguibr.zpacloud.zpa_policy_access_rule_info:
-        #id: "216196257331292020"
-        name: "All Other Services"
-      register: policy
-    - name: policy rule
-      debug:
-        msg: "{{ policy }}"
+    - name: Gather information about all machine groups
+      willguibr.zpacloud.zpa_trusted_networks_info:
+        name: Corp-Trusted-Networks
+      register: network_id
+    - debug:
+        msg: "{{ network_id.data[0].network_id }}"
+
     - name: Create/update/delete a policy rule
       willguibr.zpacloud.zpa_policy_access_rule:
         name: "test policy access rule"
@@ -21,9 +21,9 @@
             operator: "OR"
             operands:
               - name: "test policy access rule"
-                object_type: "APP"
-                lhs: "id"
-                rhs: "216196257331291979"
+                object_type: "TRUSTED_NETWORK"
+                lhs: "{{ network_id.data[0].network_id }}"
+                rhs: "true"
         state: absent
       register: created_rule
     - name: created policy access rule

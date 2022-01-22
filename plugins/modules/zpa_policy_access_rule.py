@@ -162,7 +162,6 @@ options:
                 choices:
                   - APP
                   - APP_GROUP
-                  - BYPASS
                   - SAML
                   - IDP
                   - CLIENT_TYPE

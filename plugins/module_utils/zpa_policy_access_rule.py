@@ -127,16 +127,13 @@ class PolicyAccessRuleService:
             return {}
         return {
             "default_rule": resp_json.get("defaultRule"),
+            "default_rule_name": resp_json.get("defaultRuleName"),
             "description": resp_json.get("description"),
             "policy_type": resp_json.get("policyType"),
             "custom_msg": resp_json.get("customMsg"),
             "policy_set_id": resp_json.get("policySetId"),
             "id": resp_json.get("id"),
-            "reauth_default_rule": resp_json.get("reauthDefaultRule"),
             "lss_default_rule": resp_json.get("lssDefaultRule"),
-            "bypass_default_rule": resp_json.get("reauthDefaultRule"),
-            "reauth_idle_timeout": resp_json.get("reauthIdleTimeout"),
-            "reauth_timeout": resp_json.get("reauthTimeout"),
             "action_id": resp_json.get("actionId"),
             "name": resp_json.get("name"),
             "app_connector_groups":  self.mapListJSONToList(resp_json.get("appConnectorGroups")),
@@ -159,11 +156,7 @@ class PolicyAccessRuleService:
             "customMsg": policy_rule.get("custom_msg"),
             "policySetId": policy_rule.get("policy_set_id"),
             "id": policy_rule.get("id"),
-            "reauthDefaultRule": policy_rule.get("reauth_default_rule"),
             "lssDefaultRule": policy_rule.get("lss_default_rule"),
-            "reauthDefaultRule": policy_rule.get("bypass_default_rule"),
-            "reauthIdleTimeout": policy_rule.get("reauth_idle_timeout"),
-            "reauthTimeout": policy_rule.get("reauth_timeout"),
             "actionId": policy_rule.get("action_id"),
             "name": policy_rule.get("name"),
             "action": policy_rule.get("action"),
@@ -253,13 +246,13 @@ class PolicyAccessRuleService:
                 return True
         return None
 
-    def getTrustedNetworkByNetID(self, id):
-        response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/network/%s" % (self.customer_id, id), fail_safe=True)
-        status_code = response.status_code
-        if status_code != 200:
-            return None
-        return True
+    def getTrustedNetworkByNetID(self, networkID):
+        list = self.rest.get_paginated_data(
+            base_url="/mgmtconfig/v2/admin/customers/%s/network" % (self.customer_id), data_key_name="list")
+        for network in list:
+            if network.get("networkId") == networkID:
+                return True
+        return None
 
     def getSamlAttribute(self, id):
         response = self.rest.get(
