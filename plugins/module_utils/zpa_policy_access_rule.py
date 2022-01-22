@@ -87,6 +87,7 @@ class PolicyAccessRuleService:
                 "lhs": op.get("lhs"),
                 "rhs": op.get("rhs"),
                 "name": op.get("name"),
+                "idpId": op.get("idp_id"),
             })
         return ops
 

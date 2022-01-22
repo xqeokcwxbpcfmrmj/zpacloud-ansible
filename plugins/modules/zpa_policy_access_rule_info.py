@@ -28,7 +28,7 @@ options:
   name:
     description:
       - Name of the policy rule.
-    required: false
+    required: true
     type: str
   id:
     description:

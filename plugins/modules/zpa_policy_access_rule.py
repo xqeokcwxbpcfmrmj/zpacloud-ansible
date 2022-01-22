@@ -23,121 +23,191 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  bypass_default_rule:
-    type: bool
-    required: False
-    description: ""
   policy_set_id:
-    type: str
-    required: True
     description: ""
-  action:
     type: str
-    required: False
-    description:  "  This is for providing the rule action."
+    required: false
+  action:
+    description:
+      - This is for providing the rule action.
+    type: str
+    required: false
+    choices:
+      - ALLOW
+      - DENY
   action_id:
     type: str
-    required: False
-    description:  "This field defines the description of the server."
+    required: false
+    description:
+      - This field defines the description of the server.
   priority:
-    type: str
-    required: False
     description: ""
+    type: str
+    required: false
   id:
     type: str
     description: ""
   policy_type:
-    type: str
-    required: False
     description: ""
+    type: str
+    required: false
   rule_order:
-    type: str
-    required: False
     description: ""
+    type: str
+    required: false
   default_rule:
+    description:
+      - This is for providing a customer message for the user.
     type: bool
-    required: False
-    description:  "This is for providing a customer message for the user."
+    required: false
   operator:
+    description:
+      - This denotes the operation type.
     type: str
-    required: False
-    description: ""
+    required: false
+    choices:
+      - AND
+      - OR
   app_connector_groups:
+    description:
+      - List of the app connector group IDs.
     type: list
     elements: dict
-    required: False
-    description:  "List of app-connector IDs."
-  reauth_default_rule:
-    type: bool
-    required: False
-    description: ""
-  description:
-    type: str
-    required: False
-    description:  "This is the description of the access policy."
-  conditions:
-    type: list
-    elements: dict
-    required: False
-    description:  "This is for proviidng the set of conditions for the policy."
-  reauth_idle_timeout:
-    type: str
-    required: False
-    description: ""
+    required: false
+    suboptions:
+      id:
+        description:
+          - List of the app connector group IDs.
+        type: str
+        required: false
   app_server_groups:
     type: list
     elements: dict
-    required: False
-    description:  "List of the server group IDs."
-  reauth_timeout:
-    type: str
-    required: False
-    description: ""
+    required: false
+    description:
+      - List of the server group IDs.
+    suboptions:
+      id:
+        description:
+          - List of the server group IDs.
+        type: str
+        required: false
   custom_msg:
+    description:
+      - This is for providing a customer message for the user.
     type: str
-    required: False
-    description:  "This is for providing a customer message for the user."
+    required: false
   lss_default_rule:
+    description: ""
     type: bool
     required: False
-    description: ""
   name:
+    description:
+      - This is the name of the policy.
     type: str
     required: True
-    description:  "This is the name of the policy."
+  conditions:
+    description:
+      - This is for proviidng the set of conditions for the policy.
+    type: list
+    elements: dict
+    required: false
+    suboptions:
+      negated:
+        type: bool
+        required: false
+        description:
+          - ""
+      operator:
+        description:
+          - This denotes the operation type.
+        type: str
+        required: false
+        choices:
+          - AND
+          - OR
+        suboptions:
+          operands:
+            type: list
+            elements: str
+            required: false
+            description:
+              - This signifies the various policy criterias.
+            suboptions:
+              idp_id:
+                type: str
+                required: false
+                description:
+                  - ""
+              lhs:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              name:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              rhs:
+                type: str
+                required: false
+                description:
+                  - This denotes the value for the given object type. Its value depends upon the key.
+              object_type:
+                type: str
+                required: false
+                description:
+                  - This is for specifying the policy criteria.
+                choices:
+                  - APP
+                  - APP_GROUP
+                  - BYPASS
+                  - SAML
+                  - IDP
+                  - CLIENT_TYPE
+                  - TRUSTED_NETWORK
+                  - MACHINE_GRP
+                  - POSTURE
+                  - SCIM
+                  - SCIM_GROUP
+                  - EDGE_CONNECTOR_GROUP
 """
 
 EXAMPLES = """
-    - name: Create/Update/Delete a Policy Access Rule
-      willguibr.zpacloud.zpa_policy_access_rule:
-        name: "Policy Access Rule - Example"
-        description: "Policy Access Rule - Example"
-        action: "ALLOW"
-        rule_order: 2
-        operator: "AND"
-        conditions:
-          - negated: false
-            operator: "OR"
-            operands:
-              - name: "app_segment"
-                object_type: "APP"
-                lhs: "id"
-                rhs: "216196257331291979"
-        state: present
-      register: created_rule
-    - name: created policy access rule
-      debug:
-        msg: "{{ created_rule }}"
+- name: Access Policy - Intranet Web Apps
+  willguibr.zpacloud.zpa_policy_access_rule:
+    name: "Intranet Web Apps"
+    description: "Intranet Web Apps"
+    action: "ALLOW"
+    rule_order: 1
+    operator: "AND"
+    conditions:
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "app_seg_intranet"
+            object_type: "APP"
+            lhs: "id"
+            rhs: "{{ app_seg_intranet.data.id }}"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "sg_seg_intranet"
+            object_type: "APP_GROUP"
+            lhs: "id"
+            rhs: "{{ seg_intranet.data.id }}"
+      - negated: false
+        operator: "OR"
+        operands:
+          - name: "engineering_group"
+            object_type: "SCIM_GROUP"
+            lhs: "{{ user_okta.data[0].id }}"
+            rhs: "{{ engineering_group.data[0].id }}"
 """
 
 RETURN = """
-data:
-    description: Policy Rule
-    returned: success
-    type: dict
-    sample:
-        {
-        }
+# The newly created policy access rule resource record.
 """
 
 
@@ -157,11 +227,7 @@ def core(module):
         "custom_msg",
         "policy_set_id",
         "id",
-        "reauth_default_rule",
         "lss_default_rule",
-        "bypass_default_rule",
-        "reauth_idle_timeout",
-        "reauth_timeout",
         "action_id",
         "name",
         "app_connector_groups",
@@ -202,16 +268,13 @@ def main():
         type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
         default_rule=dict(type='bool', required=False),
+        default_rule_name=dict(type='str', required=False),
         description=dict(type='str', required=False),
         policy_type=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
         #policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
-        reauth_default_rule=dict(type='bool', required=False),
         lss_default_rule=dict(type='bool', required=False),
-        bypass_default_rule=dict(type='bool', required=False),
-        reauth_idle_timeout=dict(type='str', required=False),
-        reauth_timeout=dict(type='str', required=False),
         action_id=dict(type='str', required=False),
         name=dict(type='str', required=True),
         app_connector_groups=id_name_spec,

@@ -25,40 +25,50 @@ options:
   applications:
     type: list
     elements: str
-    required: False
-    description: "This field is a json array of server_group-connector-id objects only."
+    required: false
+    description:
+      - This field is a json array of server_group-connector-id objects only.
   enabled:
     type: bool
-    required: False
-    description: "This field defines if the server group is enabled or disabled."
+    required: false
+    description:
+      - This field defines if the server group is enabled or disabled.
   dynamic_discovery:
     type: bool
-    required: False
-    description: "This field controls dynamic discovery of the servers."
+    required: false
+    description:
+      - This field controls dynamic discovery of the servers.
   name:
     type: str
     required: True
-    description: "This field defines the name of the server group."
+    description:
+      - This field defines the name of the server group.
   servers:
     type: list
     elements: str
-    required: False
-    description: "This field is a list of servers objects that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId."
+    required: false
+    description:
+      - This field is a list of servers objects that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId.
   app_connector_groups:
     type: list
     elements: str
-    required: False
-    description: "List of server_group-connector ID objects."
+    required: false
+    description:
+      - List of server_group-connector ID objects.
   config_space:
+    description:
+      - config space.
     type: str
-    required: False
-    description: ""
-    default: "DEFAULT"
-    choices: ["DEFAULT", "SIEM"]
+    required: false
+    choices:
+      - DEFAULT
+      - SIEM
+    default: DEFAULT
   description:
     type: str
     required: False
-    description: "This field is the description of the server group."
+    description:
+      - This field is the description of the server group.
   id:
     type: str
     description: ""
@@ -67,9 +77,12 @@ options:
     required: False
     description: ""
   state:
-    description: "Whether the server group should be present or absent."
+    description:
+      - Whether the server group should be present or absent.
     default: present
-    choices: ["present", "absent"]
+    choices:
+      - present
+      - absent
     type: str
 
 """

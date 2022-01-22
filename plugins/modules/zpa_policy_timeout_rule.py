@@ -15,91 +15,139 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 module: zpa_policy_timeout_rule
-short_description: Create a Policy Timeout Rule.
+short_description: Create a Policy Timeout Rule
 description:
-  - This module will create, update or delete a specific Policy Timeout Rule.
+  - This module create/update/delete a Policy Timeout Rule in the ZPA Cloud.
 author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  bypass_default_rule:
-    type: bool
-    required: False
-    description: ""
   policy_set_id:
-    type: str
-    required: True
     description: ""
+    type: str
+    required: false
   action:
+    description:
+      - This is for providing the rule action.
     type: str
-    required: False
-    description:  "  This is for providing the rule action."
+    required: false
+    choices:
+      - RE_AUTH
   action_id:
+    description:
+      - This field defines the description of the server.
     type: str
-    required: False
-    description:  "This field defines the description of the server."
+    required: false
   priority:
     type: str
-    required: False
+    required: false
     description: ""
   id:
-    type: str
     description: ""
+    type: str
+    required: false
   policy_type:
-    type: str
-    required: False
     description: ""
+    type: str
+    required: false
   rule_order:
-    type: str
-    required: False
     description: ""
+    type: str
+    required: false
   default_rule:
+    description:
+      - This is for providing a customer message for the user.
     type: bool
-    required: False
-    description:  "This is for providing a customer message for the user."
+    required: false
   operator:
+    description:
+      - This denotes the operation type.
     type: str
-    required: False
+    required: false
+    choices:
+      - AND
+      - OR
+  description:
+    description:
+      - This is the description of the access policy.
+    type: str
+    required: false
+  custom_msg:
+    description:
+      - This is for providing a customer message for the user.
+    type: str
+    required: false
+  lss_default_rule:
     description: ""
-  app_connector_groups:
-    type: list
-    elements: dict
-    required: False
-    description:  "List of app-connector IDs."
-  reauth_default_rule:
     type: bool
     required: False
-    description: ""
-  description:
-    type: str
-    required: False
-    description:  "This is the description of the access policy."
-  conditions:
-    type: list
-    elements: dict
-    required: False
-    description:  "This is for proviidng the set of conditions for the policy."
-  reauth_idle_timeout:
-    type: str
-    required: False
-    description: ""
-  app_server_groups:
-    type: list
-    elements: dict
-    required: False
-    description:  "List of the server group IDs."
-  reauth_timeout:
-    type: str
-    required: False
-    description: ""
-  custom_msg:
-    type: str
-    required: False
-    description:  "This is for providing a customer message for the user."
   name:
     type: str
     required: True
-    description:  "This is the name of the policy."
+    description:
+      - This is the name of the timeout policy.
+  conditions:
+    type: list
+    elements: dict
+    required: false
+    description:
+      - This is for providing the set of conditions for the policy.
+    suboptions:
+      negated:
+        type: bool
+        required: false
+        description:
+          - ""
+      operator:
+        description:
+          - This denotes the operation type.
+        type: str
+        required: false
+        choices:
+          - AND
+          - OR
+        suboptions:
+          operands:
+            type: list
+            elements: str
+            required: false
+            description:
+              - This signifies the various policy criterias.
+            suboptions:
+              idp_id:
+                type: str
+                required: false
+                description:
+                  - ""
+              lhs:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              name:
+                type: str
+                required: false
+                description:
+                  - This signifies the key for the object type.
+              rhs:
+                type: str
+                required: false
+                description:
+                  - This denotes the value for the given object type. Its value depends upon the key.
+              object_type:
+                type: str
+                required: false
+                description:
+                  - This is for specifying the policy criteria.
+                choices:
+                  - APP
+                  - APP_GROUP
+                  - SAML
+                  - IDP
+                  - POSTURE
+                  - SCIM
+                  - SCIM_GROUP
+                  - CLIENT_TYPE          
 """
 
 EXAMPLES = """
@@ -152,13 +200,7 @@ EXAMPLES = """
 """
 
 RETURN = """
-data:
-    description: Policy Timeout Rule
-    returned: success
-    type: dict
-    sample:
-        {
-        }
+# The newly created policy access timeout rule resource record.
 """
 
 
@@ -172,26 +214,23 @@ def core(module):
     policy_set_id = global_policy_set.get("id")
     policy = dict()
     params = [
-        # "default_rule",
+        "default_rule",
+        "default_rule_name",
         "description",
         "policy_type",
         "custom_msg",
         "policy_set_id",
         "id",
         "reauth_default_rule",
-        # "lss_default_rule",
-        # "bypass_default_rule",
         "reauth_idle_timeout",
         "reauth_timeout",
         "action_id",
         "name",
-        # "app_connector_groups",
         "action",
         "priority",
         "operator",
         "rule_order",
         "conditions",
-        # "app_server_groups",
     ]
     for param_name in params:
         policy[param_name] = module.params.get(param_name, None)
@@ -219,23 +258,19 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    # id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-    #     type='str', required=True), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
-        # default_rule=dict(type='bool', required=False),
+        default_rule=dict(type='bool', required=False),
+        default_rule_name=dict(type='str', required=False),
         description=dict(type='str', required=False),
         policy_type=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
         # policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
         reauth_default_rule=dict(type='bool', required=False),
-        # lss_default_rule=dict(type='bool', required=False),
-        # bypass_default_rule=dict(type='bool', required=False),
         reauth_idle_timeout=dict(type='str', required=False),
         reauth_timeout=dict(type='str', required=False),
         action_id=dict(type='str', required=False),
         name=dict(type='str', required=True),
-        # app_connector_groups=id_name_spec,
         action=dict(type='str', required=False, choices=["RE_AUTH"]),
         priority=dict(type='str', required=False),
         operator=dict(type='str', required=False),
@@ -260,7 +295,6 @@ def main():
                                                                            type='str', required=True),
                                                                    ), required=False),
                                                                    ), required=False),
-        # app_server_groups=id_name_spec,
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )
