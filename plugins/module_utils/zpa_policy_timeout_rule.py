@@ -222,13 +222,13 @@ class PolicyTimeOutRuleService:
             return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation' when object type is CLIENT_TYPE"
         return True
 
-    def getByPostureUDID(self, id):
-        response = self.rest.get(
-            "/mgmtconfig/v2/admin/customers/%s/posture/%s" % (self.customer_id, id), fail_safe=True)
-        status_code = response.status_code
-        if status_code != 200:
-            return None
-        return True
+    def getByPostureUDID(self, postureUDID):
+        list = self.rest.get_paginated_data(
+            base_url="/mgmtconfig/v2/admin/customers/%s/posture" % (self.customer_id), data_key_name="list")
+        for posture in list:
+            if posture.get("postureUdid") == postureUDID:
+                return True
+        return None
 
     def getSamlAttribute(self, id):
         response = self.rest.get(
