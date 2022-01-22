@@ -69,8 +69,16 @@ check-format:	## Check with black, isort
 	isort --diff .
 	isort --check .
 
-# sync-deps:	## Sync Pipfile.lock to requirements.txt
-# 	pipenv lock --requirements > requirements.txt
+sync-deps:	## Sync Pipfile.lock to requirements.txt
+	pipenv lock --requirements > requirements.txt
 
 test-release:	## Semantic release dry run
-	semantic-release --dry-run --no-ci --branches=develop
+	semantic-release --dry-run --no-ci --branches=zpa-develop
+
+doctest:
+	for i in $$(ls -1 plugins/modules | grep -v init); do \
+		echo "Checking $$i..." ; \
+		ansible-doc -M plugins/modules $$i > /dev/null ; \
+	done
+
+.PHONY: install doctest
