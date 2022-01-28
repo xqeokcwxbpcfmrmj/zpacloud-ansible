@@ -4,7 +4,13 @@
     - name: Gather information about all App Connector Controllers
       willguibr.zpacloud.zpa_app_connector_controller_info:
         #name: "USA App Connector Group"
-      register: app_connector
+      register: result
       
     - debug:
-        msg: "{{ app_connector }}"
+        msg: "{{ result }}"
+
+    - name: Verify App Connector Controller info fetched
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+          - result.data is defined

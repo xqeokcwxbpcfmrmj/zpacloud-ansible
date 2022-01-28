@@ -44,7 +44,7 @@ units:		## Run unit tests
 
 .PHONY: integration
 integration:	## Run integration tests
-	$(MAKE) -C tests/integration $(CI)
+	$(MAKE) tests/integration $(CI)
 
 .PHONY: docs
 docs:		## Build collection documentation
