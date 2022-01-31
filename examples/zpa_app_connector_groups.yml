@@ -3,8 +3,14 @@
   tasks:
     - name: Gather information about all App Connector Groups
       willguibr.zpacloud.zpa_app_connector_groups_info:
-        #name: "USA App Connector Group"
-      register: app
-    - name: app connector
-      debug:
-        msg: "{{ app }}"
+        name: "USA App Connector Group"
+      register: result
+    # - name: app connector
+    #   debug:
+    #     msg: "{{ app }}"
+
+    - name: Verify app connector group info fetched
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+          - result.data is defined
