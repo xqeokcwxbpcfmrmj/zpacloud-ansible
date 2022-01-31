@@ -8,7 +8,7 @@
         - client_id, client_secret, customer_id are not defined
         - client_id, client_secret, customer_id | length == 0
 
-    - name: Ensure App Connector Group is (Absent)
+    - name: Ensure App Connector Group is absent (leftover)
       willguibr.zpacloud.zpa_app_connector_groups:
         state: absent
         name: "{{ name }}"
@@ -24,12 +24,34 @@
         override_version_profile: "{{ override_version_profile }}"
         version_profile_id: "{{ version_profile_id }}"
         dns_query_type: "{{ dns_query_type }}"
+      ignore_errors: true  # In case one was left from previous run
+      register: result
+
+    - name: Ensure App Connector Group is absent (leftover)
+      willguibr.zpacloud.zpa_app_connector_groups:
+        state: absent
+        name: "{{ name }}"
+        description: "{{ description }}"
+        enabled: "{{ enabled }}"
+        city_country: "{{ city_country }}"
+        country_code: "{{ country_code }}"
+        latitude: "{{ latitude }}"
+        longitude: "{{ longitude }}"
+        location: "{{ location }}"
+        upgrade_day: "{{ upgrade_day }}"
+        upgrade_time_in_secs: "{{ upgrade_time_in_secs }}"
+        override_version_profile: "{{ override_version_profile }}"
+        version_profile_id: "{{ version_profile_id }}"
+        dns_query_type: "{{ dns_query_type }}"
+      ignore_errors: true  # In case one was left from previous run
+      register: result
 
     - name: Verify App Connector Group is absent
       ansible.builtin.assert:
         that:
           - not result.changed
 
+# Create App Connector Groups (Present)
     - name: Ensure App Connector Group is (Present)
       willguibr.zpacloud.zpa_app_connector_groups:
         state: present
@@ -48,20 +70,14 @@
         dns_query_type: "{{ dns_query_type }}"
       register: result
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
-
-    - name: Verify App Connector Group is present (from present)
+    - name: Verify app connector group is present
       ansible.builtin.assert:
         that:
-          - result.changed
-          - result.data is defined
-          - result.data.name is defined
-          - result.data.name == name
-          - result.data.status in ["true", "false"]
+            - result.data
+            - result.data.name is defined
+            - result.data.enabled is true
 
-    - name: Destroy App Connector Group is (Absent)
+    - name: Create the App Connector Group (again; idempotency check)
       willguibr.zpacloud.zpa_app_connector_groups:
         state: present
         name: "{{ name }}"
@@ -84,13 +100,23 @@
         that:
           - result.changed
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
+    - name: Fetch all App Connector Groups
+      willguibr.zpacloud.zpa_app_connector_groups_info:
+      register: result
 
-    - name: Create the App Connector Group (Inactive)
+    - name: Ensure all App Connector Groups found
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+          - result.data[0] is defined
+
+    - name: Give the ZPA Cloud a 5 seconds to settle
+      ansible.builtin.pause:
+        seconds: 5
+
+    - name: Delete App Connector Group
       willguibr.zpacloud.zpa_app_connector_groups:
-        state: inactive
+        state: absent
         name: "{{ name }}"
         description: "{{ description }}"
         enabled: "{{ enabled }}"
@@ -106,24 +132,12 @@
         dns_query_type: "{{ dns_query_type }}"
       register: result
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
-
-    - name: Verify App Connector Group is present (from present)
+    - name: Verify App Connector Group is absent
       ansible.builtin.assert:
         that:
-          - result.changed
-          - result.data is defined
-          - result.data.name is defined
-          - result.data.name == name
-          - result.data.status == "false"
+          - not result.changed
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
-
-    - name: Create the App Connector Group (always)
+    - name: Delete App Connector Group (again; idempotency check)
       willguibr.zpacloud.zpa_app_connector_groups:
         state: absent
         name: "{{ name }}"
@@ -140,3 +154,8 @@
         version_profile_id: "{{ version_profile_id }}"
         dns_query_type: "{{ dns_query_type }}"
       ignore_errors: true  # Should this fail, we'll clean it up next run
+
+    - name: Verify App Connector Group is absent
+      ansible.builtin.assert:
+        that:
+          - not result.changed
