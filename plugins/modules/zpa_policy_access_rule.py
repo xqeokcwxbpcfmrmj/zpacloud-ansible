@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_access_rule import PolicyAccessRuleService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_policy_access_rule
 short_description: Create a Policy Access Rule
@@ -23,10 +18,18 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  policy_set_id:
+  client_id:
     description: ""
-    type: str
     required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   action:
     description:
       - This is for providing the rule action.
@@ -45,6 +48,12 @@ options:
     type: str
     required: false
   id:
+    type: str
+    description: ""
+  default_rule_name:
+    type: str
+    description: ""
+  description:
     type: str
     description: ""
   policy_type:
@@ -75,11 +84,14 @@ options:
     elements: dict
     required: false
     suboptions:
-      id:
-        description:
-          - List of the app connector group IDs.
-        type: str
+      name:
         required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
   app_server_groups:
     type: list
     elements: dict
@@ -87,11 +99,14 @@ options:
     description:
       - List of the server group IDs.
     suboptions:
-      id:
-        description:
-          - List of the server group IDs.
-        type: str
+      name:
         required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
   custom_msg:
     description:
       - This is for providing a customer message for the user.
@@ -107,73 +122,79 @@ options:
     type: str
     required: True
   conditions:
-    description:
-      - This is for proviidng the set of conditions for the policy.
     type: list
     elements: dict
-    required: false
+    required: False
+    description: ""
     suboptions:
-      negated:
-        type: bool
-        required: false
-        description:
-          - ""
-      operator:
-        description:
-          - This denotes the operation type.
+      id:
+        description: ""
         type: str
-        required: false
-        choices:
-          - AND
-          - OR
+      negated:
+        description: ""
+        type: bool
+        required: False
+      operator:
+        description: ""
+        type: str
+        required: True
+        choices: ["AND", "OR"]
+      operands:
+        required: False
+        description: ""
+        type: list
+        elements: dict
         suboptions:
-          operands:
+          id:
+            description: ""
+            type: str
+          idp_id:
+            description: ""
+            type: str
+            required: False
+          name:
+            description: ""
+            type: str
+            required: False
+          lhs:
+            description: ""
+            type: str
+            required: True
+          rhs:
+            description: ""
+            type: str
+            required: False
+          rhs_list:
+            description: ""
             type: list
             elements: str
-            required: false
-            description:
-              - This signifies the various policy criterias.
-            suboptions:
-              idp_id:
-                type: str
-                required: false
-                description:
-                  - ""
-              lhs:
-                type: str
-                required: false
-                description:
-                  - This signifies the key for the object type.
-              name:
-                type: str
-                required: false
-                description:
-                  - This signifies the key for the object type.
-              rhs:
-                type: str
-                required: false
-                description:
-                  - This denotes the value for the given object type. Its value depends upon the key.
-              object_type:
-                type: str
-                required: false
-                description:
-                  - This is for specifying the policy criteria.
-                choices:
-                  - APP
-                  - APP_GROUP
-                  - SAML
-                  - IDP
-                  - CLIENT_TYPE
-                  - TRUSTED_NETWORK
-                  - MACHINE_GRP
-                  - POSTURE
-                  - SCIM
-                  - SCIM_GROUP
-                  - EDGE_CONNECTOR_GROUP
+            required: False
+          object_type:
+            description: ""
+            type: str
+            required: True
+            choices:
+              - APP
+              - APP_GROUP
+              - SAML
+              - IDP
+              - CLIENT_TYPE
+              - TRUSTED_NETWORK
+              - MACHINE_GRP
+              - POSTURE
+              - SCIM
+              - SCIM_GROUP
+              - EDGE_CONNECTOR_GROUP
+  state:
+    description: "Whether the app should be present or absent."
+    type: str
+    choices:
+        - present
+        - absent
+    default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Access Policy - Intranet Web Apps
   willguibr.zpacloud.zpa_policy_access_rule:
     name: "Intranet Web Apps"
@@ -205,9 +226,15 @@ EXAMPLES = """
             rhs: "{{ engineering_group.data[0].id }}"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created policy access rule resource record.
 """
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_access_rule import PolicyAccessRuleService
+from traceback import format_exc
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_native
 
 
 def core(module):
@@ -271,7 +298,7 @@ def main():
         description=dict(type='str', required=False),
         policy_type=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
-        #policy_set_id=dict(type='str', required=True),
+        # policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
         lss_default_rule=dict(type='bool', required=False),
         action_id=dict(type='str', required=False),
@@ -279,13 +306,13 @@ def main():
         app_connector_groups=id_name_spec,
         action=dict(type='str', required=False, choices=["ALLOW", "DENY"]),
         priority=dict(type='str', required=False),
-        operator=dict(type='str', required=False),
+        operator=dict(type='str', required=False, choices=['AND', 'OR']),
         rule_order=dict(type='str', required=False),
         conditions=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
                                                                    negated=dict(
                                                                        type='bool', required=False),
                                                                    operator=dict(
-                                                                       type='str', required=True),
+                                                                       type='str', required=True, choices=['AND', 'OR']),
                                                                    operands=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
                                                                                                                             idp_id=dict(
                                                                                                                                 type='str', required=False),
@@ -298,7 +325,9 @@ def main():
                                                                                                                             rhs_list=dict(
                                                                        type='list', elements='str', required=False),
                                                                        object_type=dict(
-                                                                           type='str', required=True),
+                                                                           type='str', required=True,
+                                                                           choices=['APP', 'APP_GROUP', 'SAML', 'IDP', 'CLIENT_TYPE', 'TRUSTED_NETWORK',
+                                                                                    'MACHINE_GRP', 'POSTURE', 'SCIM', 'SCIM_GROUP', 'EDGE_CONNECTOR_GROUP']),
                                                                    ), required=False),
                                                                    ), required=False),
         app_server_groups=id_name_spec,

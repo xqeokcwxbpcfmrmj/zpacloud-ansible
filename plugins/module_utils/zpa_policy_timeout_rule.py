@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none, camelcaseToSnakeCase
 )
@@ -174,7 +178,7 @@ class PolicyTimeOutRuleService:
         if operand.get("rhs", "") == "":
             return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), None)
         resp = getByID(operand.get("rhs"))
-        if resp == True:
+        if resp:
             return True
         return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), resp)
 
@@ -219,7 +223,8 @@ class PolicyTimeOutRuleService:
 
     def validClientType(self, id):
         if id != "zpn_client_type_zapp" and id != "zpn_client_type_exporter" and id != "zpn_client_type_browser_isolation":
-            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation' when object type is CLIENT_TYPE"
+            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' " +\
+                "or 'zpn_client_type_browser_isolation' when object type is CLIENT_TYPE"
         return True
 
     def getByPostureUDID(self, postureUDID):
@@ -257,18 +262,20 @@ class PolicyTimeOutRuleService:
     def validateOperand(self, operand):
         objType = operand.get("objectType")
         if objType == "APP":
-            return self.customValidate(operand, ["id"], "application segment ID", lambda id: self.getAppSegmentByID(id))
+            return self.customValidate(operand, ["id"], "application segment ID", self.getAppSegmentByID)
         elif objType == "APP_GROUP":
-            return self.customValidate(operand, ["id"], "Segment Group ID", lambda id: self.getSegmentGroupByID(id))
+            return self.customValidate(operand, ["id"], "Segment Group ID", self.getSegmentGroupByID)
         elif objType == "IDP":
-            return self.customValidate(operand, ["id"], "IDP ID", lambda id: self.getIDPControllerByID(id))
+            return self.customValidate(operand, ["id"], "IDP ID", self.getIDPControllerByID)
         elif objType == "CLIENT_TYPE":
-            return self.customValidate(operand, ["id"], "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation'", lambda id: self.validClientType(id))
+            return self.customValidate(operand, ["id"],
+                                       "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation'",
+                                       self.validClientType)
         elif objType == "POSTURE":
             if operand.get("lhs") is None or operand.get("lhs") == "":
                 return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), None)
             resp = self.getByPostureUDID(operand.get("lhs"))
-            if resp != True:
+            if resp is not True:
                 return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), resp)
             if not operand.get("rhs") in ["true", "false"]:
                 return self.rhsWarn(operand.get("objectType"), "\"true\"/\"false\"", operand.get("rhs"), None)
@@ -277,7 +284,7 @@ class PolicyTimeOutRuleService:
             if operand.get("lhs") is None or operand.get("lhs") == "":
                 return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), None)
             resp = self.getSamlAttribute(operand.get("lhs"))
-            if resp != True:
+            if resp is not True:
                 return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), resp)
             if operand.get("rhs") is None or operand.get("rhs") == "":
                 return self.rhsWarn(operand.get("objectType"), "SAML Attribute Value", operand.get("rhs"), None)
@@ -286,7 +293,7 @@ class PolicyTimeOutRuleService:
             if operand.get("lhs") is None or operand.get("lhs") == "":
                 return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), None)
             resp = self.getScimAttributeByID(operand.get("lhs"))
-            if resp != True:
+            if resp is not True:
                 return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), resp)
             if operand.get("rhs") is None or operand.get("rhs") == "":
                 return self.rhsWarn(operand.get("objectType"), "SCIM Attribute Value", operand.get("rhs"), None)
@@ -295,12 +302,12 @@ class PolicyTimeOutRuleService:
             if operand.get("lhs") is None or operand.get("lhs") == "":
                 return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), None)
             resp = self.getIDPControllerByID(operand.get("lhs"))
-            if resp != True:
+            if resp is not True:
                 return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), resp)
             if operand.get("rhs") is None or operand.get("rhs") == "":
                 return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), None)
             resp = self.getScimGroupByID(operand.get("rhs"))
-            if resp != True:
+            if resp is not True:
                 return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), resp)
             return True
         else:
@@ -310,7 +317,7 @@ class PolicyTimeOutRuleService:
         for condition in conditions:
             for operand in condition.get("operands"):
                 check = self.validateOperand(operand)
-                if check != True:
+                if check is not True:
                     return check
         return True
 
@@ -319,7 +326,7 @@ class PolicyTimeOutRuleService:
         ruleJson = self.mapAppToJSON(policy_rule)
         check = self.validateConditions(
             [] if ruleJson is None else ruleJson.get("conditions"))
-        if check != True:
+        if check is not True:
             self.module.fail_json(
                 msg="validating policy rule conditions failed: %s" % (check))
         response = self.rest.post(
@@ -337,7 +344,7 @@ class PolicyTimeOutRuleService:
         ruleJson = self.mapAppToJSON(policy_rule)
         check = self.validateConditions(
             [] if ruleJson is None else ruleJson.get("conditions"))
-        if check != True:
+        if check is not True:
             self.module.fail_json(
                 msg="validating policy rule conditions failed: %s" % (check))
         response = self.rest.put(

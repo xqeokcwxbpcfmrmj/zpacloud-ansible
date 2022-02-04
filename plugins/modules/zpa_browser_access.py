@@ -5,14 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_browser_access import BrowserAccessService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_browser_access
 short_description: Create a Browser Access Application Segment.
@@ -22,6 +18,18 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   default_max_age:
     type: str
     required: False
@@ -36,6 +44,15 @@ options:
     elements: dict
     required: False
     description: "udp port range"
+    suboptions:
+      to:
+        type: str
+        required: False
+        description: ""
+      from:
+        type: str
+        required: False
+        description: ""
   id:
     type: str
     description: "Unique ID."
@@ -54,10 +71,6 @@ options:
     required: False
     default: ""
     description: "default idle timeout."
-  modifiedby:
-    type: str
-    required: False
-    description: "modified by."
   passive_health_enabled:
     type: bool
     required: False
@@ -87,16 +100,20 @@ options:
     description: "Whether health reporting for the app is Continuous or On Access. Supported values: NONE, ON_ACCESS, CONTINUOUS."
     default: "NONE"
     choices: ["NONE", "ON_ACCESS", "CONTINUOUS"]
-  log_features:
-    type: str
-    required: False
-    choices: ["skip_discovery", "full_wildcard"]
-    description: "log features."
   server_groups:
     type: list
-    elements: str
+    elements: dict
     required: True
     description: "List of the server group IDs."
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
   segment_group_id:
     type: str
     required: True
@@ -117,16 +134,15 @@ options:
     elements: dict
     required: False
     description: "tcp port range"
-  udp_port_ranges:
-    type: list
-    elements: str
-    required: False
-    description: "UDP port ranges used to access the app."
-  tcp_port_ranges:
-    type: list
-    elements: str
-    required: False
-    description: "TCP port ranges used to access the app."
+    suboptions:
+      to:
+        type: str
+        required: False
+        description: ""
+      from:
+        type: str
+        required: False
+        description: ""
   enabled:
     type: bool
     required: False
@@ -137,13 +153,83 @@ options:
     required: True
     description: "List of domains and IPs."
   clientless_apps:
+    description: ""
     type: list
     elements: dict
+    suboptions:
+      path:
+        type: str
+        required: False
+        description: ""
+      trust_untrusted_cert:
+        type: bool
+        required: False
+        description: ""
+      allow_options:
+        type: bool
+        required: False
+        description: ""
+      description:
+        type: str
+        required: False
+        description: ""
+      id:
+        type: str
+        description: ""
+      cname:
+        type: str
+        required: False
+        description: ""
+      hidden:
+        type: bool
+        required: False
+        description: ""
+      app_id:
+        type: str
+        description: ""
+      application_port:
+        type: str
+        required: False
+        description: ""
+      application_protocol:
+        type: str
+        required: True
+        description: ""
+      name:
+        type: str
+        required: True
+        description: ""
+      certificate_id:
+        type: str
+        required: True
+        description: ""
+      certificate_name:
+        type: str
+        required: False
+        description: ""
+      domain:
+        type: str
+        required: False
+        description: ""
+      enabled:
+        type: bool
+        required: False
+        description: ""
+      local_domain:
+        type: str
+        required: False
+        description: ""
     required: False
-    description: ""
+  state:
+    description: "Whether the app should be present or absent."
+    type: str
+    choices:
+        - present
+        - absent
+    default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create an app segment
   willguibr.zpacloud.zpa_browser_access:
     name: Example Application
@@ -177,9 +263,15 @@ EXAMPLES = """
       - "216196257331291969"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created browser access application segment resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_browser_access import BrowserAccessService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 
 def core(module):
@@ -193,7 +285,6 @@ def core(module):
         "bypass_type",
         "clientless_apps",
         "config_space",
-        "creation_time",
         "default_idle_timeout",
         "default_max_age",
         "description",
@@ -206,8 +297,6 @@ def core(module):
         "id",
         "ip_anchored",
         "is_cname_enabled",
-        "modifiedby",
-        "modified_time",
         "name",
         "passive_health_enabled",
         "tcp_port_range",
@@ -253,7 +342,7 @@ def main():
                             options=port_spec, required=False),
         enabled=dict(type='bool', required=False),
         default_idle_timeout=dict(type='str', required=False, default=""),
-        bypass_type=dict(type='str', required=False),
+        bypass_type=dict(type='str', required=False, choices=["ALWAYS", "NEVER", "ON_NET"]),
         udp_port_range=dict(type='list', elements='dict',
                             options=port_spec, required=False),
         config_space=dict(type='str', required=False,
@@ -271,9 +360,6 @@ def main():
         description=dict(type='str', required=False),
         icmp_access_type=dict(type='str', required=False,
                               default="NONE", choices=["PING_TRACEROUTING", "PING", "NONE"]),
-        creation_time=dict(type='str', required=False),
-        modifiedby=dict(type='str', required=False),
-        modified_time=dict(type='str', required=False),
         id=dict(type='str'),
         server_groups=id_name_spec,
         segment_group_name=dict(type='str', required=False),

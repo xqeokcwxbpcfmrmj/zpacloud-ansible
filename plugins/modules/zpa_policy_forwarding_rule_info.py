@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import PolicyForwardingRuleService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_policy_forwarding_rule_info
 short_description: Retrieves policy forwarding rule information.
@@ -25,10 +19,22 @@ version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the policy forwarding rule.
-    required: true
+    required: false
     type: str
   id:
     description:
@@ -37,22 +43,27 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Information About All Policy Forwarding Rules
-    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-  
+  willguibr.zpacloud.zpa_policy_forwarding_rule_info:
 - name: Get information About Forwarding Rules by Name
-    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-      name: "All Other Services"
-    
+  willguibr.zpacloud.zpa_policy_forwarding_rule_info:
+    name: "All Other Services"
 - name: Get information About Forwarding Rules by ID
-    willguibr.zpacloud.zpa_policy_forwarding_rule_info:
-      id: "216196257331292020"
+  willguibr.zpacloud.zpa_policy_forwarding_rule_info:
+    id: "216196257331292020"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified policy forwarding rule.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import PolicyForwardingRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):

@@ -1,6 +1,10 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 import re
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none,camelcaseToSnakeCase
+    ZPAClientHelper, delete_none, camelcaseToSnakeCase
 )
 
 
@@ -123,13 +127,13 @@ class AppConnectorControllerService:
             "expectedUpgradeTime": connector.get("expected_upgrade_time"),
             "expectedVersion": connector.get("expected_version"),
             "fingerprint": connector.get("fingerprint"),
-            "id": connector.get("id"),   
+            "id": connector.get("id"),
             "ipAcl": connector.get("ip_acl"),
             "issuedCertId": connector.get("issued_cert_id"),
             "lastBrokerConnectTime": connector.get("last_broker_connect_time"),
             "lastBrokerConnectTimeDuration": connector.get("last_broker_connect_time_duration"),
             "lastBrokerDisconnectTime": connector.get("last_broker_disconnect_time"),
-            "lastBrokerDisconnectTimeDuration": connector.get("last_broker_disconnect_time_duration"), 
+            "lastBrokerDisconnectTimeDuration": connector.get("last_broker_disconnect_time_duration"),
             "lastUpgradeTime": connector.get("last_upgrade_time"),
             "latitude": connector.get("latitude"),
             "location": connector.get("location"),

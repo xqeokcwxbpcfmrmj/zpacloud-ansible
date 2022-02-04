@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none
 )
@@ -74,7 +78,7 @@ class ApplicationServerService:
         if server is None:
             return None
         if len(server.get("app_server_group_ids")) > 0:
-            print(
+            self.module.log(
                 "[INFO] Removing server group ID/s from application server: %s" % (appID))
             server["app_server_group_ids"] = []
             return self.update(server)

@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none, camelcaseToSnakeCase
 )
@@ -56,6 +60,7 @@ class SegmentGroupService:
         for e in entities:
             l.append(dict(id=e.get("id")))
         return l
+
     @delete_none
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
@@ -70,6 +75,7 @@ class SegmentGroupService:
             "policy_migrated": resp_json.get("policyMigrated"),
             "tcp_keep_alive_enabled": resp_json.get("tcpKeepAliveEnabled"),
         }
+
     @delete_none
     def mapAppToJSON(self, segment_group):
         if segment_group is None:

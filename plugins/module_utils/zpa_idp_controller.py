@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none
 )
@@ -39,6 +43,7 @@ class IDPControllerService:
             if idp.get("name") == name:
                 return idp
         return None
+
     @delete_none
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
@@ -47,6 +52,7 @@ class IDPControllerService:
             "id": resp_json.get("id"),
             "name": resp_json.get("name"),
         }
+
     @delete_none
     def mapAppToJSON(self, idp):
         if idp is None:

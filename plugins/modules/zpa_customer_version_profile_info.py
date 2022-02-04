@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_customer_version_profile import ProfileVersionService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_customer_version_profile_info
 short_description: Retrieves customer version profile information.
@@ -25,10 +19,22 @@ version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 2.0
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the customer version profile.
-    required: True
+    required: false
     type: str
   id:
     description:
@@ -37,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Information Details of All Customer Version Profiles
   willguibr.zpacloud.zpa_customer_version_profile_info:
 
@@ -50,9 +56,17 @@ EXAMPLES = """
     id: "2"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Customer Version Profile.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_customer_version_profile import ProfileVersionService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+
 
 def core(module):
     version_profile = module.params.get("name", None)

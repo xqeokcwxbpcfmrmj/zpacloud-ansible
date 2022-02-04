@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_server_group_info
 short_description: Retrieves information about an server group
@@ -24,6 +18,18 @@ author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
      - Name of the server group.
@@ -36,22 +42,29 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Details of All Server Groups
-    willguibr.zpacloud.zpa_server_group_info:
+  willguibr.zpacloud.zpa_server_group_info:
 
 - name: Get Details of a Specific Server Group by Name
-    willguibr.zpacloud.zpa_server_group_info:
+  willguibr.zpacloud.zpa_server_group_info:
     name: Example
 
 - name: Get Details of a Specific Server Group by ID
-    willguibr.zpacloud.zpa_server_group_info:
+  willguibr.zpacloud.zpa_server_group_info:
     id: "216196257331291969"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Server Group.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):

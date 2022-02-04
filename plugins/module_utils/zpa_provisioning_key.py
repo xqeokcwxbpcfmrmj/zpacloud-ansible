@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none
 )
@@ -120,7 +124,9 @@ class ProvisioningKeyService:
         """update the Provisioning Key"""
         provisioningKeyJson = self.mapAppToJSON(provisioning_key)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s" % (self.customer_id, association_type, provisioningKeyJson.get("id")), data=provisioningKeyJson)
+            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s" % (
+                self.customer_id, association_type, provisioningKeyJson.get("id")),
+            data=provisioningKeyJson)
         status_code = response.status_code
         if status_code > 299:
             return None

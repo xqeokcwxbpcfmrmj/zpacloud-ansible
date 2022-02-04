@@ -5,14 +5,8 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_timeout_rule import PolicyTimeOutRuleService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-__metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_policy_timeout_rule
 short_description: Create a Policy Timeout Rule
@@ -22,10 +16,18 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  policy_set_id:
+  client_id:
     description: ""
-    type: str
     required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   action:
     description:
       - This is for providing the rule action.
@@ -40,6 +42,10 @@ options:
     required: false
   priority:
     type: str
+    required: false
+    description: ""
+  reauth_default_rule:
+    type: bool
     required: false
     description: ""
   id:
@@ -77,80 +83,85 @@ options:
       - This is for providing a customer message for the user.
     type: str
     required: false
-  lss_default_rule:
-    description: ""
-    type: bool
-    required: False
   name:
     type: str
     required: True
     description:
       - This is the name of the timeout policy.
+  default_rule_name:
+    type: str
+    required: false
+    description: ""
+  reauth_idle_timeout:
+    type: str
+    required: false
+    description: ""
+  reauth_timeout:
+    type: str
+    required: false
+    description: ""
   conditions:
     type: list
     elements: dict
-    required: false
-    description:
-      - This is for providing the set of conditions for the policy.
+    required: False
+    description: ""
     suboptions:
-      negated:
-        type: bool
-        required: false
-        description:
-          - ""
-      operator:
-        description:
-          - This denotes the operation type.
+      id:
+        description: ""
         type: str
-        required: false
-        choices:
-          - AND
-          - OR
+      negated:
+        description: ""
+        type: bool
+        required: False
+      operator:
+        description: ""
+        type: str
+        required: True
+      operands:
+        description: ""
+        type: list
+        elements: dict
+        required: False
         suboptions:
-          operands:
+          id:
+            description: ""
+            type: str
+          idp_id:
+            description: ""
+            type: str
+            required: False
+          name:
+            description: ""
+            type: str
+            required: False
+          lhs:
+            description: ""
+            type: str
+            required: True
+          rhs:
+            description: ""
+            type: str
+            required: False
+          rhs_list:
+            description: ""
             type: list
             elements: str
-            required: false
-            description:
-              - This signifies the various policy criterias.
-            suboptions:
-              idp_id:
-                type: str
-                required: false
-                description:
-                  - ""
-              lhs:
-                type: str
-                required: false
-                description:
-                  - This signifies the key for the object type.
-              name:
-                type: str
-                required: false
-                description:
-                  - This signifies the key for the object type.
-              rhs:
-                type: str
-                required: false
-                description:
-                  - This denotes the value for the given object type. Its value depends upon the key.
-              object_type:
-                type: str
-                required: false
-                description:
-                  - This is for specifying the policy criteria.
-                choices:
-                  - APP
-                  - APP_GROUP
-                  - SAML
-                  - IDP
-                  - POSTURE
-                  - SCIM
-                  - SCIM_GROUP
-                  - CLIENT_TYPE          
+            required: False
+          object_type:
+            description: ""
+            type: str
+            required: True
+  state:
+    description: "Whether the app should be present or absent."
+    type: str
+    choices:
+      - present
+      - absent
+    default: present
+
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: "Policy Timeout Rule - Example"
   willguibr.zpacloud.zpa_policy_timeout_rule:
     name: "Policy Timeout Rule - Example"
@@ -199,9 +210,16 @@ EXAMPLES = """
             rhs: "true"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created policy access timeout rule resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_timeout_rule import PolicyTimeOutRuleService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+__metaclass__ = type
 
 
 def core(module):
@@ -264,7 +282,6 @@ def main():
         description=dict(type='str', required=False),
         policy_type=dict(type='str', required=False),
         custom_msg=dict(type='str', required=False),
-        # policy_set_id=dict(type='str', required=True),
         id=dict(type='str'),
         reauth_default_rule=dict(type='bool', required=False),
         reauth_idle_timeout=dict(type='str', required=False),
@@ -273,7 +290,7 @@ def main():
         name=dict(type='str', required=True),
         action=dict(type='str', required=False, choices=["RE_AUTH"]),
         priority=dict(type='str', required=False),
-        operator=dict(type='str', required=False),
+        operator=dict(type='str', required=False, choices=['AND', 'OR']),
         rule_order=dict(type='str', required=False),
         conditions=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
                                                                    negated=dict(

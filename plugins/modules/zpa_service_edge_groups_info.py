@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_service_edge_groups_info
 short_description: Retrieves information about a Service Edge Group.
@@ -24,6 +18,18 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the Service Edge Group..
@@ -37,10 +43,9 @@ options:
 
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get information about all Service Edge Groups
   willguibr.zpacloud.zpa_service_edge_groups_info:
-    
 - name: Get information about Service Edge Connector Group by ID
   willguibr.zpacloud.zpa_service_edge_groups_info:
     id: "198288282"
@@ -50,9 +55,17 @@ EXAMPLES = """
     name: "Example"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Service Edge Group.
 """
+
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):

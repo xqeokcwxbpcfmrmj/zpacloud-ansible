@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_provisioning_key
 short_description: Create a Provisioning Key.
@@ -23,99 +18,104 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  enabled:
-    type: bool
+  client_id:
+    description: ""
     required: false
-    description:
-      - Whether the provisioning key is enabled or not.
-  max_usage:
     type: str
-    required: true
-    description:
-      - The maximum number of instances where this provisioning key can be used for enrolling an App Connector or Service Edge.
-  enrollment_cert_id:
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
+  app_connector_group_id:
+    description: ""
+    type: str
+    required: False
+  app_connector_group_name:
+    description: ""
+    type: str
+    required: False
+  creation_time:
+    description: ""
+    type: str
+    required: False
+  enabled:
+    description: ""
+    type: bool
+    default: True
+    required: False
+  expiration_in_epoch_sec:
+    description: ""
+    type: str
+    required: False
+  id:
+    description: ""
+    type: str
+    required: False
+  ip_acl:
+    description: ""
+    type: str
+    required: False
+  max_usage:
+    description: ""
     type: str
     required: True
-    description:
-      - ID of the enrollment certificate that can be used for this provisioning key.
-  ui_config:
-    type: str
-    required: false
+  modified_by:
     description: ""
-  provisioning_key:
     type: str
-    description:
-      - read only field. Ignored in PUT/POST calls.
-  association_type:
-    type: str
-    required: true
-    description:
-      - Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP.
-  id:
-    type: str
-    required: false
+    required: False
+  modified_time:
     description: ""
+    type: str
+    required: False
   name:
+    description: ""
     type: str
-    required: true
-    description:
-      - Name of the provisioning key.
-  usage_count:
+    required: True
+  provisioning_key:
+    description: ""
     type: str
-    required: false
-    description:
-      - The provisioning key utilization count.
-  zcomponent_id:
+    required: False
+  enrollment_cert_id:
+    description: ""
     type: str
-    required: true
-    description:
-      - ID of the existing App Connector or Service Edge Group.
-  zcomponent_name:
-    type: str
-    required: false
-    description:
-      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
+    required: True
   enrollment_cert_name:
-    type: str
-    description:
-      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
-  app_connector_group_id:
-    type: str
-    required: false
     description: ""
-  app_connector_group_name:
     type: str
-    description:
-      - Read only property. Applicable only for GET calls, ignored in PUT/POST calls.
-  ip_acl:
-    type: list
-    elements: str
+    required: False
+  ui_config:
     description: ""
-    required: false
+    type: str
+    required: False
+  usage_count:
+    description: ""
+    type: str
+    required: False
+  zcomponent_id:
+    description: ""
+    type: str
+    required: True
+  zcomponent_name:
+    description: ""
+    type: str
+    required: False
+  association_type:
+    description: ""
+    type: str
+    choices: ['CONNECTOR_GRP', 'SERVICE_EDGE_GRP']
+    required: True
+  state:
+    description: ""
+    type: str
+    choices: ['present', 'absent']
+    default: present
 """
 
-EXAMPLES = """
-- name: Get ID Information of a Connector Enrollment Certificate
-  willguibr.zpacloud.zpa_enrollement_certificate_info:
-    name: "Connector"
-  register: connector_cert_id
-
-- name: Get ID Information of an App Connector Group
-  willguibr.zpacloud.zpa_app_connector_groups_info:
-    name: "Example"
-  register: app_connector_group
-  
-- name: Create/Update/Delete App Connector Group Provisioning Key
-  willguibr.zpacloud.zpa_provisioning_key:
-    name: "App Connector Group Provisioning Key"
-    association_type: "CONNECTOR_GRP"
-    max_usage: "10"
-    enrollment_cert_id: "{{ connector_cert_id.data[0].id }}"
-    zcomponent_id: "{{ app_connector_group.data[0].id }}"
-  register: provisioning_key
-"""
-
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get ID Information of a Service Edge Group Enrollment Certificate
   willguibr.zpacloud.zpa_enrollement_certificate_info:
     name: "Service Edge"
@@ -125,8 +125,7 @@ EXAMPLES = """
   willguibr.zpacloud.zpa_service_edge_groups_info:
     name: "Example"
   register: service_edge_group
-  
-- name: Create/Update/Delete App Connector Group Provisioning Key
+- name: "Create/Update/Delete App Connector Group Provisioning Key"
   willguibr.zpacloud.zpa_provisioning_key:
     name: "App Connector Group Provisioning Key"
     association_type: "CONNECTOR_GRP"
@@ -135,9 +134,15 @@ EXAMPLES = """
     zcomponent_id: "{{ service_edge_group.data[0].id }}"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created app connector group or service edge group provisioning key resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 
 def core(module):
@@ -206,7 +211,7 @@ def main():
         modified_by=dict(type="str", required=False),
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=True),
-        provisioning_key=dict(type="str", required=False),
+        provisioning_key=dict(type="str", required=False, no_log=True,),
         enrollment_cert_id=dict(type="str", required=True),
         enrollment_cert_name=dict(type="str", required=False),
         ui_config=dict(type="str", required=False),

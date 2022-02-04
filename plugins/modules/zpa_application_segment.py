@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_application_segment
 short_description: Create an application segment in the ZPA Cloud.
@@ -23,10 +18,27 @@ author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
-    description: 
+    description:
       - Name of the application.
     required: true
+    type: str
+  id:
+    description:
+      - ID of the application.
+    required: false
     type: str
   description:
     description:
@@ -48,7 +60,7 @@ options:
     elements: dict
     description:
       - List of tcp port range pairs, e.g. [22, 22] for port 22-22, [80, 100] for 80-100.
-    required: true
+    required: false
     suboptions:
       from:
         type: str
@@ -64,8 +76,8 @@ options:
     type: list
     elements: dict
     description:
-      - List of udp port range pairs, e.g. [‘35000’, ‘35000’] for port 35000.
-    required: true
+      - List of udp port range pairs, e.g. ['35000', '35000'] for port 35000.
+    required: false
     suboptions:
       from:
         type: str
@@ -116,7 +128,7 @@ options:
     description:
       - Indicates if the Zscaler Client Connector (formerly Zscaler App or Z App) receives CNAME DNS records from the connectors.
     type: bool
-    required: false 
+    required: false
   config_space:
     description:
       - config space.
@@ -136,14 +148,6 @@ options:
       - ON_ACCESS
       - CONTINUOUS
     default: NONE
-  log_features:
-    description:
-      - log features.
-    type: str
-    required: false
-    choices:
-      - skip_discovery
-      - full_wildcard
   server_groups:
     description:
       - ID of the server group.
@@ -151,11 +155,14 @@ options:
     elements: dict
     required: true
     suboptions:
-      id:
+      name:
+        required: false
         type: str
+        description: ""
+      id:
         required: true
-        description:
-          - ID of the server group.
+        type: str
+        description: ""
   segment_group_id:
     description:
       - ID of the segment group.
@@ -182,9 +189,16 @@ options:
     type: list
     elements: str
     required: true
+  state:
+    description: "Whether the app should be present or absent."
+    type: str
+    choices:
+        - present
+        - absent
+    default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create/Update/Delete an application segment.
   willguibr.zpacloud.zpa_application_segment:
     name: Example Application Segment
@@ -203,9 +217,15 @@ EXAMPLES = """
       - "216196257331291969"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created application segment resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 
 def core(module):
@@ -231,9 +251,6 @@ def core(module):
         "name",
         "description",
         "icmp_access_type",
-        "creation_time",
-        "modifiedby",
-        "modified_time",
         "id",
         "server_groups",
         "segment_group_name",
@@ -276,7 +293,7 @@ def main():
                             options=port_spec, required=False),
         enabled=dict(type='bool', required=False),
         default_idle_timeout=dict(type='str', required=False, default=""),
-        bypass_type=dict(type='str', required=False),
+        bypass_type=dict(type='str', required=False, default='NEVER', choices=['ALWAYS', 'NEVER', 'ON_NET']),
         udp_port_range=dict(type='list', elements='dict',
                             options=port_spec, required=False),
         config_space=dict(type='str', required=False,
@@ -294,9 +311,6 @@ def main():
         description=dict(type='str', required=False),
         icmp_access_type=dict(type='str', required=False,
                               default="NONE", choices=["PING_TRACEROUTING", "PING", "NONE"]),
-        creation_time=dict(type='str', required=False),
-        modifiedby=dict(type='str', required=False),
-        modified_time=dict(type='str', required=False),
         id=dict(type='str'),
         server_groups=id_name_spec,
         segment_group_name=dict(type='str', required=False),

@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_config_controller import LSSConfigControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_lss_config_controller
 short_description: Create a LSS CONFIG.
@@ -23,26 +18,207 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   id:
     type: str
     description: ""
   policy_rule_resource:
-    type: list
-    elements: dict
-    required: False
+    type: dict
     description: ""
+    required: False
+    suboptions:
+      description:
+        description: ""
+        type: str
+        required: False
+      priority:
+        description: ""
+        type: str
+        required: False
+      reauth_idle_timeout:
+        description: ""
+        type: str
+        required: False
+      policy_type:
+        description: ""
+        type: str
+        required: False
+      reauth_default_rule:
+        description: ""
+        type: bool
+        required: False
+      custom_msg:
+        description: ""
+        type: str
+        required: False
+      action_id:
+        description: ""
+        type: str
+        required: False
+      operator:
+        description: ""
+        type: str
+        required: False
+      bypass_default_rule:
+        description: ""
+        type: bool
+        required: False
+      policy_set_id:
+        description: ""
+        type: str
+        required: False
+      default_rule:
+        description: ""
+        type: bool
+        required: False
+      action:
+        description: ""
+        type: str
+        required: False
+      name:
+        description: ""
+        type: str
+        required: True
+      reauth_timeout:
+        description: ""
+        type: str
+        required: False
+      rule_order:
+        description: ""
+        type: str
+        required: False
+      id:
+        description: ""
+        type: str
+      lss_default_rule:
+        description: ""
+        type: bool
+        required: False
+      conditions:
+        description: ""
+        type: list
+        elements: dict
+        required: False
+        suboptions:
+          negated:
+            description: ""
+            type: bool
+            required: False
+          operator:
+            description: ""
+            type: str
+            required: True
+          operands:
+            description: ""
+            type: list
+            elements: dict
+            required: False
+            suboptions:
+              values:
+                description: ""
+                type: list
+                elements: str
+                required: False
+              object_type:
+                description: ""
+                type: str
+                required: True
+                choices: ["APP", "APP_GROUP", "CLIENT_TYPE"]
   connector_groups:
     type: list
     elements: dict
     required: False
-    description:  "App Connector Group(s) to be added to the LSS configuration"
+    description: "App Connector Group(s) to be added to the LSS configuration"
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
   config:
-    type: list
-    elements: dict
+    type: dict
     required: False
     description: ""
+    suboptions:
+      format:
+        description: ""
+        type: str
+        required: True
+      id:
+        description: ""
+        type: str
+      name:
+        description: ""
+        type: str
+        required: True
+      lss_port:
+        description: ""
+        type: str
+        required: True
+      use_tls:
+        description: ""
+        type: bool
+        required: False
+        default: False
+      enabled:
+        description: ""
+        type: bool
+        required: False
+        default: True
+      description:
+        description: ""
+        type: str
+        required: False
+      filter:
+        description: ""
+        type: list
+        elements: str
+        required: False
+      lss_host:
+        description: ""
+        type: str
+        required: True
+      source_log_type:
+        description: ""
+        type: str
+        required: True
+        choices:
+          - "zpn_trans_log"
+          - "zpn_auth_log"
+          - "zpn_ast_auth_log"
+          - "zpn_http_trans_log"
+          - "zpn_audit_log"
+          - "zpn_sys_auth_log"
+          - "zpn_http_insp"
+          - "zpn_ast_comprehensive_stats"
+      audit_message:
+        description: ""
+        type: str
+        required: False
+  state:
+    description: "Whether the config should be present or absent."
+    type: str
+    choices:
+      - present
+      - absent
+    default: present
+
 """
-EXAMPLES = '''
+EXAMPLES = r'''
 - name: LSS Controller
   hosts: localhost
   tasks:
@@ -55,7 +231,7 @@ EXAMPLES = '''
           enabled: true
           lss_host: 10.1.1.1
           lss_port: 20000
-          format: {\"LogTimestamp\": %j{LogTimestamp:time},\"Customer\": %j{Customer},\"SessionID\": %j{SessionID},\"SessionType\": %j{SessionType},\"SessionStatus\": %j{SessionStatus},\"Version\": %j{Version},\"Platform\": %j{Platform},\"ZEN\": %j{ZEN},\"Connector\": %j{Connector},\"ConnectorGroup\": %j{ConnectorGroup},\"PrivateIP\": %j{PrivateIP},\"PublicIP\": %j{PublicIP},\"Latitude\": %f{Latitude},\"Longitude\": %f{Longitude},\"CountryCode\": %j{CountryCode},\"TimestampAuthentication\": %j{TimestampAuthentication:iso8601},\"TimestampUnAuthentication\": %j{TimestampUnAuthentication:iso8601},\"CPUUtilization\": %d{CPUUtilization},\"MemUtilization\": %d{MemUtilization},\"ServiceCount\": %d{ServiceCount},\"InterfaceDefRoute\": %j{InterfaceDefRoute},\"DefRouteGW\": %j{DefRouteGW},\"PrimaryDNSResolver\": %j{PrimaryDNSResolver},\"HostUpTime\": %j{HostUpTime},\"ConnectorUpTime\": %j{ConnectorUpTime},\"NumOfInterfaces\": %d{NumOfInterfaces},\"BytesRxInterface\": %d{BytesRxInterface},\"PacketsRxInterface\": %d{PacketsRxInterface},\"ErrorsRxInterface\": %d{ErrorsRxInterface},\"DiscardsRxInterface\": %d{DiscardsRxInterface},\"BytesTxInterface\": %d{BytesTxInterface},\"PacketsTxInterface\": %d{PacketsTxInterface},\"ErrorsTxInterface\": %d{ErrorsTxInterface},\"DiscardsTxInterface\": %d{DiscardsTxInterface},\"TotalBytesRx\": %d{TotalBytesRx},\"TotalBytesTx\": %d{TotalBytesTx}}\\n"
+          format: "..."
           source_log_type: "zpn_ast_auth_log"
         connector_groups:
           - id: "11111"
@@ -66,49 +242,14 @@ EXAMPLES = '''
         msg: "{{ lss_controller }}"
 '''
 
-RETURN = """
-# The newly created browser access application segment resource record.
-{
-            "config": {
-                "audit_message": "{\"logType\":\"App Connector Status\",\"tcpPort\":\"20000\",\"appConnectorGroups\":[{\"name\":null,\"id\":\"216196257331292512\"}],\"domainOrIpAddress\":\"10.1.1.1\",\"logStreamContent\":\"{\\\"LogTimestamp\\\": %j{LogTimestamp:time},\\\"Customer\\\": %j{Customer},\\\"SessionID\\\": %j{SessionID},\\\"SessionType\\\": %j{SessionType},\\\"SessionStatus\\\": %j{SessionStatus},\\\"Version\\\": %j{Version},\\\"Platform\\\": %j{Platform},\\\"ZEN\\\": %j{ZEN},\\\"Connector\\\": %j{Connector},\\\"ConnectorGroup\\\": %j{ConnectorGroup},\\\"PrivateIP\\\": %j{PrivateIP},\\\"PublicIP\\\": %j{PublicIP},\\\"Latitude\\\": %f{Latitude},\\\"Longitude\\\": %f{Longitude},\\\"CountryCode\\\": %j{CountryCode},\\\"TimestampAuthentication\\\": %j{TimestampAuthentication:iso8601},\\\"TimestampUnAuthentication\\\": %j{TimestampUnAuthentication:iso8601},\\\"CPUUtilization\\\": %d{CPUUtilization},\\\"MemUtilization\\\": %d{MemUtilization},\\\"ServiceCount\\\": %d{ServiceCount},\\\"InterfaceDefRoute\\\": %j{InterfaceDefRoute},\\\"DefRouteGW\\\": %j{DefRouteGW},\\\"PrimaryDNSResolver\\\": %j{PrimaryDNSResolver},\\\"HostUpTime\\\": %j{HostUpTime},\\\"ConnectorUpTime\\\": %j{ConnectorUpTime},\\\"NumOfInterfaces\\\": %d{NumOfInterfaces},\\\"BytesRxInterface\\\": %d{BytesRxInterface},\\\"PacketsRxInterface\\\": %d{PacketsRxInterface},\\\"ErrorsRxInterface\\\": %d{ErrorsRxInterface},\\\"DiscardsRxInterface\\\": %d{DiscardsRxInterface},\\\"BytesTxInterface\\\": %d{BytesTxInterface},\\\"PacketsTxInterface\\\": %d{PacketsTxInterface},\\\"ErrorsTxInterface\\\": %d{ErrorsTxInterface},\\\"DiscardsTxInterface\\\": %d{DiscardsTxInterface},\\\"TotalBytesRx\\\": %d{TotalBytesRx},\\\"TotalBytesTx\\\": %d{TotalBytesTx}}\\\\n\",\"name\":\"Status\",\"description\":\"status\",\"sessionStatuses\":null,\"enabled\":true,\"useTls\":false,\"policy\":{}}",
-                "creation_time": "1643109694",
-                "description": "status",
-                "enabled": true,
-                "format": "{\"LogTimestamp\": %j{LogTimestamp:time},\"Customer\": %j{Customer},\"SessionID\": %j{SessionID},\"SessionType\": %j{SessionType},\"SessionStatus\": %j{SessionStatus},\"Version\": %j{Version},\"Platform\": %j{Platform},\"ZEN\": %j{ZEN},\"Connector\": %j{Connector},\"ConnectorGroup\": %j{ConnectorGroup},\"PrivateIP\": %j{PrivateIP},\"PublicIP\": %j{PublicIP},\"Latitude\": %f{Latitude},\"Longitude\": %f{Longitude},\"CountryCode\": %j{CountryCode},\"TimestampAuthentication\": %j{TimestampAuthentication:iso8601},\"TimestampUnAuthentication\": %j{TimestampUnAuthentication:iso8601},\"CPUUtilization\": %d{CPUUtilization},\"MemUtilization\": %d{MemUtilization},\"ServiceCount\": %d{ServiceCount},\"InterfaceDefRoute\": %j{InterfaceDefRoute},\"DefRouteGW\": %j{DefRouteGW},\"PrimaryDNSResolver\": %j{PrimaryDNSResolver},\"HostUpTime\": %j{HostUpTime},\"ConnectorUpTime\": %j{ConnectorUpTime},\"NumOfInterfaces\": %d{NumOfInterfaces},\"BytesRxInterface\": %d{BytesRxInterface},\"PacketsRxInterface\": %d{PacketsRxInterface},\"ErrorsRxInterface\": %d{ErrorsRxInterface},\"DiscardsRxInterface\": %d{DiscardsRxInterface},\"BytesTxInterface\": %d{BytesTxInterface},\"PacketsTxInterface\": %d{PacketsTxInterface},\"ErrorsTxInterface\": %d{ErrorsTxInterface},\"DiscardsTxInterface\": %d{DiscardsTxInterface},\"TotalBytesRx\": %d{TotalBytesRx},\"TotalBytesTx\": %d{TotalBytesTx}}\\n",
-                "id": "216196257331292567",
-                "lss_host": "10.1.1.1",
-                "lss_port": "20000",
-                "modified_by": "216196257331282070",
-                "name": "Status",
-                "source_log_type": "zpn_ast_auth_log",
-                "use_tls": false
-            },
-            "connector_groups": [
-                {
-                    "city_country": "Langley, CA",
-                    "country_code": "CA",
-                    "creation_time": "1642798564",
-                    "description": "USA App Connector Group",
-                    "dns_query_type": "IPV4",
-                    "enabled": true,
-                    "id": "216196257331292512",
-                    "latitude": "49.1041779",
-                    "location": "Langley City, BC, Canada",
-                    "longitude": "-122.6603519",
-                    "lss_app_connector_group": false,
-                    "modified_by": "216196257331282070",
-                    "name": "USA App Connector Group",
-                    "override_version_profile": true,
-                    "upgrade_day": "SUNDAY",
-                    "upgrade_time_in_secs": "66600",
-                    "version_profile_id": "2",
-                    "version_profile_name": "New Release",
-                    "version_profile_visibility_scope": "ALL"
-                }
-            ],
-            "id": "216196257331292567"
-        }
-"""
+RETURN = r'''
+'''
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_config_controller import LSSConfigControllerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 
 def core(module):
     state = module.params.get("state", None)
