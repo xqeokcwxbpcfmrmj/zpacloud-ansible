@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_provisioning_key_info
 short_description: Retrieves details about a Provisioning Key.
@@ -25,6 +19,18 @@ version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the provisioning key.
@@ -38,10 +44,13 @@ options:
   association_type:
     type: str
     required: true
-    description: "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges. The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
+    choices: ["CONNECTOR_GRP", "SERVICE_EDGE_GRP"]
+    description:
+      - "Specifies the provisioning key type for App Connectors or ZPA Private Service Edges."
+      - "The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys
   willguibr.zpacloud.zpa_provisioning_key_info:
     association_type: "SERVICE_EDGE_GRP"
@@ -57,9 +66,17 @@ EXAMPLES = """
     association_type: "SERVICE_EDGE_GRP"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified provisioning key resource.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+
 
 def core(module):
     provisioning_key_name = module.params.get("name", None)

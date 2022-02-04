@@ -5,14 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_server_group
 short_description: Create a Server Group .
@@ -22,9 +18,30 @@ author:
     - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   applications:
     type: list
-    elements: str
+    elements: dict
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
     required: false
     description:
       - This field is a json array of server_group-connector-id objects only.
@@ -45,13 +62,32 @@ options:
       - This field defines the name of the server group.
   servers:
     type: list
-    elements: str
+    elements: dict
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
     required: false
     description:
-      - This field is a list of servers objects that are applicable only when dynamic discovery is disabled. Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId.
+      - This field is a list of servers objects that are applicable only when dynamic discovery is disabled.
+      - Server name is required only in cases where the new servers need to be created in this API. For existing servers, pass only the serverId.
   app_connector_groups:
     type: list
-    elements: str
+    elements: dict
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
     required: false
     description:
       - List of server_group-connector ID objects.
@@ -86,18 +122,8 @@ options:
     type: str
 
 """
-EXAMPLES = """
-- name: Create/Update/Delete a Server Group - Dynamic Discovery ON
-  willguibr.zpacloud.zpa_server_group:
-    name: "Example"
-    description: "Example"
-    enabled: true
-    dynamic_discovery: true
-    app_connector_groups:
-      - id: "216196257331291924"
-"""
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create/Update/Delete a Server Group - Dynamic Discovery Off
   willguibr.zpacloud.zpa_server_group:
     name: "Example"
@@ -112,9 +138,15 @@ EXAMPLES = """
       - id: "216196257331291921"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created server group resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 
 def core(module):

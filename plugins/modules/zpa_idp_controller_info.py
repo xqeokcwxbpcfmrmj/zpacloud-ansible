@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import IDPControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_idp_controller_info
 short_description: Retrieves Identity Provider information.
@@ -24,10 +18,22 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the Identity Provider.
-    required: true
+    required: false
     type: str
   id:
     description:
@@ -36,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Details of All IdP Controllers
   willguibr.zpacloud.zpa_idp_controller_info:
 
@@ -46,12 +52,20 @@ EXAMPLES = """
 
 - name: Get Details of a Specific IdP Controller by ID
   willguibr.zpacloud.zpa_idp_controller_info:
-    id: "216196257331282583"  
+    id: "216196257331282583"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Identity Provider.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import IDPControllerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+
 
 def core(module):
     idp_name = module.params.get("name", None)

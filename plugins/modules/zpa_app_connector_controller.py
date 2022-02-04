@@ -1,20 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_controller import AppConnectorControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_app_connector_controller
 short_description: Manages an app connector controller
@@ -24,23 +17,31 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   application_start_time:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   app_connector_group_id:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   app_connector_group_name:
-    description:
-        - "".
+    description: ""
     type: str
   control_channel_status:
-    description:
-      - Read only.Ignored in PUT/POST calls. Expected values: UNKNOWN/ZPN_STATUS_AUTHENTICATED(1)/ZPN_STATUS_DISCONNECTED.
+    description: "Read only.Ignored in PUT/POST calls. Expected values: UNKNOWN/ZPN_STATUS_AUTHENTICATED(1)/ZPN_STATUS_DISCONNECTED."
     type: str
     choices:
       - UNKNOWN
@@ -49,146 +50,117 @@ options:
       - ZPN_STATUS_DISCONNECTED
   creation_time:
     description:
-      - "".
+      - ""
     type: str
   ctrl_broker_name:
-    description:
-      - Read only. Ignored in PUT/POST calls.
-    type: str 
+    description: "Read only. Ignored in PUT/POST calls."
+    type: str
   current_version:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   description:
-    description:
-      - Description of the App Connector.
+    description: "Description of the App Connector."
     type: str
   enabled:
     description:
       - Whether the App Connector is enabled or not.
     type: bool
+    default: true
   expected_upgrade_time:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   expected_version:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   fingerprint:
-    description:
-      - "".
+    description: ""
     type: str
   id:
-    description:
-      - "".
+    description: ""
     type: str
   ip_acl:
-    description:
-      - "".
+    description: ""
     type: str
   issued_cert_id:
-    description:
-      - "".
+    description: ""
     type: str
   last_broker_connect_time:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   last_broker_connect_time_duration:
-    description:
-      - Read only. Ignored in PUT/POST calls.
-    type: str      
+    description: "Read only. Ignored in PUT/POST calls."
+    type: str
   last_broker_disconnect_time:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   last_broker_disconnect_time_duration:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   last_upgrade_time:
-    description:
-      - Read only. Ignored in PUT/POST calls.
+    description: "Read only. Ignored in PUT/POST calls."
     type: str
   latitude:
-    description:
-      - Latitude of the App Connector Controller. Integer or decimal. With values in the range of -90 to 90.
-    required: true
+    description: "Latitude of the App Connector Controller. Integer or decimal. With values in the range of -90 to 90."
+    required: false
     type: str
   location:
-    description:
-      - Location of the App Connector Controller.
-    required: true
+    description: "Location of the App Connector Controller."
+    required: false
     type: str
   longitude:
-    description:
-      - Longitude of the App Connector Controller. Integer or decimal. With values in the range of -180 to 180.
-    required: true
+    description: "Longitude of the App Connector Controller. Integer or decimal. With values in the range of -180 to 180."
+    required: false
     type: str
   modified_by:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   modified_time:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   name:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   provisioning_key_id:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   provisioning_key_name:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   platform:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   previous_version:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   private_ip:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   public_ip:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   sarge_version:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   enrollment_cert:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   upgrade_attempt:
-    description:
-      - "".
+    description: ""
     required: false
     type: str
   upgrade_status:
-    description:
-      - Read only. Ignored in PUT/POST calls..
+    description: "Read only. Ignored in PUT/POST calls.."
     required: false
     type: str
     choices:
@@ -198,8 +170,7 @@ options:
       - UNKNOWN
       - RESTARTING
   state:
-    description:
-      - Whether the app connector group should be present or absent.
+    description: "Whether the app connector group should be present or absent."
     type: str
     choices:
         - present
@@ -207,7 +178,7 @@ options:
     default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create/Update/Delete an App Connector Group
   willguibr.zpacloud.zpa_app_connector_groups:
     name: "Example"
@@ -225,9 +196,16 @@ EXAMPLES = """
     dns_query_type: "IPV4"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created app connector group resource record.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_controller import AppConnectorControllerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):
@@ -305,13 +283,13 @@ def main():
         application_start_time=dict(type="str", required=False),
         app_connector_group_id=dict(type="str", required=False),
         app_connector_group_name=dict(type="str", required=False),
-        control_channel_status=dict(type="str", required=False),
+        control_channel_status=dict(type="str", required=False, choices=['UNKNOWN', 'ZPN_STATUS_AUTHENTICATED', 'FAILED', 'ZPN_STATUS_DISCONNECTED']),
         creation_time=dict(type="str", required=False),
         ctrl_broker_name=dict(type="str", required=False),
-        current_version=dict(type="str", required=False),   
-        description=dict(type="str", required=False),          
+        current_version=dict(type="str", required=False),
+        description=dict(type="str", required=False),
         enabled=dict(type="bool", default=True, required=False),
-        expected_upgrade_time=dict(type="str", required=False),   
+        expected_upgrade_time=dict(type="str", required=False),
         expected_version=dict(type="str", required=False),
         fingerprint=dict(type="str", required=False),
         id=dict(type="str", required=False),
@@ -320,24 +298,24 @@ def main():
         last_broker_connect_time=dict(type="str", required=False),
         last_broker_connect_time_duration=dict(type="str", required=False),
         last_broker_disconnect_time=dict(type="str", required=False),
-        last_broker_disconnect_time_duration=dict(type="str", required=False), 
-        last_upgrade_time=dict(type="str", required=False), 
-        latitude=dict(type="str", required=False),   
+        last_broker_disconnect_time_duration=dict(type="str", required=False),
+        last_upgrade_time=dict(type="str", required=False),
+        latitude=dict(type="str", required=False),
         location=dict(type="str", required=False),
-        longitude=dict(type="str", required=False),        
-        modified_by=dict(type="str", required=False),                
+        longitude=dict(type="str", required=False),
+        modified_by=dict(type="str", required=False),
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=False),
         provisioning_key_id=dict(type="str", required=False),
         provisioning_key_name=dict(type="str", required=False),
         platform=dict(type="str", required=False),
-        previous_version=dict(type="str", required=False),                                                             
+        previous_version=dict(type="str", required=False),
         private_ip=dict(type="str", required=False),
         public_ip=dict(type="str", required=False),
         sarge_version=dict(type="str", required=False),
         enrollment_cert=dict(type="str", required=False),
         upgrade_attempt=dict(type="str", required=False),
-        upgrade_status=dict(type="str", required=False),
+        upgrade_status=dict(type="str", required=False, choices=['COMPLETE', 'IN_PROGRESS', 'FAILED', 'UNKNOWN', 'RESTARTING']),
         state=dict(type="str", choices=[
                    "present", "absent"], default="present"),
     )

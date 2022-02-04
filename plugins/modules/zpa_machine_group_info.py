@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_machine_group import MachineGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_machine_group_info
 short_description: Retrieves machine group information.
@@ -25,6 +19,18 @@ version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the machine group.
@@ -37,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Details of All Machine Groups
   willguibr.zpacloud.zpa_machine_group_info:
 
@@ -50,10 +56,16 @@ EXAMPLES = """
     id: "216196257331282583"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Machine Group.
 """
 
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_machine_group import MachineGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):

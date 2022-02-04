@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import SegmentGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_segment_group
 short_description: Create a Segment Group
@@ -23,40 +18,89 @@ author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
 options:
-  name:
-    description:
-        - Name of the server group.
+  client_id:
+    description: ""
     required: false
     type: str
-  id:
-    description:
-        - ID of the server group.
+  client_secret:
+    description: ""
     required: false
     type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
+  applications:
+    description: ""
+    type: list
+    required: False
+    elements: dict
+    suboptions:
+      id:
+        description: ""
+        type: str
+        required: True
+      name:
+        description: ""
+        type: str
+        required: False
   config_space:
-    description:
-        - ID of the server group.
+    description: ""
     type: str
-    choices:
-        - SIEM
-        - DEFAULT
-    default: DEFAULT               
+    required: False
+    default: DEFAULT
+    choices: ['DEFAULT', 'SIEM']
+  description:
+    description: ""
+    type: str
+    required: False
+  enabled:
+    description: ""
+    type: bool
+    required: False
+  id:
+    description: ""
+    type: str
+  name:
+    description: ""
+    type: str
+    required: True
+  policy_migrated:
+    description: ""
+    type: bool
+    required: False
+  tcp_keep_alive_enabled:
+    description: ""
+    type: str
+    required: False
+  state:
+    description: ""
+    type: str
+    choices: ['present', 'absent']
+    default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create/Update/Delete a Segment Group
-    willguibr.zpacloud.zpa_segment_group:
-        name: Example Segment Group
-        config_space: "DEFAULT"
-        description: Example Segment Group
-        enabled: true
-        policy_migrated: true
-        tcp_keep_alive_enabled: "1"
+  willguibr.zpacloud.zpa_segment_group:
+    name: Example Segment Group
+    config_space: "DEFAULT"
+    description: Example Segment Group
+    enabled: true
+    policy_migrated: true
+    tcp_keep_alive_enabled: "1"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created segment group resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import SegmentGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 
 def core(module):
     state = module.params.get("state", None)

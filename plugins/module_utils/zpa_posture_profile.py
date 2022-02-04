@@ -1,3 +1,7 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
     ZPAClientHelper, delete_none
 )
@@ -39,6 +43,7 @@ class PostureProfileService:
             if posture.get("name") == name:
                 return posture
         return None
+
     @delete_none
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
@@ -55,6 +60,7 @@ class PostureProfileService:
             "zscaler_cloud": resp_json.get("zscalerCloud"),
             "zscaler_customer_id": resp_json.get("zscalerCustomerId"),
         }
+
     @delete_none
     def mapAppToJSON(self, posture):
         if posture is None:

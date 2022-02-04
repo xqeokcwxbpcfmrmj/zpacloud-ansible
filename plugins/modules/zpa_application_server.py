@@ -5,15 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_server import ApplicationServerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_application_server
 short_description: Create an application server in the ZPA Cloud.
@@ -23,12 +18,32 @@ author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
 options:
+    client_id:
+        description: ""
+        required: false
+        type: str
+    client_secret:
+        description: ""
+        required: false
+        type: str
+    customer_id:
+        description: ""
+        required: false
+        type: str
     name:
         description:
             - This field defines the name of the server to create.
         required: True
         type: str
-    app_application_server_ids:
+    id:
+        description: ""
+        required: false
+        type: str
+    address:
+        description: ""
+        required: true
+        type: str
+    app_server_group_ids:
         description:
             - This field defines the list of server groups IDs.
         required: False
@@ -49,31 +64,38 @@ options:
             - This field defines the type of the server, DEFAULT or SIEM.
         required: False
         type: str
-        elements: str
+        default: "DEFAULT"
+        choices: ["DEFAULT", "SIEM"]
+    state:
+        description: "Whether the app should be present or absent."
+        type: str
+        choices:
+            - present
+            - absent
+        default: present
 """
 
-EXAMPLES = """
-- name: Create First Application Server
-    willguibr.zpacloud.zpa_application_server:
-    name: Example
-    description: Example
-    address: example.acme.com
-    enabled: true
-"""
-
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create Second Application Server
-    willguibr.zpacloud.zpa_application_server:
-    name: Example1
-    description: Example1
-    address: example.acme.com
-    enabled: true
-    app_server_group_ids: []
+  willguibr.zpacloud.zpa_application_server:
+      name: Example1
+      description: Example1
+      address: example.acme.com
+      enabled: true
+      app_server_group_ids: []
+
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created application server resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_server import ApplicationServerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 
 def core(module):
     state = module.params.get("state", None)

@@ -17,7 +17,6 @@ import json
 from ansible.module_utils.urls import fetch_url
 from ansible.module_utils._text import to_text
 from ansible.module_utils.basic import env_fallback
-from ansible.module_utils.pycompat24 import get_exception
 import urllib.parse
 import random
 import time
@@ -40,7 +39,7 @@ def retry_with_backoff(retries=5, backoff_in_seconds=1):
                 else:
                     sleep = (backoff_in_seconds * 2 ** x +
                              random.uniform(0, 1))
-                    print("\n[INFO] args: %s\nretrying after %d seconds...\n" % (
+                    args[0].module.log("\n[INFO] args: %s\nretrying after %d seconds...\n" % (
                         str(args), sleep))
                     time.sleep(sleep)
                     x += 1
@@ -58,6 +57,7 @@ def delete_none(f):
             return deleteNone(_dict)
         return _dict
     return wrapper
+
 
 def deleteNone(_dict):
     """Delete None values recursively from all of the dictionaries, tuples, lists, sets"""
@@ -80,6 +80,7 @@ def camelcaseToSnakeCase(obj):
             new_obj[re.sub(r'(?<!^)(?=[A-Z])', '_', key).lower()] = value
     return new_obj
 
+
 def snakecaseToCamelcase(obj):
     new_obj = dict()
     for key, value in obj.items():
@@ -89,6 +90,8 @@ def snakecaseToCamelcase(obj):
             newKey = newKey[:1].lower() + newKey[1:]
             new_obj[newKey] = value
     return new_obj
+
+
 class Response(object):
     def __init__(self, resp, info):
         self.body = None
@@ -114,7 +117,6 @@ class Response(object):
 
 class ZPAClientHelper:
     def __init__(self, module):
-        print("Hello there")
         self.baseurl = "https://config.private.zscaler.com"
         # self.private_baseurl = "https://api.private.zscaler.com"
         self.timeout = 240
@@ -132,7 +134,7 @@ class ZPAClientHelper:
             )
         resp_json = response.json
         self.access_token = resp_json.get("access_token")
-        print("[INFO] access_token: '%s'" % (self.access_token))
+        self.module.log("[INFO] access_token: '%s'" % (self.access_token))
         self.headers = {  # 'referer': self.baseurl,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -153,12 +155,11 @@ class ZPAClientHelper:
             resp, info = fetch_url(
                 module=self.module, url=url, data=data, method="POST", headers=headers)
             resp = Response(resp, info)
-            print("[INFO] calling: %s %s %s\n response: %s" %
-                  ("POST", url, str(data), str("" if resp == None else resp.json)))
-            # print("[INFO] %s\n" % (to_text(resp.read())))
+            self.module.log("[INFO] calling: %s %s %s\n response: %s" % (
+                "POST", url, str(data), str("" if resp is None else resp.json)))
+            # self.module.log("[INFO] %s\n" % (to_text(resp.read())))
             return resp
-        except Exception:
-            e = get_exception()
+        except Exception as e:
             self._fail('login', str(e))
 
     def jsonify(self, data):
@@ -196,9 +197,9 @@ class ZPAClientHelper:
             timeout=self.timeout,
         )
         resp = Response(resp, info)
-        print("[INFO] calling: %s %s %s\n response: %s" %
-              (method, url, str(data), str("" if resp == None else resp.json)))
-        if resp.status_code == 400 and fail_safe == True:
+        self.module.log("[INFO] calling: %s %s %s\n response: %s" % (
+            method, url, str(data), str("" if resp is None else resp.json)))
+        if resp.status_code == 400 and fail_safe:
             self.module.fail_json(
                 msg="Operation failed. API response: %s\n" % (resp.json))
         return resp
@@ -219,7 +220,6 @@ class ZPAClientHelper:
     def zpa_argument_spec():
         return dict(
             client_id=dict(
-                aliases=["client_id"],
                 no_log=True,
                 fallback=(
                     env_fallback,
@@ -227,7 +227,6 @@ class ZPAClientHelper:
                 )
             ),
             client_secret=dict(
-                aliases=["client_secret"],
                 no_log=True,
                 fallback=(
                     env_fallback,
@@ -235,7 +234,6 @@ class ZPAClientHelper:
                 )
             ),
             customer_id=dict(
-                aliases=["customer_id"],
                 no_log=True,
                 fallback=(
                     env_fallback,

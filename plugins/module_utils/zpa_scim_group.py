@@ -1,5 +1,9 @@
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper,delete_none
+    ZPAClientHelper, delete_none
 )
 
 
@@ -57,6 +61,7 @@ class ScimGroupService:
             if group.get("name") == name:
                 return group
         return None
+
     @delete_none
     def mapRespJSONToApp(self, resp_json):
         if resp_json is None:
@@ -69,6 +74,7 @@ class ScimGroupService:
             "modified_time": resp_json.get("modifiedTime"),
             "name": resp_json.get("name"),
         }
+
     @delete_none
     def mapAppToJSON(self, group):
         if group is None:

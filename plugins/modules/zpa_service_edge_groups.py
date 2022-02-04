@@ -5,14 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_service_edge_groups
 short_description: Create a Service Edge Group.
@@ -22,142 +18,128 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  name:
-      description:
-        - Name of the Service Edge Group.
-      required: true
-      type: str
-  description:
-      description:
-        - Description of the Service Edge Group.
-      type: str
-  enabled:
-      description:
-        - Whether this Service Edge Group is enabled or not.
-      required: false
-      default: true
-      type: bool
-  id:
-      description:
-        - Description of the Service Edge Group.
-      type: str
-  is_public:
-      description:
-        - Enable or disable public access for the Service Edge Group.
-      type: str
-      required: false
-      choices:
-        - DEFAULT
-        - TRUE
-        - FALSE
-      default: DEFAULT
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   city_country:
-      description:
-        - City Country of the Service Edge Group.
-      type: str
-      required: false
+    description: ""
+    type: str
+    required: False
   country_code:
-      description:
-        - Country code of the Service Edge Group.
-      type: str
-      required: false
+    description: ""
+    type: str
+    required: False
+  description:
+    description: ""
+    type: str
+    required: False
+  enabled:
+    description: ""
+    type: bool
+    default: True
+    required: False
+  geolocation_id:
+    description: ""
+    type: str
+    required: False
+  id:
+    description: ""
+    type: str
+    required: False
+  is_public:
+    description: ""
+    type: str
+    required: False
   latitude:
-      description:
-        - Latitude for the Service Edge Group. Integer or decimal. With values in the range of -90 to 90.
-      type: str
-      required: true
+    description: ""
+    type: str
+    required: False
   location:
-      description:
-        - Location of the Service Edge Group.
-      type: str
-      required: true
+    description: ""
+    type: str
+    required: False
   longitude:
-      description:
-        - Longitude for the Service Edge Group. Integer or decimal. With values in the range of -180 to 180.
-      type: str
-      required: true
-  upgrade_day:
-      description:
-        - Service Edges in this group will attempt to update to a newer version of the software during this specified day. List of valid days (i.e., Sunday, Monday).
-      type: str
-      required: false
-      default: SUNDAY
-  upgrade_time_in_secs:
-      description:
-        - Service Edges in this group will attempt to update to a newer version of the software during this specified time. Integer in seconds (i.e., -66600). The integer should be greater than or equal to 0 and less than 86400, in 15 minute intervals.
-      type: str
-      required: false
-      default: 66600
-  service_edges:
-      description:
-        - List of ID of the service edge connectors.
-      type: list
-      elements: dict
-      required: false
-      suboptions:
-        id:
-          description:
-            - List of ID of the service edge connectors.
-          type: str
-          required: false
-  trusted_networks:
-      description:
-        - List of Trusted networks for this Service Edge Group.
-      type: list
-      elements: dict
-      required: false
-      suboptions:
-        id:
-          description:
-            - List of Trusted networks for this Service Edge Group.
-          type: str
-          required: false
+    description: ""
+    type: str
+    required: False
+  name:
+    description: ""
+    type: str
+    required: True
   override_version_profile:
-      description:
-        - Whether the default version profile of the Service Edges Group is applied or overridden.
-      type: bool
-      required: false
-      choices:
-        - true
-        - false
-      default: true
+    description: ""
+    type: bool
+    default: False
+    required: False
+  upgrade_day:
+    description: ""
+    type: str
+    default: SUNDAY
+    required: False
+  upgrade_time_in_secs:
+    description: ""
+    type: str
+    default: 66600
+    required: False
   version_profile_id:
-      description:
-        - ID of the version profile. To learn more, see Version Profile Use Cases. This value is required, if the value for overrideVersionProfile is set to true.
-      type: str
-      required: false
-      choices:
-        - 0
-        - 1
-        - 2
-      default: 0
+    description: ""
+    type: str
+    required: False
   version_profile_name:
-      description:
-        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
-      type: str
-      required: false
+    description: ""
+    type: str
+    required: False
   version_profile_visibility_scope:
-      description:
-        - Only applicable for a GET request. Ignored in PUT/POST/DELETE requests.
-      type: str
-      required: false
-      choices:
-        - ALL
-        - NONE
-        - CUSTOM
-      default: NONE
+    description: ""
+    type: str
+    default: NONE
+    choices: ['ALL', 'NONE', 'CUSTOM']
+    required: False
+  service_edges:
+    description: ""
+    type: list
+    elements: dict
+    required: False
+    suboptions:
+      id:
+        description: ""
+        type: str
+        required: False
+      name:
+        description: ""
+        type: str
+        required: False
+  trusted_networks:
+    description: ""
+    type: list
+    elements: dict
+    required: False
+    suboptions:
+      id:
+        description: ""
+        type: str
+        required: False
+      name:
+        description: ""
+        type: str
+        required: False
   state:
-      description:
-        - Whether the Service Edge group should be present or absent.
-      type: str
-      required: false
-      choices:
-        - present
-        - absent
-      default: present
+    description: ""
+    type: str
+    choices: ['present', 'absent']
+    default: present
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Create/Update/Delete a Service Edge Group
   willguibr.zpacloud.zpa_service_edge_groups:
     name: "Example"
@@ -175,9 +157,16 @@ EXAMPLES = """
     dns_query_type: "IPV4"
 """
 
-RETURN = """
+RETURN = r"""
 # The newly created service edge group resource record.
 """
+
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_service_edge_groups import ServiceEdgeGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+
 
 def core(module):
     state = module.params.get("state", None)
@@ -205,7 +194,8 @@ def core(module):
     ]
     for param_name in params:
         service_edge[param_name] = module.params.get(param_name, None)
-    existing_edge = service.getByIDOrName(service_edge.get("id"), service_edge.get("name"))
+    existing_edge = service.getByIDOrName(
+        service_edge.get("id"), service_edge.get("name"))
     if existing_edge is not None:
         id = existing_edge.get("id")
         existing_edge.update(service_edge)
@@ -248,8 +238,14 @@ def main():
         upgrade_time_in_secs=dict(type="str", default=66600, required=False),
         version_profile_id=dict(type="str", required=False),
         version_profile_name=dict(type="str", required=False),
-        version_profile_visibility_scope=dict(type="str", default="NONE", choices=[
-                                'ALL', 'NONE', 'CUSTOM'], required=False),
+        version_profile_visibility_scope=dict(type="str",
+                                              default="NONE",
+                                              choices=[
+                                                  'ALL',
+                                                  'NONE',
+                                                  'CUSTOM'
+                                              ],
+                                              required=False),
         service_edges=id_name_spec,
         trusted_networks=id_name_spec,
         state=dict(type="str", choices=[

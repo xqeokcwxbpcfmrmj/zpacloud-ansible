@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_group import ScimGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_scim_group_info
 short_description: Retrieves scim group information from a given IDP
@@ -25,6 +19,18 @@ version_added: "1.0.0"
 requirements:
   - supported starting from zpa_api >= 1.0
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
       - Name of the scim group.
@@ -42,25 +48,30 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Get Information About All SCIM Groups from an IdP
   willguibr.zpacloud.zpa_scim_attribute_header_info:
     idp_name: "IdP_Name"
-    
 - name: Get Information About a SCIM Group by ID
   willguibr.zpacloud.zpa_scim_attribute_header_info:
     id: 216196257331285827
     idp_name: "IdP_Name"
-    
-- name: Get Information About a SCIM Group by Name 
+- name: Get Information About a SCIM Group by Name
   willguibr.zpacloud.zpa_scim_attribute_header_info:
     name: "Finance"
     idp_name: "IdP_Name"
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified posture profile.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_group import ScimGroupService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
 
 
 def core(module):

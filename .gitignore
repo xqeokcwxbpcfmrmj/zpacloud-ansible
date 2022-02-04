@@ -108,3 +108,4 @@ zpa_all_together/
 zpa_all_together/*
 scripts/
 scripts/*
+ansible_collections/

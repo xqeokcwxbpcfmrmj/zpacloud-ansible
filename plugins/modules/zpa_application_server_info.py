@@ -5,16 +5,10 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
-from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_server import ApplicationServerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible.module_utils._text import to_native
-from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
 
 __metaclass__ = type
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
 ---
 module: zpa_application_server_info
 short_description: Retrieve an application server information.
@@ -24,6 +18,18 @@ author:
     - William Guilherme (@willguibr)
 version_added: '1.0.0'
 options:
+  client_id:
+    description: ""
+    required: false
+    type: str
+  client_secret:
+    description: ""
+    required: false
+    type: str
+  customer_id:
+    description: ""
+    required: false
+    type: str
   name:
     description:
      - Name of the server group.
@@ -36,22 +42,31 @@ options:
     type: str
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 - name: Gather Information Details of All Application Servers
-    willguibr.zpacloud.zpa_application_server_info:
+  willguibr.zpacloud.zpa_application_server_info:
 
 - name: Gather Information Details of an Application Server by Name
-    willguibr.zpacloud.zpa_application_server_info:
-    name: server1.acme.com
+  willguibr.zpacloud.zpa_application_server_info:
+      name: server1.acme.com
 
 - name: Gather Information Details of an Application Server by ID
-    willguibr.zpacloud.zpa_application_server_info:
-    id: "216196257331291921"
+  willguibr.zpacloud.zpa_application_server_info:
+      id: "216196257331291921"
+
 """
 
-RETURN = """
+RETURN = r"""
 # Returns information on a specified Application Server.
 """
+
+from re import T
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_server import ApplicationServerService
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from traceback import format_exc
+
 
 def core(module):
     application_server_name = module.params.get("name", None)
