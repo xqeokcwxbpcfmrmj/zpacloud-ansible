@@ -77,7 +77,7 @@ class ApplicationServerService:
         server = self.getByID(appID)
         if server is None:
             return None
-        if len(server.get("app_server_group_ids")) > 0:
+        if len(server.get("app_server_group_ids", [])) > 0:
             self.module.log(
                 "[INFO] Removing server group ID/s from application server: %s" % (appID))
             server["app_server_group_ids"] = []
