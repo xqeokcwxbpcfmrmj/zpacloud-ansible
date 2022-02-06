@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_trusted_networks_info
 short_description: Retrieves information about a Trusted Network.
@@ -44,7 +44,7 @@ options:
 
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information About All Trusted Networks
   willguibr.zpacloud.zpa_trusted_network_info:
 - name: Get information about Trusted Networks by Name
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: 216196257331282234
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Trusted Network.
 """
 

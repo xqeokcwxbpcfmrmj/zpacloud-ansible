@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_forwarding_rule_info
 short_description: Retrieves policy forwarding rule information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information About All Policy Forwarding Rules
   willguibr.zpacloud.zpa_policy_forwarding_rule_info:
 - name: Get information About Forwarding Rules by Name
@@ -54,7 +54,7 @@ EXAMPLES = r"""
     id: "216196257331292020"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified policy forwarding rule.
 """
 

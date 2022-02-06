@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_posture_profile_info
 short_description: Retrieves details of a posture profile resource.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information About All Posture Profiles
   willguibr.zpacloud.zpa_posture_profile_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     name: CrowdStrike_ZPA_Pre-ZTA
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified posture profile.
 """
 

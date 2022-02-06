@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_enrollement_certificate_info
 short_description: Retrieves enrollment certificate information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather Information Details of All Enrollment Certificates
   willguibr.zpacloud.zpa_enrollment_cert_info:
 
@@ -68,7 +68,7 @@ EXAMPLES = r"""
     name: "Isolation Client"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Enrollment Certificate.
 """
 

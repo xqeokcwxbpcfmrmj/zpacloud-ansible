@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_server
 short_description: Create an application server in the ZPA Cloud.
@@ -75,7 +75,7 @@ options:
         default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create Second Application Server
   willguibr.zpacloud.zpa_application_server:
       name: Example1
@@ -86,7 +86,7 @@ EXAMPLES = r"""
 
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created application server resource record.
 """
 

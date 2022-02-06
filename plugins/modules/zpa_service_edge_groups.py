@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_service_edge_groups
 short_description: Create a Service Edge Group.
@@ -139,7 +139,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create/Update/Delete a Service Edge Group
   willguibr.zpacloud.zpa_service_edge_groups:
     name: "Example"
@@ -157,7 +157,7 @@ EXAMPLES = r"""
     dns_query_type: "IPV4"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created service edge group resource record.
 """
 

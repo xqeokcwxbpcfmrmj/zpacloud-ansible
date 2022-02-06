@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_ba_certificate_info
 short_description: Retrieves browser access certificate information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather Details of All Browser Certificates
   willguibr.zpacloud.zpa_ba_certificate_info:
 
@@ -56,7 +56,7 @@ EXAMPLES = r"""
     id: "216196257331282583"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Browser Access certificate.
 """
 

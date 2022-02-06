@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_saml_attribute_info
 short_description: Retrieves saml attributes from a given IDP
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information About All SAML Attributes
   willguibr.zpacloud.zpa_saml_attribute_info:
 - name: Get Information About Saml Attribute by Attribute Name
@@ -54,7 +54,7 @@ EXAMPLES = r"""
     id: 216196257331285827
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified SAML attribute.
 """
 

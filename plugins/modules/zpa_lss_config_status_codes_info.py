@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_lss_config_status_codes_info
 short_description: Retrieves LSS Status Codes Information.
@@ -33,7 +33,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details About All LSS Status Codes
   willguibr.zpacloud.zpa_lss_config_status_codes_info:
   register: lss_status_codes
@@ -41,7 +41,7 @@ EXAMPLES = r"""
     msg: "{{ lss_status_codes }}"
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: LSS Status Codes
     returned: success

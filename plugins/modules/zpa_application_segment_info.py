@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_segment_info
 short_description: Retrieve an application segment information.
@@ -39,7 +39,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Retrieve Details of All Application Segments
   willguibr.zpacloud.zpa_application_segment_info:
 
@@ -52,7 +52,7 @@ EXAMPLES = r"""
     id: "216196257331291981"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Application Segment.
 """
 

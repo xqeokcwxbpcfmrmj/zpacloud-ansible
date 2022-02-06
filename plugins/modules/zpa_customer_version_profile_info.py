@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_customer_version_profile_info
 short_description: Retrieves customer version profile information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information Details of All Customer Version Profiles
   willguibr.zpacloud.zpa_customer_version_profile_info:
 
@@ -56,7 +56,7 @@ EXAMPLES = r"""
     id: "2"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Customer Version Profile.
 """
 

@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_access_rule_info
 short_description: Retrieves policy access rule information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details of All Policy Access Rules
   willguibr.zpacloud.zpa_policy_access_rule_info:
 - name: Get Details of a Policy Access Rule by Name
@@ -54,7 +54,7 @@ EXAMPLES = r"""
     id: "216196257331291979"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Policy Access Rule.
 """
 

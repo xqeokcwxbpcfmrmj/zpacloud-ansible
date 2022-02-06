@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_groups
 short_description: Create an App Connector Group in the ZPA Cloud.
@@ -141,7 +141,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create/Update/Delete an App Connector Group
   willguibr.zpacloud.zpa_app_connector_groups:
     name: "Example"
@@ -159,7 +159,7 @@ EXAMPLES = r"""
     dns_query_type: "IPV4"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created app connector group resource record.
 """
 

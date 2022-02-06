@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_app_connector_controller_info
 short_description: Retrieves an app connector controller information
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Retrieve Details of all App Connector Groups
   willguibr.zpacloud.zpa_app_connector_controller_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: "216196257331292046"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified App Connector Group.
 """
 

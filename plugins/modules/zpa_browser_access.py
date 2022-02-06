@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_browser_access
 short_description: Create a Browser Access Application Segment.
@@ -229,7 +229,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create an app segment
   willguibr.zpacloud.zpa_browser_access:
     name: Example Application
@@ -263,7 +263,7 @@ EXAMPLES = r"""
       - "216196257331291969"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created browser access application segment resource record.
 """
 

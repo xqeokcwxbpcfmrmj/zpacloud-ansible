@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_server_info
 short_description: Retrieve an application server information.
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather Information Details of All Application Servers
   willguibr.zpacloud.zpa_application_server_info:
 
@@ -56,7 +56,7 @@ EXAMPLES = r"""
 
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Application Server.
 """
 

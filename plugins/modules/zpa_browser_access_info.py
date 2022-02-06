@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_browser_access_info
 short_description: Retrieves browser access application segment information.
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather information about all browser access application segments
   willguibr.zpacloud.zpa_browser_access_info:
   register: all_browser_access
@@ -59,7 +59,7 @@ EXAMPLES = r"""
 
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Browser Access Application Segment.
 """
 

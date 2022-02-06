@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_lss_client_types_info
 short_description: Retrieves LSS Client Types Information.
@@ -34,7 +34,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details About All LSS Client Types
   willguibr.zpacloud.zpa_lss_client_types_info:
   register: lss_client_typeps
@@ -43,7 +43,7 @@ EXAMPLES = r"""
 
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: Trusted Network information
     returned: success

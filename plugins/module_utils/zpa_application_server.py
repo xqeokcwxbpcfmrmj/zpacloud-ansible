@@ -89,7 +89,7 @@ class ApplicationServerService:
         return server
 
     def create(self, application_server):
-        """Create new Application Server"""
+        """Create new Application Serve"""
         ApplicationServerJson = self.mapAppToJSON(application_server)
         response = self.rest.post(
             "/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id), data=ApplicationServerJson)
@@ -99,7 +99,7 @@ class ApplicationServerService:
         return self.mapRespJSONToApp(response.json)
 
     def update(self, application_server):
-        """update the Application Server"""
+        """update the Application Serve"""
         ApplicationServerJson = self.mapAppToJSON(application_server)
         response = self.rest.put(
             "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, ApplicationServerJson.get("id")), data=ApplicationServerJson)
@@ -109,7 +109,7 @@ class ApplicationServerService:
         return application_server
 
     def delete(self, id):
-        """delete the Application Server"""
+        """delete the Application Serve"""
         self.unlinkAttachedServerGroups(id)
         response = self.rest.delete(
             "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, id))

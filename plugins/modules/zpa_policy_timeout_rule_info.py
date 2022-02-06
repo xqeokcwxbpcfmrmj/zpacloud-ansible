@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_timeout_rule_info
 short_description: Retrieves policy timeout rule information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather information about all policy rules
   willguibr.zpacloud.zpa_policy_timeout_rule_info:
 - name: Get Information About a Specific Timeout Rule by Name
@@ -54,7 +54,7 @@ EXAMPLES = r"""
     id: "216196257331292020"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified policy timeout rule.
 """
 

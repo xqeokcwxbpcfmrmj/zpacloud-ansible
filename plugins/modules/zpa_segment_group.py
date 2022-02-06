@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_segment_group
 short_description: Create a Segment Group
@@ -80,7 +80,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create/Update/Delete a Segment Group
   willguibr.zpacloud.zpa_segment_group:
     name: Example Segment Group
@@ -91,7 +91,7 @@ EXAMPLES = r"""
     tcp_keep_alive_enabled: "1"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created segment group resource record.
 """
 

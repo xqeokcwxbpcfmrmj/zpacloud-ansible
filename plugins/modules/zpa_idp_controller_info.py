@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_idp_controller_info
 short_description: Retrieves Identity Provider information.
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details of All IdP Controllers
   willguibr.zpacloud.zpa_idp_controller_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: "216196257331282583"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Identity Provider.
 """
 

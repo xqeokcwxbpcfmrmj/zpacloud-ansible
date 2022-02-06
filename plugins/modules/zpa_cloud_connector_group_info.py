@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_cloud_connector_group_info
 short_description: Retrieves cloud connector group information.
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information Details of All Cloud Connector Groups
   willguibr.zpacloud.zpa_cloud_connector_group_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: "216196257331292017"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Cloud Connector Group.
 """
 

@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_service_edge_groups_info
 short_description: Retrieves information about a Service Edge Group.
@@ -43,7 +43,7 @@ options:
 
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get information about all Service Edge Groups
   willguibr.zpacloud.zpa_service_edge_groups_info:
 - name: Get information about Service Edge Connector Group by ID
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     name: "Example"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Service Edge Group.
 """
 

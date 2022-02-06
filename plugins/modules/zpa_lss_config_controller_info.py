@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_lss_config_controller_info
 short_description: Retrieves LSS Config controller information.
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information Details of All Cloud lss_configs
   willguibr.zpacloud.zpa_lss_config_controller_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: "216196257331292017"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified LSS Config controlle.
 """
 

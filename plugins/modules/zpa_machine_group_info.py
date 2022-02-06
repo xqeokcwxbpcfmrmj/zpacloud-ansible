@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_machine_group_info
 short_description: Retrieves machine group information.
@@ -43,7 +43,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details of All Machine Groups
   willguibr.zpacloud.zpa_machine_group_info:
 
@@ -56,7 +56,7 @@ EXAMPLES = r"""
     id: "216196257331282583"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Machine Group.
 """
 

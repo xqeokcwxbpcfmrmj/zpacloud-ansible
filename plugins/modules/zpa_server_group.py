@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_server_group
 short_description: Create a Server Group .
@@ -123,7 +123,7 @@ options:
 
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create/Update/Delete a Server Group - Dynamic Discovery Off
   willguibr.zpacloud.zpa_server_group:
     name: "Example"
@@ -138,7 +138,7 @@ EXAMPLES = r"""
       - id: "216196257331291921"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created server group resource record.
 """
 

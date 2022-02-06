@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_provisioning_key_info
 short_description: Retrieves details about a Provisioning Key.
@@ -50,7 +50,7 @@ options:
       - "The supported values are CONNECTOR_GRP and SERVICE_EDGE_GRP."
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Gather Details of All SERVICE_EDGE_GRP Provisioning Keys
   willguibr.zpacloud.zpa_provisioning_key_info:
     association_type: "SERVICE_EDGE_GRP"
@@ -66,7 +66,7 @@ EXAMPLES = r"""
     association_type: "SERVICE_EDGE_GRP"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified provisioning key resource.
 """
 

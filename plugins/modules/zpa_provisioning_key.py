@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_provisioning_key
 short_description: Create a Provisioning Key.
@@ -115,7 +115,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get ID Information of a Service Edge Group Enrollment Certificate
   willguibr.zpacloud.zpa_enrollement_certificate_info:
     name: "Service Edge"
@@ -134,7 +134,7 @@ EXAMPLES = r"""
     zcomponent_id: "{{ service_edge_group.data[0].id }}"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created app connector group or service edge group provisioning key resource record.
 """
 

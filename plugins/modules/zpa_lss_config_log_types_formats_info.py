@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_lss_config_log_types_formats_info
 short_description: Retrieves LSS Log formats Information.
@@ -39,7 +39,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
     - name: Gather LSS Log types formats
       willguibr.zpacloud.zpa_lss_config_log_types_formats_info:
         log_type: zpn_trans_log
@@ -49,7 +49,7 @@ EXAMPLES = r"""
         msg: "{{ log_types_formats }}"
 """
 
-RETURN = r"""
+RETURN = """
 data:
     description: LSS Log formats
     returned: success

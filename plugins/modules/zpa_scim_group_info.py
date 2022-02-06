@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_scim_group_info
 short_description: Retrieves scim group information from a given IDP
@@ -48,7 +48,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Information About All SCIM Groups from an IdP
   willguibr.zpacloud.zpa_scim_attribute_header_info:
     idp_name: "IdP_Name"
@@ -62,7 +62,7 @@ EXAMPLES = r"""
     idp_name: "IdP_Name"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified posture profile.
 """
 

@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_access_rule
 short_description: Create a Policy Access Rule
@@ -194,7 +194,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Access Policy - Intranet Web Apps
   willguibr.zpacloud.zpa_policy_access_rule:
     name: "Intranet Web Apps"
@@ -226,7 +226,7 @@ EXAMPLES = r"""
             rhs: "{{ engineering_group.data[0].id }}"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created policy access rule resource record.
 """
 

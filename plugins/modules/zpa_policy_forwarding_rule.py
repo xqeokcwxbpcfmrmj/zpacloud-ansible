@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_forwarding_rule
 short_description: Create a Policy Forwarding Rule.
@@ -158,7 +158,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Policy Forwarding Rule - Example
   willguibr.zpacloud.zpa_policy_forwarding_rule:
     name: "Policy Forwarding Rule - Example"
@@ -205,7 +205,7 @@ EXAMPLES = r"""
             rhs: "false"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created access client forwarding policy rule resource record.
 """
 

@@ -6,7 +6,7 @@
 
 from __future__ import (absolute_import, division, print_function)
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_policy_timeout_rule
 short_description: Create a Policy Timeout Rule
@@ -161,7 +161,7 @@ options:
 
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: "Policy Timeout Rule - Example"
   willguibr.zpacloud.zpa_policy_timeout_rule:
     name: "Policy Timeout Rule - Example"
@@ -210,7 +210,7 @@ EXAMPLES = r"""
             rhs: "true"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created policy access timeout rule resource record.
 """
 

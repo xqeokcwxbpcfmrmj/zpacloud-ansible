@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_application_segment
 short_description: Create an application segment in the ZPA Cloud.
@@ -198,7 +198,7 @@ options:
     default: present
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Create/Update/Delete an application segment.
   willguibr.zpacloud.zpa_application_segment:
     name: Example Application Segment
@@ -217,7 +217,7 @@ EXAMPLES = r"""
       - "216196257331291969"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created application segment resource record.
 """
 

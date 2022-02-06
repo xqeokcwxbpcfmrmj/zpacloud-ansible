@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_server_group_info
 short_description: Retrieves information about an server group
@@ -42,7 +42,7 @@ options:
     type: str
 """
 
-EXAMPLES = r"""
+EXAMPLES = """
 - name: Get Details of All Server Groups
   willguibr.zpacloud.zpa_server_group_info:
 
@@ -55,7 +55,7 @@ EXAMPLES = r"""
     id: "216196257331291969"
 """
 
-RETURN = r"""
+RETURN = """
 # Returns information on a specified Server Group.
 """
 
