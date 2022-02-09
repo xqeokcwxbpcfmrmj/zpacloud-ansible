@@ -186,7 +186,7 @@ def core(module):
     elif state == "absent":
         if existing_server_group is not None:
             service.delete(existing_server_group.get("id"))
-            module.exit_json(changed=False, data=existing_server_group)
+            module.exit_json(changed=True, data=existing_server_group)
     module.exit_json(changed=False, data={})
 
 
