@@ -154,3 +154,28 @@
       ansible.builtin.assert:
         that:
           - not result.changed
+    - name: Delete App connector Group
+      willguibr.zpacloud.zpa_app_connector_groups:
+        state: absent
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "{{app_connector_group.data.name}}"
+        id: "{{app_connector_group.data.id}}"
+        description: "Dummy Application connector group for integration test"
+        enabled: true
+        city_country: California, US
+        country_code: US
+        latitude: 37.3382082
+        longitude: -121.8863286
+        location: San Jose, CA, USA
+        upgrade_day: SUNDAY
+        upgrade_time_in_secs: 66600
+        override_version_profile: true
+        version_profile_id: "1"
+        dns_query_type: "IPV4"
+      register: result
+    - name: Verify App connector Group is absent
+      ansible.builtin.assert:
+        that:
+          - result.changed
