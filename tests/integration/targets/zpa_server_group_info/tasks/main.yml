@@ -11,14 +11,14 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
-    - name: Gather Policy Access Rule Information
-      willguibr.zpacloud.zpa_policy_access_rule_info:
+    - name: Gather Server Group Information
+      willguibr.zpacloud.zpa_server_group_info:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
       register: result
 
-    - name: Verify policy access rule fetched
+    - name: Verify Server Group fetched
       ansible.builtin.assert:
         that:
           - not result.changed

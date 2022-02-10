@@ -278,7 +278,7 @@ def core(module):
             service.detach_from_segment_group(existing_app.get(
                 "id"), existing_app.get("segment_group_id"))
             service.delete(existing_app.get("id"))
-            module.exit_json(changed=False, data=existing_app)
+            module.exit_json(changed=True, data=existing_app)
     module.exit_json(changed=False, data={})
 
 
