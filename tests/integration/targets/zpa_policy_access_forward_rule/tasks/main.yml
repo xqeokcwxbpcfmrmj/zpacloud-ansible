@@ -18,7 +18,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       ignore_errors: true # In case one was left from previous run
@@ -31,7 +31,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       ignore_errors: true # In case one was left from previous run
@@ -49,7 +49,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       register: result
@@ -67,7 +67,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       register: result
@@ -97,7 +97,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       register: result
@@ -113,7 +113,7 @@
         customer_id: "{{ customer_id }}"
         name: "Test policy access rule"
         description: "Test policy access rule"
-        action: "ALLOW"
+        action: "BYPASS"
         rule_order: 1
         operator: "AND"
       register: result
