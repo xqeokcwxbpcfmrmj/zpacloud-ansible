@@ -96,10 +96,6 @@
           - not result.changed
           - result.data[0] is defined
 
-    - name: Give the ZPA Cloud a 5 seconds to settle
-      ansible.builtin.pause:
-        seconds: 5
-
     - name: Delete Application Server
       willguibr.zpacloud.zpa_application_server:
         state: absent
