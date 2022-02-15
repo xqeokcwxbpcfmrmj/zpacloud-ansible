@@ -24,7 +24,6 @@
         operator: "AND"
       ignore_errors: true # In case one was left from previous run
       register: result
-
     - name: Ensure Policy Access Forward is absent
       willguibr.zpacloud.zpa_policy_forwarding_rule:
         state: absent
@@ -38,12 +37,10 @@
         operator: "AND"
       ignore_errors: true # In case one was left from previous run
       register: result
-
     - name: Verify Policy Access Forward is absent
       ansible.builtin.assert:
         that:
           - not result.changed
-
     # Create Policy Access Forward (Present)
     - name: Ensure Policy Access Forward is (Present)
       willguibr.zpacloud.zpa_policy_forwarding_rule:
@@ -57,14 +54,12 @@
         rule_order: 1
         operator: "AND"
       register: result
-      
     - name: Verify Policy Access Forward is present
       ansible.builtin.assert:
         that:
           - result.data
           - result.data.name is defined
           - result.data.id is defined
-
     - name: Create the Policy Access Forward (again; idempotency check)
       willguibr.zpacloud.zpa_policy_forwarding_rule:
         state: present
@@ -77,12 +72,10 @@
         rule_order: 1
         operator: "AND"
       register: result
-
     - name: Verify Policy Access Forward is absent (from absent)
       ansible.builtin.assert:
         that:
           - result.changed
-
     - name: Fetch all Policy Access Forward
       willguibr.zpacloud.zpa_policy_forwarding_rule_info:
         client_id: "{{ client_id }}"
@@ -94,11 +87,9 @@
         that:
           - not result.changed
           - result.data[0] is defined
-
     - name: Give the ZPA Cloud a 5 seconds to settle
       ansible.builtin.pause:
         seconds: 5
-
     - name: Delete Policy Access Forward
       willguibr.zpacloud.zpa_policy_forwarding_rule:
         state: absent
@@ -111,12 +102,10 @@
         rule_order: 1
         operator: "AND"
       register: result
-
     - name: Verify Policy Access Forward is absent
       ansible.builtin.assert:
         that:
           - result.changed
-
     - name: Delete Policy Access Forward (again; idempotency check)
       willguibr.zpacloud.zpa_policy_forwarding_rule:
         state: absent
@@ -129,7 +118,6 @@
         rule_order: 1
         operator: "AND"
       register: result
-
     - name: Verify Policy Access is absent
       ansible.builtin.assert:
         that:
