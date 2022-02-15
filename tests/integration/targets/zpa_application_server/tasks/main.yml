@@ -26,6 +26,9 @@
 
     - name: Find the Application Server
       willguibr.zpacloud.zpa_application_server_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         name: "{{ name }}"
       register: result
 
