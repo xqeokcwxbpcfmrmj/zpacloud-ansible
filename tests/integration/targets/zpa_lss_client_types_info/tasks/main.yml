@@ -11,16 +11,15 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
-    - name: Gather App Connector Group Information
-      willguibr.zpacloud.zpa_app_connector_groups_info:
+    - name: Gather LSS Client Types Information
+      willguibr.zpacloud.zpa_lss_client_types_info:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
       register: result
 
-    - name: Verify app connector group info fetched
+    - name: Verify lss client types info fetched
       ansible.builtin.assert:
         that:
           - not result.changed
           - result.data is defined
-

@@ -11,16 +11,12 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
-    - name: Gather App Connector Group Information
-      willguibr.zpacloud.zpa_app_connector_groups_info:
-        client_id: "{{ client_id }}"
-        client_secret: "{{ client_secret }}"
-        customer_id: "{{ customer_id }}"
+    - name: Fetch all Enrollment Certificate Information
+      willguibr.zpacloud.zpa_enrollement_certificate_info:
       register: result
 
-    - name: Verify app connector group info fetched
+    - name: Ensure all enrollment certificate info fetched
       ansible.builtin.assert:
         that:
           - not result.changed
           - result.data is defined
-

@@ -2,7 +2,7 @@ name: integration
 on:
   push:
     branches:
-      - ci*
+      # - ci*
       - master
       - develop
   schedule:
