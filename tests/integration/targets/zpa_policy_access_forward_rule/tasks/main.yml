@@ -118,7 +118,7 @@
           - result.changed
 
     - name: Delete Policy Access Forward (again; idempotency check)
-      willguibr.zpacloud.zpa_policy_access_rule:
+      willguibr.zpacloud.zpa_policy_forwarding_rule:
         state: absent
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
