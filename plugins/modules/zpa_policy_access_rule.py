@@ -226,7 +226,7 @@ EXAMPLES = r"""
             rhs: "{{ engineering_group.data[0].id }}"
 """
 
-RETURN = r"""
+RETURN = """
 # The newly created policy access rule resource record.
 """
 

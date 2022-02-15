@@ -8,7 +8,7 @@ from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-DOCUMENTATION = r"""
+DOCUMENTATION = """
 ---
 module: zpa_lss_config_controller
 short_description: Create a LSS CONFIG.
@@ -18,18 +18,80 @@ author:
   - William Guilherme (@willguibr)
 version_added: "1.0.0"
 options:
-  client_id:
+  config:
+    type: dict
+    required: False
     description: ""
-    required: false
-    type: str
-  client_secret:
-    description: ""
-    required: false
-    type: str
-  customer_id:
-    description: ""
-    required: false
-    type: str
+    suboptions:
+      audit_message:
+        description: ""
+        type: str
+        required: False
+      description:
+        description: ""
+        type: str
+        required: False
+      enabled:
+        description: ""
+        type: bool
+        required: False
+        default: True
+      filter:
+        description: ""
+        type: list
+        elements: str
+        required: False
+      format:
+            description: ""
+        type: str
+        required: True
+      id:
+        description: ""
+        type: str
+      name:
+        description: ""
+        type: str
+        required: True
+      lss_host:
+        description: ""
+        type: str
+        required: True
+      lss_port:
+        description: ""
+        type: str
+        required: True
+      source_log_type:
+        description: ""
+        type: str
+        required: True
+        choices:
+          - "zpn_trans_log"
+          - "zpn_auth_log"
+          - "zpn_ast_auth_log"
+          - "zpn_http_trans_log"
+          - "zpn_audit_log"
+          - "zpn_sys_auth_log"
+          - "zpn_http_insp"
+          - "zpn_ast_comprehensive_stats"
+      use_tls:
+        description: ""
+        type: bool
+        required: False
+        default: False
+  connector_groups:
+    type: list
+    elements: dict
+    required: False
+    description: "App Connector Group(s) to be added to the LSS configuration"
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
   id:
     type: str
     description: ""
@@ -135,80 +197,6 @@ options:
                 type: str
                 required: True
                 choices: ["APP", "APP_GROUP", "CLIENT_TYPE"]
-  connector_groups:
-    type: list
-    elements: dict
-    required: False
-    description: "App Connector Group(s) to be added to the LSS configuration"
-    suboptions:
-      name:
-        required: false
-        type: str
-        description: ""
-      id:
-        required: true
-        type: str
-        description: ""
-  config:
-    type: dict
-    required: False
-    description: ""
-    suboptions:
-      format:
-        description: ""
-        type: str
-        required: True
-      id:
-        description: ""
-        type: str
-      name:
-        description: ""
-        type: str
-        required: True
-      lss_port:
-        description: ""
-        type: str
-        required: True
-      use_tls:
-        description: ""
-        type: bool
-        required: False
-        default: False
-      enabled:
-        description: ""
-        type: bool
-        required: False
-        default: True
-      description:
-        description: ""
-        type: str
-        required: False
-      filter:
-        description: ""
-        type: list
-        elements: str
-        required: False
-      lss_host:
-        description: ""
-        type: str
-        required: True
-      source_log_type:
-        description: ""
-        type: str
-        required: True
-        choices:
-          - "zpn_trans_log"
-          - "zpn_auth_log"
-          - "zpn_ast_auth_log"
-          - "zpn_http_trans_log"
-          - "zpn_audit_log"
-          - "zpn_sys_auth_log"
-          - "zpn_http_insp"
-          - "zpn_ast_comprehensive_stats"
-      audit_message:
-        description: ""
-        type: str
-        required: False
   state:
     description: "Whether the config should be present or absent."
     type: str
@@ -218,7 +206,7 @@ options:
     default: present
 
 """
-EXAMPLES = r'''
+EXAMPLES = """
 - name: LSS Controller
   hosts: localhost
   tasks:
@@ -240,10 +228,12 @@ EXAMPLES = r'''
     - name: lss_controller
       debug:
         msg: "{{ lss_controller }}"
-'''
+"""
 
-RETURN = r'''
-'''
+RETURN = """
+# The newly created policy access rule resource record.
+"""
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
 from traceback import format_exc
