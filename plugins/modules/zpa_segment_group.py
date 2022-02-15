@@ -137,7 +137,7 @@ def core(module):
     elif state == "absent":
         if existing_segment_group is not None:
             service.delete(existing_segment_group.get("id"))
-            module.exit_json(changed=False, data=existing_segment_group)
+            module.exit_json(changed=True, data=existing_segment_group)
     module.exit_json(changed=False, data={})
 
 

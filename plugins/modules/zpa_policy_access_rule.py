@@ -284,7 +284,7 @@ def core(module):
     elif state == "absent":
         if existing_policy is not None:
             service.delete(existing_policy.get("id"), policy_set_id)
-            module.exit_json(changed=False, data=existing_policy)
+            module.exit_json(changed=True, data=existing_policy)
     module.exit_json(changed=False, data={})
 
 
