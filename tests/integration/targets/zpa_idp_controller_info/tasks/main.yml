@@ -13,6 +13,9 @@
 
     - name: Gather Identity Provider Information
       willguibr.zpacloud.zpa_idp_controller_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
       register: result
 
     - name: Verify identity provider info fetched
