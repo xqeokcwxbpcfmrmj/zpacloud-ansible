@@ -81,7 +81,7 @@
     - name: Verify Application Server is absent (again; idempotency check)
       ansible.builtin.assert:
         that:
-          - result.changed
+          - not result.changed
 
     - name: Fetch all Application Server
       willguibr.zpacloud.zpa_application_server_info:
@@ -116,7 +116,7 @@
     - name: Verify Application Server is absent
       ansible.builtin.assert:
         that:
-          - result.changed
+          - not result.changed
 
     - name: Delete Application Server (again; idempotency check)
       willguibr.zpacloud.zpa_application_server:
