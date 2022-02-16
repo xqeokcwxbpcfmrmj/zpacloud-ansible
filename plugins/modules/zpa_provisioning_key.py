@@ -212,11 +212,11 @@ def main():
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=True),
         provisioning_key=dict(type="str", required=False, no_log=True,),
-        enrollment_cert_id=dict(type="str", required=False),
+        enrollment_cert_id=dict(type="str", required=True),
         enrollment_cert_name=dict(type="str", required=False),
         ui_config=dict(type="str", required=False),
         usage_count=dict(type="str", required=False),
-        zcomponent_id=dict(type="str", required=False),
+        zcomponent_id=dict(type="str", required=True),
         zcomponent_name=dict(type="str", required=False),
         association_type=dict(type="str", choices=[
                               "CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True),

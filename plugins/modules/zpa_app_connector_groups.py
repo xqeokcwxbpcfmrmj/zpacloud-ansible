@@ -220,7 +220,7 @@ def main():
         type='str', required=False), name=dict(type='str', required=False)), required=False)
     argument_spec.update(
         connectors=id_name_spec,
-        name=dict(type="str", required=False),
+        name=dict(type="str", required=True),
         id=dict(type="str", required=False),
         city_country=dict(type="str", required=False),
         country_code=dict(type="str", required=False),

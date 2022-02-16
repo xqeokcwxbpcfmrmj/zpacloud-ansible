@@ -35,7 +35,7 @@ options:
     description:
       - Log type
     required: true
-    choices: ["zpn_trans_log", "zpn_auth_log", "zpn_ast_auth_log", "zpn_http_trans_log", "zpn_audit_log", "zpn_ast_comprehensive_stats"]
+    choices: ["zpn_trans_log", "zpn_auth_log", "zpn_ast_auth_log", "zpn_http_trans_log", "zpn_audit_log", "zpn_ast_comprehensive_stats", "zpn_sys_auth_log"]
     type: str
 """
 
@@ -83,8 +83,8 @@ def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
         log_type=dict(type="str", required=True, choices=[
-                      'zpn_trans_log', 'zpn_auth_log', 'zpn_ast_auth_log', 'zpn_waf_http_exchanges_log',
-                      'zpn_http_trans_log', 'zpn_audit_log', 'zpn_ast_comprehensive_stats', 'zpn_sys_auth_log']),
+                      'zpn_trans_log', 'zpn_auth_log', 'zpn_ast_auth_log', 'zpn_http_trans_log',
+                      'zpn_audit_log', 'zpn_ast_comprehensive_stats', 'zpn_sys_auth_log']),
     )
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=True)
