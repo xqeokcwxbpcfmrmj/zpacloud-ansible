@@ -21,4 +21,3 @@
         that:
           - not result.changed
           - result.data is defined
-
