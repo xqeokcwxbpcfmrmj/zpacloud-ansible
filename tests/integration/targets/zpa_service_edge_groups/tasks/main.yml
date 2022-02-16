@@ -10,6 +10,9 @@
 
     - name: Ensure Service Edge Group is (Absent)
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: absent
         name: "{{ name }}"
         description: "{{ description }}"
@@ -31,6 +34,9 @@
 
     - name: Ensure Service Edge Group is (Present)
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: present
         name: "{{ name }}"
         description: "{{ description }}"
@@ -61,6 +67,9 @@
 
     - name: Destroy Service Edge Group is (Absent)
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: present
         name: "{{ name }}"
         description: "{{ description }}"
@@ -87,6 +96,9 @@
 
     - name: Create the Service Edge Group (Inactive)
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: inactive
         name: "{{ name }}"
         description: "{{ description }}"
@@ -121,6 +133,9 @@
 
     - name: Create the Service Edge Group (always)
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: absent
         name: "{{ name }}"
         description: "{{ description }}"
