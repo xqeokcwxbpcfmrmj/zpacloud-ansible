@@ -185,6 +185,9 @@
         state: "absent"
         name: "Dummy CONNECTOR_GRP Provisioning Key"
         association_type: "CONNECTOR_GRP"
+        max_usage: "2"
+        enrollment_cert_id: "{{ connector_cert_id.data[0].id }}"
+        zcomponent_id: "{{ app_connector_group.data.id }}"
       register: result
       ignore_errors: true
       
@@ -196,5 +199,8 @@
         state: "absent"
         name: "Dummy SERVICE_EDGE_GRP Provisioning Key"
         association_type: "SERVICE_EDGE_GRP"
+        max_usage: "2"
+        enrollment_cert_id: "{{ service_edge_cert_id.data[0].id }}"
+        zcomponent_id: "{{ service_edge_group.data.id }}"
       register: result
       ignore_errors: true
