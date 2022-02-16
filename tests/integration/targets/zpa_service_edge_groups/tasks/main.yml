@@ -11,24 +11,23 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
-    - name: Ensure Service Edge Group is (Absent)
+    - name: Ensure Service Edge Group is Absent (leftover)
       willguibr.zpacloud.zpa_service_edge_groups:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
         state: absent
         name: "{{ name }}"
-        description: "{{ description }}"
-        enabled: "{{ enabled }}"
-        city_country: "{{ city_country }}"
-        country_code: "{{ country_code }}"
-        latitude: "{{ latitude }}"
-        longitude: "{{ longitude }}"
-        location: "{{ location }}"
-        upgrade_day: "{{ upgrade_day }}"
-        upgrade_time_in_secs: "{{ upgrade_time_in_secs }}"
-        override_version_profile: "{{ override_version_profile }}"
-        version_profile_id: "{{ version_profile_id }}"
+      ignore_errors: true  # In case one was left from previous run
+      register: result
+
+    - name: Ensure Service Edge Group is Absent
+      willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        state: absent
+        name: "{{ name }}"
       register: result
 
     - name: Verify Service Edge Group is absent
@@ -36,7 +35,7 @@
         that:
           - not result.changed
 
-    - name: Ensure Service Edge Group is (Present)
+    - name: Create Service Edge Group is (present)
       willguibr.zpacloud.zpa_service_edge_groups:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
@@ -56,20 +55,19 @@
         version_profile_id: "{{ version_profile_id }}"
       register: result
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
+    - debug:
+        msg: "{{ result }}"
 
-    - name: Verify Service Edge Group is present (from present)
+    - name: Verify Service Edge Group is present
       ansible.builtin.assert:
         that:
-          - result.changed
+          - not result.changed
           - result.data is defined
           - result.data.name is defined
           - result.data.name == name
-          - result.data.status in ["true", "false"]
+          - result.data.enabled == true
 
-    - name: Destroy Service Edge Group is (Absent)
+    - name: Create Service Edge Group is (again; idempotency check)
       willguibr.zpacloud.zpa_service_edge_groups:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
@@ -89,31 +87,65 @@
         version_profile_id: "{{ version_profile_id }}"
       register: result
 
-    - name: Verify Service Edge Group is absent (from absent)
+    - name: Verify Service Edge Group is present
       ansible.builtin.assert:
         that:
           - result.changed
 
-    - name: Give the cloud a minute to settle
-      ansible.builtin.pause:
-        minutes: 1
+    - name: Fetch All Service Edge Group
+      willguibr.zpacloud.zpa_service_edge_groups_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+      register: result
 
-    - name: Verify Service Edge Group is present (from present)
+    - name: Ensure all Service Edge Group found
       ansible.builtin.assert:
         that:
-          - result.changed
+          - not result.changed
           - result.data is defined
-          - result.data.name is defined
-          - result.data.name == name
-          - result.data.status == "false"
 
-  always:
+    - name: Fetch this Service Edge Group
+      willguibr.zpacloud.zpa_service_edge_groups_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "{{ name }}"
+      register: result
 
-    - name: Delete the Service Edge Group (always)
+    - name: Ensure all Service Edge Group found
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+          - result.data is defined
+          - result.data[0].name is defined
+          - result.data[0].name == name
+          - result.data[0].enabled == true
+
+    - name: Delete Service Edge Group
       willguibr.zpacloud.zpa_service_edge_groups:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
         state: absent
         name: "{{ name }}"
-      ignore_errors: true
+      register: result
+
+    - name: Verify Service Edge Group is Deleted
+      ansible.builtin.assert:
+        that:
+          - not result.changed
+
+    - name: Delete Service Edge Group (again; idempotency check)
+      willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        state: absent
+        name: "{{ name }}"
+      register: result
+
+    - name: Verify the Service Edge Group is deleted
+      ansible.builtin.assert:
+        that:
+          - not result.changed
