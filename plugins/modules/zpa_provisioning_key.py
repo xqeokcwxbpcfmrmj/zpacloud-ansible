@@ -207,7 +207,7 @@ def main():
         expiration_in_epoch_sec=dict(type="str", required=False),
         id=dict(type="str", required=False),
         ip_acl=dict(type="str", required=False),
-        max_usage=dict(type="str", required=False),
+        max_usage=dict(type="str", required=True),
         modified_by=dict(type="str", required=False),
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=True),

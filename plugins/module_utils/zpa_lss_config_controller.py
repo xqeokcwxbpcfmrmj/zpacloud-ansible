@@ -126,18 +126,18 @@ class LSSConfigControllerService:
         if policy is None:
             return None
         return {
-            "default_rule": policy.get("defaultRule"),
-            "default_rule_name": policy.get("defaultRuleName"),
-            "description": policy.get("description"),
-            "policy_type": policy.get("policyType"),
+            "action": policy.get("action"),
+            "action_id": policy.get("actionId"),
             "custom_msg": policy.get("customMsg"),
+            "default_rule": policy.get("defaultRule"),
+            "description": policy.get("description"),
+            "name": policy.get("name"),
             "policy_set_id": policy.get("policySetId"),
+            "policy_type": policy.get("policyType"),
+            "priority": policy.get("priority"),
+            "default_rule_name": policy.get("defaultRuleName"),
             "id": policy.get("id"),
             "lss_default_rule": policy.get("lssDefaultRule"),
-            "action_id": policy.get("actionId"),
-            "name": policy.get("name"),
-            "action": policy.get("action"),
-            "priority": policy.get("priority"),
             "operator": policy.get("operator"),
             "rule_order": policy.get("ruleOrder"),
             "conditions": self.mapConditionsToList(policy.get("conditions"))

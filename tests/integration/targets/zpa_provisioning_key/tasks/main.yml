@@ -95,19 +95,6 @@
         that:
           - result is changed
 
-  always:
-
-    - name: Delete Dummy Connector Group Provisioning Key
-      willguibr.zpacloud.zpa_provisioning_key:
-        client_id: "{{ client_id }}"
-        client_secret: "{{ client_secret }}"
-        customer_id: "{{ customer_id }}"
-        state: "absent"
-        name: "Dummy CONNECTOR_GRP Provisioning Key"
-        association_type: "CONNECTOR_GRP"
-      register: result
-      ignore_errors: true
-
 # Test Service Edge Provisioning Key
     - name: Gather Information Details of All Enrollment Certificates
       willguibr.zpacloud.zpa_enrollement_certificate_info:
@@ -189,6 +176,17 @@
 
   always:
 
+    - name: Delete Dummy Connector Group Provisioning Key
+      willguibr.zpacloud.zpa_provisioning_key:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        state: "absent"
+        name: "Dummy CONNECTOR_GRP Provisioning Key"
+        association_type: "CONNECTOR_GRP"
+      register: result
+      ignore_errors: true
+      
     - name: Delete Dummy Service Edge Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
         client_id: "{{ client_id }}"

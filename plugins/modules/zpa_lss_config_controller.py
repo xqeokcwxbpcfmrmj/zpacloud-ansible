@@ -30,13 +30,98 @@ options:
     description: ""
     required: false
     type: str
+  config:
+    type: dict
+    required: False
+    description: "Name of the LSS configuration"
+    suboptions:
+      audit_message:
+        description: ""
+        type: str
+        required: False
+      description:
+        description: "Name of the LSS configuration"
+        type: str
+        required: False
+      enabled:
+        description: "Whether this LSS configuration is enabled or not"
+        type: bool
+        required: False
+        default: True
+      filter:
+        description: "Filter for the LSS configuration"
+        type: list
+        elements: str
+        required: False
+      format:
+        description: "Format of the log type"
+        type: str
+        required: True
+      id:
+        description: ""
+        type: str
+      name:
+        description: "Name of the LSS configuration"
+        type: str
+        required: True
+      lss_host:
+        description: "Host of the LSS configuration"
+        type: str
+        required: True
+      lss_port:
+        description: "Port of the LSS configuration"
+        type: str
+        required: True
+      source_log_type:
+        description: "Log type of the LSS configuration"
+        type: str
+        required: True
+        choices:
+          - "zpn_trans_log"
+          - "zpn_auth_log"
+          - "zpn_ast_auth_log"
+          - "zpn_http_trans_log"
+          - "zpn_audit_log"
+          - "zpn_sys_auth_log"
+          - "zpn_http_insp"
+          - "zpn_ast_comprehensive_stats"
+      use_tls:
+        description: "Whether TLS is enabled or not"
+        type: bool
+        required: False
+        default: False
+  connector_groups:
+    type: list
+    elements: dict
+    required: False
+    description: "App Connector Group(s) to be added to the LSS configuration"
+    suboptions:
+      name:
+        required: false
+        type: str
+        description: ""
+      id:
+        required: true
+        type: str
+        description: ""
+  id:
+    type: str
+    description: ""
   policy_rule_resource:
     type: dict
-    description: ""
+    description: "Object Type"
     required: False
     suboptions:
-      description:
+      action:
         description: ""
+        type: str
+        required: False
+      action_id:
+        description: ""
+        type: str
+        required: False
+      description:
+        description: "Object Type"
         type: str
         required: False
       priority:
@@ -59,10 +144,6 @@ options:
         description: ""
         type: str
         required: False
-      action_id:
-        description: ""
-        type: str
-        required: False
       operator:
         description: ""
         type: str
@@ -78,10 +159,6 @@ options:
       default_rule:
         description: ""
         type: bool
-        required: False
-      action:
-        description: ""
-        type: str
         required: False
       name:
         description: ""
@@ -132,83 +209,6 @@ options:
                 type: str
                 required: True
                 choices: ["APP", "APP_GROUP", "CLIENT_TYPE"]
-  config:
-    type: dict
-    required: False
-    description: ""
-    suboptions:
-      audit_message:
-        description: ""
-        type: str
-        required: False
-      description:
-        description: ""
-        type: str
-        required: False
-      enabled:
-        description: ""
-        type: bool
-        required: False
-        default: True
-      filter:
-        description: ""
-        type: list
-        elements: str
-        required: False
-      format:
-            description: ""
-        type: str
-        required: True
-      id:
-        description: ""
-        type: str
-      name:
-        description: ""
-        type: str
-        required: True
-      lss_host:
-        description: ""
-        type: str
-        required: True
-      lss_port:
-        description: ""
-        type: str
-        required: True
-      source_log_type:
-        description: ""
-        type: str
-        required: True
-        choices:
-          - "zpn_trans_log"
-          - "zpn_auth_log"
-          - "zpn_ast_auth_log"
-          - "zpn_http_trans_log"
-          - "zpn_audit_log"
-          - "zpn_sys_auth_log"
-          - "zpn_http_insp"
-          - "zpn_ast_comprehensive_stats"
-      use_tls:
-        description: ""
-        type: bool
-        required: False
-        default: False
-  connector_groups:
-    type: list
-    elements: dict
-    required: False
-    description: "App Connector Group(s) to be added to the LSS configuration"
-    suboptions:
-      name:
-        required: false
-        type: str
-        description: ""
-      id:
-        required: true
-        type: str
-        description: ""
-  id:
-    type: str
-    description: ""
   state:
     description: "Whether the config should be present or absent."
     type: str
