@@ -11,6 +11,7 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
+    - name: Gather Saml Attribute Information
       willguibr.zpacloud.zpa_saml_attribute_info:
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"

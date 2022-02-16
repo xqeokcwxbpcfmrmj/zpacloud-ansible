@@ -56,21 +56,6 @@
           - zpn_ast_auth_log.data.csv is defined
           - zpn_ast_auth_log.data.tsv is defined
 
-    - name: Gather LSS Log Type zpn_waf_http_exchanges_log Information
-      willguibr.zpacloud.zpa_lss_config_log_types_formats_info:
-        client_id: "{{ client_id }}"
-        client_secret: "{{ client_secret }}"
-        customer_id: "{{ customer_id }}"
-        log_type: "zpn_waf_http_exchanges_log"
-      register: zpn_waf_http_exchanges_log
-
-    - name: Verify lss log type zpn_waf_http_exchanges_log fetched
-      ansible.builtin.assert:
-        that:
-          - zpn_waf_http_exchanges_log.data.json is defined
-          - zpn_waf_http_exchanges_log.data.csv is defined
-          - zpn_waf_http_exchanges_log.data.tsv is defined
-
     - name: Gather LSS Log Type zpn_http_trans_log Information
       willguibr.zpacloud.zpa_lss_config_log_types_formats_info:
         client_id: "{{ client_id }}"
