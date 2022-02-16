@@ -175,7 +175,7 @@
         that:
           - result is not changed
 
-always:
+  always:
 
     - name: Delete Dummy Connector Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
