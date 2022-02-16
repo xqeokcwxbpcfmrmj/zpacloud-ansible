@@ -127,6 +127,7 @@
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
+        name: "Dummy SERVICE_EDGE_GRP Provisioning Key"
         association_type: "SERVICE_EDGE_GRP"
         enabled: true
         max_usage: "2"
@@ -172,9 +173,9 @@
     - name: Verify Service Edge Group deleted
       ansible.builtin.assert:
         that:
-          - result is changed
+          - result is not changed
 
-  always:
+always:
 
     - name: Delete Dummy Connector Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
