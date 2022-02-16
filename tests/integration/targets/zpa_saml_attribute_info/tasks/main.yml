@@ -18,8 +18,11 @@
         customer_id: "{{ customer_id }}"
       register: result
 
-    - name: Verify saml attribute fetched
+    - name: Verify Saml Attribute found
       ansible.builtin.assert:
         that:
           - not result.changed
           - result.data is defined
+          - result.data[0].name is defined
+          - result.data[0].name == name
+          - result.data[0].idp_name is defined

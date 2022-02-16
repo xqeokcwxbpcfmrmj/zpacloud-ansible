@@ -16,6 +16,7 @@
         client_id: "{{ client_id }}"
         client_secret: "{{ client_secret }}"
         customer_id: "{{ customer_id }}"
+        idp_name: "{{ idp_name }}"
       register: result
 
     - name: Verify scim attribute header fetched
@@ -23,3 +24,4 @@
         that:
           - not result.changed
           - result.data is defined
+          - result.data[0].name is defined
