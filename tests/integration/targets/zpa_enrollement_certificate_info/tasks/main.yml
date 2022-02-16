@@ -11,12 +11,82 @@
         - client_secret | length == 0
         - customer_id | length == 0
 
-    - name: Fetch all Enrollment Certificate Information
+    - name: Fetch Isolation Client Enrollment Certificate Information
       willguibr.zpacloud.zpa_enrollement_certificate_info:
-      register: result
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "Isolation Client"
+      register: isolation
 
-    - name: Ensure all enrollment certificate info fetched
+    - name: Ensure isolation certificate info fetched
       ansible.builtin.assert:
         that:
-          - not result.changed
-          - result.data is defined
+          - not isolation.changed
+          - isolation.data is defined
+          - isolation.data[0].name is defined
+          - isolation.data[0].name == "Isolation Client"
+
+    - name: Fetch Service Edge Enrollment Certificate Information
+      willguibr.zpacloud.zpa_enrollement_certificate_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "Service Edge"
+      register: service_edge
+
+    - name: Ensure service_edge certificate info fetched
+      ansible.builtin.assert:
+        that:
+          - not service_edge.changed
+          - service_edge.data is defined
+          - service_edge.data[0].name is defined
+          - service_edge.data[0].name == "Service Edge"
+
+    - name: Fetch Connector Enrollment Certificate Information
+      willguibr.zpacloud.zpa_enrollement_certificate_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "Connector"
+      register: connector
+
+    - name: Ensure service_edge certificate info fetched
+      ansible.builtin.assert:
+        that:
+          - not connector.changed
+          - connector.data is defined
+          - connector.data[0].name is defined
+          - connector.data[0].name == "Connector"
+
+    - name: Fetch Client Enrollment Certificate Information
+      willguibr.zpacloud.zpa_enrollement_certificate_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "Client"
+      register: client
+
+    - name: Ensure Client certificate info fetched
+      ansible.builtin.assert:
+        that:
+          - not client.changed
+          - client.data is defined
+          - client.data[0].name is defined
+          - client.data[0].name == "Client"
+
+    - name: Fetch Root Enrollment Certificate Information
+      willguibr.zpacloud.zpa_enrollement_certificate_info:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
+        name: "Root"
+      register: root
+
+    - name: Ensure Root certificate info fetched
+      ansible.builtin.assert:
+        that:
+          - not root.changed
+          - root.data is defined
+          - root.data[0].name is defined
+          - root.data[0].name == "Root"

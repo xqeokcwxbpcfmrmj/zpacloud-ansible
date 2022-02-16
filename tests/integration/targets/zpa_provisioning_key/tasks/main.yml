@@ -68,6 +68,9 @@
 
     - name: Delete Dummy Connector Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy CONNECTOR_GRP Provisioning Key"
         association_type: "CONNECTOR_GRP"
@@ -80,6 +83,9 @@
 
     - name: Delete Dummy App Connector Group
       willguibr.zpacloud.zpa_app_connector_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy App Connector Group"
       register: result
@@ -93,6 +99,9 @@
 
     - name: Delete Dummy Connector Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy CONNECTOR_GRP Provisioning Key"
         association_type: "CONNECTOR_GRP"
@@ -110,6 +119,9 @@
 
     - name: Create Dummy Service Edge Group
       willguibr.zpacloud.zpa_service_edge_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         name: "Dummy Service Edge Group"
         description: "Dummy Service Edge Group"
         enabled: true
@@ -148,6 +160,9 @@
 
     - name: Delete Dummy Service Edge Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy SERVICE_EDGE_GRP Provisioning Key"
         association_type: "SERVICE_EDGE_GRP"
@@ -160,6 +175,9 @@
 
     - name: Delete Dummy Service Edge Group
       willguibr.zpacloud.zpa_app_connector_groups:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy Service Edge Group"
       register: result
@@ -173,6 +191,9 @@
 
     - name: Delete Dummy Service Edge Group Provisioning Key
       willguibr.zpacloud.zpa_provisioning_key:
+        client_id: "{{ client_id }}"
+        client_secret: "{{ client_secret }}"
+        customer_id: "{{ customer_id }}"
         state: "absent"
         name: "Dummy SERVICE_EDGE_GRP Provisioning Key"
         association_type: "SERVICE_EDGE_GRP"
