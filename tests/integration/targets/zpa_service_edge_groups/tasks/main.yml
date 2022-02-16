@@ -29,6 +29,7 @@
         upgrade_time_in_secs: "{{ upgrade_time_in_secs }}"
         override_version_profile: "{{ override_version_profile }}"
         version_profile_id: "{{ version_profile_id }}"
+      register: result
 
     - name: Verify Service Edge Group is absent
       ansible.builtin.assert:
