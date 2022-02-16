@@ -1,6 +1,10 @@
 # (Unofficial) Zscaler Private Access (ZPA) Ansible Collection
 
+[![sanity](https://github.com/willguibr/zpacloud-ansible/actions/workflows/ansible-test-sanity.yml/badge.svg)](https://github.com/willguibr/zpacloud-ansible/actions/workflows/ansible-test-sanity.yml)
+
 ![Version on Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud/&query=latest_version.version)
+
+[![integration](https://github.com/willguibr/zpacloud-ansible/actions/workflows/ansible-test-integration.yml/badge.svg)](https://github.com/willguibr/zpacloud-ansible/actions/workflows/ansible-test-integration.yml)
 
 This collection contains modules and plugins to assist in automating the configuration and operational tasks on Zscaler Private Access cloud, and API interactions with Ansible.
 
