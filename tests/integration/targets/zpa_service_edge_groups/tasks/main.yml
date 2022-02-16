@@ -1,12 +1,15 @@
 ---
 - block:
-
     - name: Ensure ZPA API Credential is Set
       ansible.builtin.fail:
         msg: client_id, client_secret and customer_id should be defined in tests/integration/integration_config.yml
       when:
-        - client_id, client_secret, customer_id are not defined
-        - client_id, client_secret, customer_id | length == 0
+        - client_id is not defined
+        - client_secret is not defined
+        - customer_id  is not defined
+        - client_id | length == 0
+        - client_secret | length == 0
+        - customer_id | length == 0
 
     - name: Ensure Service Edge Group is (Absent)
       willguibr.zpacloud.zpa_service_edge_groups:

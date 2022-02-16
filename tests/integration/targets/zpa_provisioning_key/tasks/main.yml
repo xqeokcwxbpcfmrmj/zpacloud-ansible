@@ -58,7 +58,7 @@
     - name: Verify Provisioning Keys found
       ansible.builtin.assert:
         that:
-          - result.changed
+          - not result.changed
           - result.data is defined
           - result.data.name is defined
           - result.data.provisioning_key is defined
