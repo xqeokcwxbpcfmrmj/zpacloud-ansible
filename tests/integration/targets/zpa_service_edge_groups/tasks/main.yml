@@ -55,9 +55,6 @@
         version_profile_id: "{{ version_profile_id }}"
       register: result
 
-    - debug:
-        msg: "{{ result }}"
-
     - name: Verify Service Edge Group is present
       ansible.builtin.assert:
         that:
@@ -113,7 +110,7 @@
         name: "{{ name }}"
       register: result
 
-    - name: Ensure all Service Edge Group found
+    - name: Ensure this Service Edge Group is found
       ansible.builtin.assert:
         that:
           - not result.changed
