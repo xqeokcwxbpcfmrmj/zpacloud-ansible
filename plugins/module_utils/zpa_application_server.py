@@ -1,9 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none
+    ZPAClientHelper,
+    delete_none,
 )
 
 
@@ -23,7 +24,8 @@ class ApplicationServerService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -31,11 +33,12 @@ class ApplicationServerService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id),
+            data_key_name="list",
+        )
         application_servers = []
         for application_server in list:
-            application_servers.append(
-                self.mapRespJSONToApp(application_server))
+            application_servers.append(self.mapRespJSONToApp(application_server))
         return application_servers
 
     def getByName(self, name):
@@ -79,7 +82,9 @@ class ApplicationServerService:
             return None
         if len(server.get("app_server_group_ids", [])) > 0:
             self.module.log(
-                "[INFO] Removing server group ID/s from application server: %s" % (appID))
+                "[INFO] Removing server group ID/s from application server: %s"
+                % (appID)
+            )
             server["app_server_group_ids"] = []
             return self.update(server)
         return server
@@ -88,7 +93,9 @@ class ApplicationServerService:
         """Create new Application Serve"""
         ApplicationServerJson = self.mapAppToJSON(application_server)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id), data=ApplicationServerJson)
+            "/mgmtconfig/v1/admin/customers/%s/server" % (self.customer_id),
+            data=ApplicationServerJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -98,7 +105,10 @@ class ApplicationServerService:
         """update the Application Serve"""
         ApplicationServerJson = self.mapAppToJSON(application_server)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, ApplicationServerJson.get("id")), data=ApplicationServerJson)
+            "/mgmtconfig/v1/admin/customers/%s/server/%s"
+            % (self.customer_id, ApplicationServerJson.get("id")),
+            data=ApplicationServerJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -108,5 +118,6 @@ class ApplicationServerService:
         """delete the Application Serve"""
         self.unlinkAttachedServerGroups(id)
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/server/%s" % (self.customer_id, id)
+        )
         return response.status_code

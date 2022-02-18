@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -71,11 +71,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import (
+    ProvisioningKeyService,
+)
 
 
 def core(module):
@@ -86,18 +91,17 @@ def core(module):
     service = ProvisioningKeyService(module, customer_id)
     provisioning_keys = []
     if provisioning_key_id is not None:
-        provisioning_key = service.getByID(
-            provisioning_key_id, association_type)
+        provisioning_key = service.getByID(provisioning_key_id, association_type)
         if provisioning_key is None:
-            module.fail_json(
-                msg="Failed to retrieve Provisioning Key ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve Provisioning Key ID: '%s'" % (id))
         provisioning_keys = [provisioning_key]
     elif provisioning_key_name is not None:
-        provisioning_key = service.getByName(
-            provisioning_key_name, association_type)
+        provisioning_key = service.getByName(provisioning_key_name, association_type)
         if provisioning_key is None:
             module.fail_json(
-                msg="Failed to retrieve Provisioning Key Name: '%s'" % (provisioning_key_name))
+                msg="Failed to retrieve Provisioning Key Name: '%s'"
+                % (provisioning_key_name)
+            )
         provisioning_keys = [provisioning_key]
     else:
         provisioning_keys = service.getAll(association_type)
@@ -109,11 +113,11 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
-        association_type=dict(type="str", choices=[
-                              "CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True),
+        association_type=dict(
+            type="str", choices=["CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True
+        ),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

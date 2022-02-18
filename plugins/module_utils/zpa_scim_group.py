@@ -1,9 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none
+    ZPAClientHelper,
+    delete_none,
 )
 
 
@@ -23,7 +24,8 @@ class ScimGroupService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/userconfig/v1/customers/%s/scimgroup/%s" % (self.customer_id, id))
+            "/userconfig/v1/customers/%s/scimgroup/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -31,7 +33,9 @@ class ScimGroupService:
 
     def getAllIDPControllersRaw(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/idp" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/idp" % (self.customer_id),
+            data_key_name="list",
+        )
         return list
 
     def getIDPByName(self, idpName):
@@ -49,7 +53,10 @@ class ScimGroupService:
 
     def getAll(self, idp_id):
         list = self.rest.get_paginated_data(
-            base_url="/userconfig/v1/customers/%s/scimgroup/idpId/%s" % (self.customer_id, idp_id), data_key_name="list")
+            base_url="/userconfig/v1/customers/%s/scimgroup/idpId/%s"
+            % (self.customer_id, idp_id),
+            data_key_name="list",
+        )
         groups = []
         for group in list:
             groups.append(self.mapRespJSONToApp(group))

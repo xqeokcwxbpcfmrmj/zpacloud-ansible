@@ -1,11 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+)
 
 
 class SegmentGroupService:
@@ -24,7 +27,8 @@ class SegmentGroupService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +36,10 @@ class SegmentGroupService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/segmentGroup" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/segmentGroup"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         segment_groups = []
         for segment_group in list:
             segment_groups.append(self.mapRespJSONToApp(segment_group))
@@ -81,7 +88,9 @@ class SegmentGroupService:
         if segment_group is None:
             return {}
         return {
-            "applications": self.mapListToJSONObjList(segment_group.get("applications")),
+            "applications": self.mapListToJSONObjList(
+                segment_group.get("applications")
+            ),
             "configSpace": segment_group.get("config_space"),
             "description": segment_group.get("description"),
             "enabled": segment_group.get("enabled"),
@@ -95,7 +104,9 @@ class SegmentGroupService:
         """Create new Segment Group"""
         segmentGroupJson = self.mapAppToJSON(segment_group)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup" % (self.customer_id), data=segmentGroupJson)
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup" % (self.customer_id),
+            data=segmentGroupJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -105,7 +116,10 @@ class SegmentGroupService:
         """update the Segment Group"""
         segmentGroupJson = self.mapAppToJSON(segment_group)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, segmentGroupJson.get("id")), data=segmentGroupJson)
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, segmentGroupJson.get("id")),
+            data=segmentGroupJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -114,5 +128,6 @@ class SegmentGroupService:
     def delete(self, id):
         """delete the Segment Group"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id)
+        )
         return response.status_code

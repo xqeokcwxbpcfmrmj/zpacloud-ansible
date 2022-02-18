@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -61,11 +61,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_customer_version_profile import ProfileVersionService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_customer_version_profile import (
+    ProfileVersionService,
+)
 
 
 def core(module):
@@ -78,13 +83,16 @@ def core(module):
         version_profile = service.getByID(version_id)
         if version_profile is None:
             module.fail_json(
-                msg="Failed to retrieve Customer Version Profile ID: '%s'" % (id))
+                msg="Failed to retrieve Customer Version Profile ID: '%s'" % (id)
+            )
         version_profiles = [version_profile]
     elif version_profile is not None:
         version_profile = service.getByName(version_profile)
         if version_profile is None:
             module.fail_json(
-                msg="Failed to retrieve Customer Version Profile Name: '%s'" % (version_profile))
+                msg="Failed to retrieve Customer Version Profile Name: '%s'"
+                % (version_profile)
+            )
         version_profiles = [version_profile]
     else:
         version_profiles = service.getAll()
@@ -97,8 +105,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

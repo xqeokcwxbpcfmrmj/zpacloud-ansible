@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -246,11 +246,16 @@ RETURN = """
 # The newly created policy access rule resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_config_controller import LSSConfigControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_config_controller import (
+    LSSConfigControllerService,
+)
 
 
 def core(module):
@@ -258,16 +263,12 @@ def core(module):
     customer_id = module.params.get("customer_id", None)
     service = LSSConfigControllerService(module, customer_id)
     lss_config = dict()
-    params = [
-        "id",
-        "config",
-        "connector_groups",
-        "policy_rule_resource"
-    ]
+    params = ["id", "config", "connector_groups", "policy_rule_resource"]
     for param_name in params:
         lss_config[param_name] = module.params.get(param_name, None)
     existing_lss_config = service.getByIDOrName(
-        lss_config.get("id"), lss_config.get("config", {}).get("name"))
+        lss_config.get("id"), lss_config.get("config", {}).get("name")
+    )
     if existing_lss_config is not None:
         id = existing_lss_config.get("id")
         existing_lss_config.update(lss_config)
@@ -291,99 +292,97 @@ def core(module):
 def main():
     """Main"""
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=False)
+    id_name_spec = dict(
+        type="list",
+        elements="dict",
+        options=dict(
+            id=dict(type="str", required=True), name=dict(type="str", required=False)
+        ),
+        required=False,
+    )
     argument_spec.update(
-        id=dict(type='str'),
+        id=dict(type="str"),
         policy_rule_resource=dict(
-            type='dict',
+            type="dict",
             options=dict(
-                priority=dict(
-                    type='str', required=False
-                ),
-                reauth_idle_timeout=dict(
-                    type='str', required=False
-                ),
-                policy_type=dict(
-                    type='str', required=False
-                ),
-                reauth_default_rule=dict(
-                    type='bool', required=False
-                ),
-                custom_msg=dict(
-                    type='str', required=False
-                ),
-                action_id=dict(
-                    type='str', required=False
-                ),
-                operator=dict(
-                    type='str', required=False
-                ),
-                bypass_default_rule=dict(
-                    type='bool', required=False
-                ),
-                policy_set_id=dict(
-                    type='str', required=False
-                ),
-                default_rule=dict(
-                    type='bool', required=False
-                ),
-                action=dict(
-                    type='str', required=False
-                ),
+                priority=dict(type="str", required=False),
+                reauth_idle_timeout=dict(type="str", required=False),
+                policy_type=dict(type="str", required=False),
+                reauth_default_rule=dict(type="bool", required=False),
+                custom_msg=dict(type="str", required=False),
+                action_id=dict(type="str", required=False),
+                operator=dict(type="str", required=False),
+                bypass_default_rule=dict(type="bool", required=False),
+                policy_set_id=dict(type="str", required=False),
+                default_rule=dict(type="bool", required=False),
+                action=dict(type="str", required=False),
                 conditions=dict(
-                    type='list',
-                    elements='dict',
+                    type="list",
+                    elements="dict",
                     options=dict(
-                        negated=dict(type='bool', required=False),
-                        operator=dict(type='str', required=True),
+                        negated=dict(type="bool", required=False),
+                        operator=dict(type="str", required=True),
                         operands=dict(
-                            type='list',
-                            elements='dict',
+                            type="list",
+                            elements="dict",
                             options=dict(
                                 values=dict(
-                                    type='list', elements='str', required=False
+                                    type="list", elements="str", required=False
                                 ),
                                 object_type=dict(
-                                    type='str', required=True, choices=["APP", "APP_GROUP", "CLIENT_TYPE"]
+                                    type="str",
+                                    required=True,
+                                    choices=["APP", "APP_GROUP", "CLIENT_TYPE"],
                                 ),
                             ),
-                            required=False
+                            required=False,
                         ),
-                    ), required=False),
-                name=dict(type='str', required=True),
-                reauth_timeout=dict(type='str', required=False),
-                rule_order=dict(type='str', required=False),
-                description=dict(type='str', required=False),
-                id=dict(type='str'),
-                lss_default_rule=dict(type='bool', required=False),
+                    ),
+                    required=False,
+                ),
+                name=dict(type="str", required=True),
+                reauth_timeout=dict(type="str", required=False),
+                rule_order=dict(type="str", required=False),
+                description=dict(type="str", required=False),
+                id=dict(type="str"),
+                lss_default_rule=dict(type="bool", required=False),
             ),
-            required=False
+            required=False,
         ),
         connector_groups=id_name_spec,
         config=dict(
-            type='dict',
+            type="dict",
             options=dict(
-                format=dict(type='str', required=True),
-                id=dict(type='str'),
-                name=dict(type='str', required=True),
-                lss_port=dict(type='str', required=True),
-                use_tls=dict(type='bool', required=False, default=False),
-                enabled=dict(type='bool', required=False, default=True),
-                description=dict(type='str', required=False),
-                filter=dict(type='list', elements='str', required=False),
-                lss_host=dict(type='str', required=True),
-                source_log_type=dict(type='str', required=True, choices=["zpn_trans_log", "zpn_auth_log", "zpn_ast_auth_log",
-                                     "zpn_http_trans_log", "zpn_audit_log", "zpn_sys_auth_log", "zpn_http_insp", "zpn_ast_comprehensive_stats", ]),
-                audit_message=dict(type='str', required=False),
+                format=dict(type="str", required=True),
+                id=dict(type="str"),
+                name=dict(type="str", required=True),
+                lss_port=dict(type="str", required=True),
+                use_tls=dict(type="bool", required=False, default=False),
+                enabled=dict(type="bool", required=False, default=True),
+                description=dict(type="str", required=False),
+                filter=dict(type="list", elements="str", required=False),
+                lss_host=dict(type="str", required=True),
+                source_log_type=dict(
+                    type="str",
+                    required=True,
+                    choices=[
+                        "zpn_trans_log",
+                        "zpn_auth_log",
+                        "zpn_ast_auth_log",
+                        "zpn_http_trans_log",
+                        "zpn_audit_log",
+                        "zpn_sys_auth_log",
+                        "zpn_http_insp",
+                        "zpn_ast_comprehensive_stats",
+                    ],
+                ),
+                audit_message=dict(type="str", required=False),
             ),
-            required=False
+            required=False,
         ),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

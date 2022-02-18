@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -95,11 +95,16 @@ RETURN = """
 # The newly created segment group resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import SegmentGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_segment_group import (
+    SegmentGroupService,
+)
 
 
 def core(module):
@@ -120,7 +125,8 @@ def core(module):
     for param_name in params:
         segment_group[param_name] = module.params.get(param_name, None)
     existing_segment_group = service.getByIDOrName(
-        segment_group.get("id"), segment_group.get("name"))
+        segment_group.get("id"), segment_group.get("name")
+    )
     if existing_segment_group is not None:
         id = existing_segment_group.get("id")
         existing_segment_group.update(segment_group)
@@ -144,22 +150,27 @@ def core(module):
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
-        applications=dict(type='list', elements='dict', options=dict(id=dict(
-            type='str', required=True), name=dict(type='str', required=False)), required=False),
-        config_space=dict(type='str', required=False,
-                          default="DEFAULT", choices=["DEFAULT", "SIEM"]),
-        description=dict(type='str', required=False),
-        enabled=dict(type='bool', required=False),
-        id=dict(type='str'),
-        name=dict(type='str', required=True),
-        policy_migrated=dict(type='bool', required=False),
-        tcp_keep_alive_enabled=dict(type='str', required=False),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
-
+        applications=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                id=dict(type="str", required=True),
+                name=dict(type="str", required=False),
+            ),
+            required=False,
+        ),
+        config_space=dict(
+            type="str", required=False, default="DEFAULT", choices=["DEFAULT", "SIEM"]
+        ),
+        description=dict(type="str", required=False),
+        enabled=dict(type="bool", required=False),
+        id=dict(type="str"),
+        name=dict(type="str", required=True),
+        policy_migrated=dict(type="bool", required=False),
+        tcp_keep_alive_enabled=dict(type="str", required=False),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

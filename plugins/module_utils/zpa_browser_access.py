@@ -1,10 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import re
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase, snakecaseToCamelcase
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+    snakecaseToCamelcase,
 )
 
 
@@ -24,7 +28,8 @@ class BrowserAccessService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,10 @@ class BrowserAccessService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/application"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         apps = []
         for app in list:
             apps.append(self.mapRespJSONToApp(app))
@@ -89,7 +97,9 @@ class BrowserAccessService:
             "segment_group_id": resp_json.get("segmentGroupId"),
             "segment_group_name": resp_json.get("segmentGroupName"),
             "bypass_type": resp_json.get("bypassType"),
-            "clientless_apps": self.mapClientlessAppsJSONToList(resp_json.get("clientlessApps")),
+            "clientless_apps": self.mapClientlessAppsJSONToList(
+                resp_json.get("clientlessApps")
+            ),
             "config_space": resp_json.get("configSpace"),
             "creation_time": resp_json.get("creationTime"),
             "default_idle_timeout": resp_json.get("defaultIdleTimeout"),
@@ -110,7 +120,9 @@ class BrowserAccessService:
             "passive_health_enabled": resp_json.get("passiveHealthEnabled"),
             "tcp_port_range": resp_json.get("tcpPortRange"),
             "udp_port_range": resp_json.get("udpPortRange"),
-            "server_groups": self.mapServerGroupsJSONToList(resp_json.get("serverGroups")),
+            "server_groups": self.mapServerGroupsJSONToList(
+                resp_json.get("serverGroups")
+            ),
         }
 
     @delete_none
@@ -142,14 +154,18 @@ class BrowserAccessService:
             "tcpPortRange": app.get("tcp_port_range"),
             "udpPortRange": app.get("udp_port_range"),
             "serverGroups": self.mapServerGroupsListToJSON(app.get("server_groups")),
-            "clientlessApps": self.mapClientlessAppsToJSONList(app.get("clientless_apps")),
+            "clientlessApps": self.mapClientlessAppsToJSONList(
+                app.get("clientless_apps")
+            ),
         }
 
     def create(self, app):
         """Create new application"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -159,7 +175,10 @@ class BrowserAccessService:
         """update the application"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/application/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -167,7 +186,9 @@ class BrowserAccessService:
 
     def detach_from_segment_group(self, app_id, seg_group_id):
         seg_group = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id))
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, seg_group_id)
+        )
         if seg_group.status_code > 299:
             return None
         data = seg_group.json
@@ -178,10 +199,14 @@ class BrowserAccessService:
                 addaptedApps.append(app)
         data["applications"] = addaptedApps
         self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id), data=data)
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, seg_group_id),
+            data=data,
+        )
 
     def delete(self, id):
         """delete the application"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id)
+        )
         return response.status_code

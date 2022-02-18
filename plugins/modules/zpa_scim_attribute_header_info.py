@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -67,11 +67,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_attribute_header import ScimAttributeHeaderService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_attribute_header import (
+    ScimAttributeHeaderService,
+)
 
 
 def core(module):
@@ -85,13 +90,16 @@ def core(module):
         attribute = service.getByID(scim_attr_id, idp_name)
         if attribute is None:
             module.fail_json(
-                msg="Failed to retrieve scim attribute header ID: '%s'" % (id))
+                msg="Failed to retrieve scim attribute header ID: '%s'" % (id)
+            )
         attributes = [attribute]
     elif scim_attr_name is not None:
         attribute = service.getByName(scim_attr_name, idp_name)
         if attribute is None:
             module.fail_json(
-                msg="Failed to retrieve scim attribute header Name: '%s'" % (scim_attr_name))
+                msg="Failed to retrieve scim attribute header Name: '%s'"
+                % (scim_attr_name)
+            )
         attributes = [attribute]
     else:
         attributes = service.getAllByIDPName(idp_name)
@@ -103,10 +111,9 @@ def main():
     argument_spec.update(
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
-        idp_name=dict(type="str", required=True)
+        idp_name=dict(type="str", required=True),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

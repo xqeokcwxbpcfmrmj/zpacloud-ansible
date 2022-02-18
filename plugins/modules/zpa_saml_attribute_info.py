@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -59,11 +59,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_saml_attribute import SamlAttributeService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_saml_attribute import (
+    SamlAttributeService,
+)
 
 
 def core(module):
@@ -75,14 +80,14 @@ def core(module):
     if saml_attr_id is not None:
         attribute = service.getByID(saml_attr_id)
         if attribute is None:
-            module.fail_json(
-                msg="Failed to retrieve saml attribute ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve saml attribute ID: '%s'" % (id))
         attributes = [attribute]
     elif saml_attr_name is not None:
         attribute = service.getByName(saml_attr_name)
         if attribute is None:
             module.fail_json(
-                msg="Failed to retrieve saml attribute Name: '%s'" % (saml_attr_name))
+                msg="Failed to retrieve saml attribute Name: '%s'" % (saml_attr_name)
+            )
         attributes = [attribute]
     else:
         attributes = service.getAll()
@@ -95,8 +100,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

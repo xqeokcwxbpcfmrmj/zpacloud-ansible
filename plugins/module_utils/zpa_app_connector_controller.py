@@ -1,10 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import re
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
 )
 
 
@@ -24,7 +27,8 @@ class AppConnectorControllerService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/connector/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/connector/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +36,9 @@ class AppConnectorControllerService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/connector" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/connector" % (self.customer_id),
+            data_key_name="list",
+        )
         connectors = []
         for connector in list:
             connectors.append(self.mapRespJSONToApp(connector))
@@ -86,9 +92,13 @@ class AppConnectorControllerService:
             "ip_acl": resp_json.get("ipAcl"),
             "issued_cert_id": resp_json.get("issuedCertId"),
             "last_broker_connect_time": resp_json.get("lastBrokerConnectTime"),
-            "last_broker_connect_time_duration": resp_json.get("lastBrokerConnectTimeDuration"),
+            "last_broker_connect_time_duration": resp_json.get(
+                "lastBrokerConnectTimeDuration"
+            ),
             "last_broker_disconnect_time": resp_json.get("lastBrokerDisconnectTime"),
-            "last_broker_disconnect_time_duration": resp_json.get("lastBrokerDisconnectTimeDuration"),
+            "last_broker_disconnect_time_duration": resp_json.get(
+                "lastBrokerDisconnectTimeDuration"
+            ),
             "last_upgrade_time": resp_json.get("lastUpgradeTime"),
             "latitude": resp_json.get("latitude"),
             "location": resp_json.get("location"),
@@ -131,9 +141,13 @@ class AppConnectorControllerService:
             "ipAcl": connector.get("ip_acl"),
             "issuedCertId": connector.get("issued_cert_id"),
             "lastBrokerConnectTime": connector.get("last_broker_connect_time"),
-            "lastBrokerConnectTimeDuration": connector.get("last_broker_connect_time_duration"),
+            "lastBrokerConnectTimeDuration": connector.get(
+                "last_broker_connect_time_duration"
+            ),
             "lastBrokerDisconnectTime": connector.get("last_broker_disconnect_time"),
-            "lastBrokerDisconnectTimeDuration": connector.get("last_broker_disconnect_time_duration"),
+            "lastBrokerDisconnectTimeDuration": connector.get(
+                "last_broker_disconnect_time_duration"
+            ),
             "lastUpgradeTime": connector.get("last_upgrade_time"),
             "latitude": connector.get("latitude"),
             "location": connector.get("location"),
@@ -157,7 +171,10 @@ class AppConnectorControllerService:
         """Bulk Delete App Connectors"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/connector/bulkDelete" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/connector/bulkDelete"
+            % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -167,7 +184,10 @@ class AppConnectorControllerService:
         """update the App Connectors"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/connector/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/connector/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -176,5 +196,6 @@ class AppConnectorControllerService:
     def delete(self, id):
         """delete the App Connectors"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/connector/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/connector/%s" % (self.customer_id, id)
+        )
         return response.status_code

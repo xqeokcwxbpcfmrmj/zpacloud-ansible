@@ -1,9 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none
+    ZPAClientHelper,
+    delete_none,
 )
 
 
@@ -23,7 +24,8 @@ class PostureProfileService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/posture/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/posture/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -31,7 +33,9 @@ class PostureProfileService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/posture" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/posture" % (self.customer_id),
+            data_key_name="list",
+        )
         postures = []
         for posture in list:
             postures.append(self.mapRespJSONToApp(posture))

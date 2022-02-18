@@ -1,10 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import re
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
 )
 
 
@@ -24,7 +27,9 @@ class ServiceEdgeGroupService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s"
+            % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,10 @@ class ServiceEdgeGroupService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         apps = []
         for app in list:
             apps.append(self.mapRespJSONToApp(app))
@@ -102,9 +110,15 @@ class ServiceEdgeGroupService:
             "upgrade_time_in_secs": resp_json.get("upgradeTimeInSecs"),
             "version_profile_id": resp_json.get("versionProfileId"),
             "version_profile_name": resp_json.get("versionProfileName"),
-            "version_profile_visibility_scope": resp_json.get("versionProfileVisibilityScope"),
-            "service_edges": self.mapServiceEdgesJSONToList(resp_json.get("serviceEdges")),
-            "trusted_networks": self.mapTrustedNetworksJSONToList(resp_json.get("trustedNetworks")),
+            "version_profile_visibility_scope": resp_json.get(
+                "versionProfileVisibilityScope"
+            ),
+            "service_edges": self.mapServiceEdgesJSONToList(
+                resp_json.get("serviceEdges")
+            ),
+            "trusted_networks": self.mapTrustedNetworksJSONToList(
+                resp_json.get("trustedNetworks")
+            ),
         }
 
     @delete_none
@@ -127,16 +141,24 @@ class ServiceEdgeGroupService:
             "upgradeDay": serviceEdge.get("upgrade_day"),
             "upgradeTimeInSecs": serviceEdge.get("upgrade_time_in_secs"),
             "versionProfileId": serviceEdge.get("version_profile_id"),
-            "versionProfileVisibilityScope": serviceEdge.get("version_profile_visibility_scope"),
-            "serviceEdges": self.mapServiceEdgesListToJSON(serviceEdge.get("service_edges")),
-            "trustedNetworks": self.mapTrustedNetworksListToJSON(serviceEdge.get("trusted_networks")),
+            "versionProfileVisibilityScope": serviceEdge.get(
+                "version_profile_visibility_scope"
+            ),
+            "serviceEdges": self.mapServiceEdgesListToJSON(
+                serviceEdge.get("service_edges")
+            ),
+            "trustedNetworks": self.mapTrustedNetworksListToJSON(
+                serviceEdge.get("trusted_networks")
+            ),
         }
 
     def create(self, app):
         """Create new ServiceEdgeGroup"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup" % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -146,7 +168,10 @@ class ServiceEdgeGroupService:
         """update the ServiceEdgeGroup"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -155,5 +180,7 @@ class ServiceEdgeGroupService:
     def delete(self, id):
         """delete the ServiceEdgeGroup"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/serviceEdgeGroup/%s"
+            % (self.customer_id, id)
+        )
         return response.status_code

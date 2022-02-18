@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -209,11 +209,16 @@ RETURN = """
 # The newly created access client forwarding policy rule resource record.
 """
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import PolicyForwardingRuleService
 from traceback import format_exc
-from ansible.module_utils.basic import AnsibleModule
+
 from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import (
+    PolicyForwardingRuleService,
+)
 
 
 def core(module):
@@ -245,7 +250,8 @@ def core(module):
     for param_name in params:
         policy[param_name] = module.params.get(param_name, None)
     existing_policy = service.getByIDOrName(
-        policy.get("id"), policy.get("name"), policy_set_id, "BYPASS_POLICY")
+        policy.get("id"), policy.get("name"), policy_set_id, "BYPASS_POLICY"
+    )
     if existing_policy is not None:
         id = existing_policy.get("id")
         existing_policy.update(policy)
@@ -269,51 +275,68 @@ def core(module):
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
-        id=dict(type='str'),
-        name=dict(type='str', required=True),
-        description=dict(type='str', required=False),
-        action=dict(type='str', required=False, choices=[
-                    "INTERCEPT", "INTERCEPT_ACCESSIBLE", "BYPASS"], default="INTERCEPT"),
-        action_id=dict(type='str', required=False),
-        default_rule=dict(type='bool', required=False),
-        default_rule_name=dict(type='str', required=False),
-        custom_msg=dict(type='str', required=False),
-        bypass_default_rule=dict(type='bool', required=False),
-        operator=dict(type='str', required=False, choices=['AND', 'OR']),
-        policy_type=dict(type='str', required=False),
-        priority=dict(type='str', required=False),
-        rule_order=dict(type='str', required=False),
-        conditions=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
-                                                                   negated=dict(
-                                                                       type='bool', required=False),
-                                                                   operator=dict(
-                                                                       type='str', required=True, choices=['AND', 'OR']),
-                                                                   operands=dict(type='list', elements='dict', options=dict(id=dict(type='str'),
-                                                                                                                            idp_id=dict(
-                                                                                                                                type='str', required=False),
-                                                                                                                            name=dict(
-                                                                                                                                type='str', required=False),
-                                                                                                                            lhs=dict(
-                                                                                                                                type='str', required=True),
-                                                                                                                            rhs=dict(
-                                                                                                                                type='str', required=False),
-                                                                                                                            rhs_list=dict(
-                                                                       type='list', elements='str', required=False),
-                                                                       object_type=dict(
-                                                                           type='str',
-                                                                           required=True,
-                                                                           choices=['APP', 'APP_GROUP', 'BYPASS', 'SAML',
-                                                                                    'IDP', 'CLIENT_TYPE',
-                                                                                    'TRUSTED_NETWORK', 'MACHINE_GRP',
-                                                                                    'POSTURE', 'SCIM', 'SCIM_GROUP',
-                                                                                    'EDGE_CONNECTOR_GROUP']),
-                                                                   ), required=False),
-                                                                   ), required=False),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        id=dict(type="str"),
+        name=dict(type="str", required=True),
+        description=dict(type="str", required=False),
+        action=dict(
+            type="str",
+            required=False,
+            choices=["INTERCEPT", "INTERCEPT_ACCESSIBLE", "BYPASS"],
+            default="INTERCEPT",
+        ),
+        action_id=dict(type="str", required=False),
+        default_rule=dict(type="bool", required=False),
+        default_rule_name=dict(type="str", required=False),
+        custom_msg=dict(type="str", required=False),
+        bypass_default_rule=dict(type="bool", required=False),
+        operator=dict(type="str", required=False, choices=["AND", "OR"]),
+        policy_type=dict(type="str", required=False),
+        priority=dict(type="str", required=False),
+        rule_order=dict(type="str", required=False),
+        conditions=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                id=dict(type="str"),
+                negated=dict(type="bool", required=False),
+                operator=dict(type="str", required=True, choices=["AND", "OR"]),
+                operands=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        id=dict(type="str"),
+                        idp_id=dict(type="str", required=False),
+                        name=dict(type="str", required=False),
+                        lhs=dict(type="str", required=True),
+                        rhs=dict(type="str", required=False),
+                        rhs_list=dict(type="list", elements="str", required=False),
+                        object_type=dict(
+                            type="str",
+                            required=True,
+                            choices=[
+                                "APP",
+                                "APP_GROUP",
+                                "BYPASS",
+                                "SAML",
+                                "IDP",
+                                "CLIENT_TYPE",
+                                "TRUSTED_NETWORK",
+                                "MACHINE_GRP",
+                                "POSTURE",
+                                "SCIM",
+                                "SCIM_GROUP",
+                                "EDGE_CONNECTOR_GROUP",
+                            ],
+                        ),
+                    ),
+                    required=False,
+                ),
+            ),
+            required=False,
+        ),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

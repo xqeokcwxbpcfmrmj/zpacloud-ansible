@@ -1,10 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import re
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase, snakecaseToCamelcase
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+    snakecaseToCamelcase,
 )
 
 
@@ -24,7 +28,8 @@ class LSSConfigControllerService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s" % (self.customer_id, id))
+            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,9 @@ class LSSConfigControllerService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/lssConfig" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/lssConfig" % (self.customer_id),
+            data_key_name="list",
+        )
         lss_configs = []
         for lss_config in list:
             lss_configs.append(self.mapRespJSONToApp(lss_config))
@@ -66,16 +73,18 @@ class LSSConfigControllerService:
         if operandsJSON is None:
             return None
         for op in operandsJSON:
-            ops.append({
-                "id": op.get("id"),
-                "creation_time": op.get("creationTime"),
-                "modified_by": op.get("modifiedBy"),
-                "object_type": op.get("objectType"),
-                "lhs": op.get("lhs"),
-                "rhs": op.get("rhs"),
-                "name": op.get("name"),
-                "values": op.get("values"),
-            })
+            ops.append(
+                {
+                    "id": op.get("id"),
+                    "creation_time": op.get("creationTime"),
+                    "modified_by": op.get("modifiedBy"),
+                    "object_type": op.get("objectType"),
+                    "lhs": op.get("lhs"),
+                    "rhs": op.get("rhs"),
+                    "name": op.get("name"),
+                    "values": op.get("values"),
+                }
+            )
         return ops
 
     def mapOperandsToListJSON(self, operandsJSON):
@@ -83,13 +92,15 @@ class LSSConfigControllerService:
         if operandsJSON is None:
             return None
         for op in operandsJSON:
-            ops.append({
-                "objectType": op.get("object_type"),
-                "lhs": op.get("lhs"),
-                "rhs": op.get("rhs"),
-                "name": op.get("name"),
-                "values": op.get("values")
-            })
+            ops.append(
+                {
+                    "objectType": op.get("object_type"),
+                    "lhs": op.get("lhs"),
+                    "rhs": op.get("rhs"),
+                    "name": op.get("name"),
+                    "values": op.get("values"),
+                }
+            )
         return ops
 
     def mapConditionsToList(self, conditionsJSON):
@@ -98,15 +109,17 @@ class LSSConfigControllerService:
             return None
         for cond in conditionsJSON:
             """"""
-            conds.append({
-                "id": cond.get("id"),
-                "modified_time": cond.get("modifiedTime"),
-                "creation_time": cond.get("creationTime"),
-                "modified_by": cond.get("modifiedBy"),
-                "operator": cond.get("operator"),
-                "negated": cond.get("negated"),
-                "operands": self.mapOperandsToList(cond.get("operands")),
-            })
+            conds.append(
+                {
+                    "id": cond.get("id"),
+                    "modified_time": cond.get("modifiedTime"),
+                    "creation_time": cond.get("creationTime"),
+                    "modified_by": cond.get("modifiedBy"),
+                    "operator": cond.get("operator"),
+                    "negated": cond.get("negated"),
+                    "operands": self.mapOperandsToList(cond.get("operands")),
+                }
+            )
         return conds
 
     def mapConditionsToJSONList(self, conditions):
@@ -115,11 +128,13 @@ class LSSConfigControllerService:
             return None
         for cond in conditions:
             """"""
-            conds.append({
-                "operator": cond.get("operator"),
-                "negated": cond.get("negated"),
-                "operands": self.mapOperandsToListJSON(cond.get("operands")),
-            })
+            conds.append(
+                {
+                    "operator": cond.get("operator"),
+                    "negated": cond.get("negated"),
+                    "operands": self.mapOperandsToListJSON(cond.get("operands")),
+                }
+            )
         return conds
 
     def mapJSONPolicyRule(self, policy):
@@ -140,7 +155,7 @@ class LSSConfigControllerService:
             "lss_default_rule": policy.get("lssDefaultRule"),
             "operator": policy.get("operator"),
             "rule_order": policy.get("ruleOrder"),
-            "conditions": self.mapConditionsToList(policy.get("conditions"))
+            "conditions": self.mapConditionsToList(policy.get("conditions")),
         }
 
     def mapToJSONPolicyRule(self, policy):
@@ -161,7 +176,7 @@ class LSSConfigControllerService:
             "priority": policy.get("priority"),
             "operator": policy.get("operator"),
             "ruleOrder": policy.get("rule_order"),
-            "conditions": self.mapConditionsToJSONList(policy.get("conditions"))
+            "conditions": self.mapConditionsToJSONList(policy.get("conditions")),
         }
 
     @delete_none
@@ -171,7 +186,9 @@ class LSSConfigControllerService:
         return {
             "id": resp_json.get("id"),
             "config": camelcaseToSnakeCase(resp_json.get("config")),
-            "connector_groups": self.mapListJSONToList(resp_json.get("connectorGroups")),
+            "connector_groups": self.mapListJSONToList(
+                resp_json.get("connectorGroups")
+            ),
             "policy_rule": self.mapJSONPolicyRule(resp_json.get("policyRule")),
         }
 
@@ -182,15 +199,21 @@ class LSSConfigControllerService:
         return {
             "id": policy_rule.get("id"),
             "config": snakecaseToCamelcase(policy_rule.get("config")),
-            "connectorGroups": self.mapListToJSONList(policy_rule.get("connector_groups")),
-            "policyRuleResource": self.mapToJSONPolicyRule(policy_rule.get("policy_rule_resource")),
+            "connectorGroups": self.mapListToJSONList(
+                policy_rule.get("connector_groups")
+            ),
+            "policyRuleResource": self.mapToJSONPolicyRule(
+                policy_rule.get("policy_rule_resource")
+            ),
         }
 
     def create(self, lss_config):
         """Create new LSSConfig"""
         appJSON = self.mapAppToJSON(lss_config)
         response = self.rest.post(
-            "/mgmtconfig/v2/admin/customers/%s/lssConfig" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v2/admin/customers/%s/lssConfig" % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -200,7 +223,10 @@ class LSSConfigControllerService:
         """update the LSSConfig"""
         appJSON = self.mapAppToJSON(lss_config)
         response = self.rest.put(
-            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -209,5 +235,6 @@ class LSSConfigControllerService:
     def delete(self, id):
         """delete the LSSConfig"""
         response = self.rest.delete(
-            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s" % (self.customer_id, id))
+            "/mgmtconfig/v2/admin/customers/%s/lssConfig/%s" % (self.customer_id, id)
+        )
         return response.status_code

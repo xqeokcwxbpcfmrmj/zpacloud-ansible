@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -67,11 +67,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_group import ScimGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_scim_group import (
+    ScimGroupService,
+)
 
 
 def core(module):
@@ -84,14 +89,14 @@ def core(module):
     if scim_id is not None:
         attribute = service.getByID(scim_id)
         if attribute is None:
-            module.fail_json(
-                msg="Failed to retrieve scim group ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve scim group ID: '%s'" % (id))
         attributes = [attribute]
     elif scim_name is not None:
         attribute = service.getByName(scim_name, idp_name)
         if attribute is None:
             module.fail_json(
-                msg="Failed to retrieve scim group Name: '%s'" % (scim_name))
+                msg="Failed to retrieve scim group Name: '%s'" % (scim_name)
+            )
         attributes = [attribute]
     else:
         attributes = service.getAllByIDPName(idp_name)
@@ -105,8 +110,7 @@ def main():
         id=dict(type="str", required=False),
         idp_name=dict(type="str", required=True),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -65,11 +65,16 @@ data:
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_log_formats import LSSLogFormatsService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_lss_log_formats import (
+    LSSLogFormatsService,
+)
 
 
 def core(module):
@@ -82,12 +87,21 @@ def core(module):
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
     argument_spec.update(
-        log_type=dict(type="str", required=True, choices=[
-                      'zpn_trans_log', 'zpn_auth_log', 'zpn_ast_auth_log', 'zpn_http_trans_log',
-                      'zpn_audit_log', 'zpn_ast_comprehensive_stats', 'zpn_sys_auth_log']),
+        log_type=dict(
+            type="str",
+            required=True,
+            choices=[
+                "zpn_trans_log",
+                "zpn_auth_log",
+                "zpn_ast_auth_log",
+                "zpn_http_trans_log",
+                "zpn_audit_log",
+                "zpn_ast_comprehensive_stats",
+                "zpn_sys_auth_log",
+            ],
+        ),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

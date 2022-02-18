@@ -1,10 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 import re
+
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
 )
 
 
@@ -24,7 +27,9 @@ class AppConnectorGroupService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s"
+            % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,10 @@ class AppConnectorGroupService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/appConnectorGroup" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/appConnectorGroup"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         apps = []
         for app in list:
             apps.append(self.mapRespJSONToApp(app))
@@ -111,7 +119,9 @@ class AppConnectorGroupService:
         """Create new AppConnectorGroup"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup" % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -121,7 +131,10 @@ class AppConnectorGroupService:
         """update the AppConnectorGroup"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -130,5 +143,7 @@ class AppConnectorGroupService:
     def delete(self, id):
         """delete the AppConnectorGroup"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/appConnectorGroup/%s"
+            % (self.customer_id, id)
+        )
         return response.status_code

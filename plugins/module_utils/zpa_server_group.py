@@ -1,11 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+)
 
 
 class ServerGroupService:
@@ -24,7 +27,8 @@ class ServerGroupService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +36,10 @@ class ServerGroupService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/serverGroup" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/serverGroup"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         server_groups = []
         for server_group in list:
             server_groups.append(self.mapRespJSONToApp(server_group))
@@ -75,7 +82,9 @@ class ServerGroupService:
             "dynamic_discovery": resp_json.get("dynamicDiscovery"),
             "servers": self.mapListJSONToList(resp_json.get("servers")),
             "applications": self.mapListJSONToList(resp_json.get("applications")),
-            "app_connector_groups": self.mapListJSONToList(resp_json.get("appConnectorGroups")),
+            "app_connector_groups": self.mapListJSONToList(
+                resp_json.get("appConnectorGroups")
+            ),
         }
 
     @delete_none
@@ -92,14 +101,18 @@ class ServerGroupService:
             "dynamicDiscovery": server_group.get("dynamic_discovery"),
             "servers": self.mapListToJSONList(server_group.get("servers")),
             "applications": self.mapListToJSONList(server_group.get("applications")),
-            "appConnectorGroups": self.mapListToJSONList(server_group.get("app_connector_groups")),
+            "appConnectorGroups": self.mapListToJSONList(
+                server_group.get("app_connector_groups")
+            ),
         }
 
     def create(self, server_group):
         """Create new Server Group"""
         serverGroupJson = self.mapAppToJSON(server_group)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/serverGroup" % (self.customer_id), data=serverGroupJson)
+            "/mgmtconfig/v1/admin/customers/%s/serverGroup" % (self.customer_id),
+            data=serverGroupJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -109,7 +122,10 @@ class ServerGroupService:
         """update the Server Group"""
         serverGroupJson = self.mapAppToJSON(server_group)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s" % (self.customer_id, serverGroupJson.get("id")), data=serverGroupJson)
+            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s"
+            % (self.customer_id, serverGroupJson.get("id")),
+            data=serverGroupJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -118,5 +134,6 @@ class ServerGroupService:
     def delete(self, id):
         """delete the Server Group"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/serverGroup/%s" % (self.customer_id, id)
+        )
         return response.status_code

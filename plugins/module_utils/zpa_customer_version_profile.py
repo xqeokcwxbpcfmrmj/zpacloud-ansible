@@ -1,11 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+)
 
 
 class ProfileVersionService:
@@ -24,7 +27,9 @@ class ProfileVersionService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/visible/versionProfiles/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/visible/versionProfiles/%s"
+            % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,10 @@ class ProfileVersionService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/visible/versionProfiles" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/visible/versionProfiles"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         networks = []
         for network in list:
             networks.append(self.mapRespJSONToApp(network))
@@ -80,7 +88,11 @@ class ProfileVersionService:
             "name": resp_json.get("name"),
             "upgrade_priority": resp_json.get("upgradePriority"),
             "visibility_scope": resp_json.get("visibilityScope"),
-            "custom_scope_request_customer_ids": self.mapJSONCustomScopeRequestCustomerIds(resp_json.get("customScopeRequestCustomerIds")),
-            "custom_scope_customer_ids": self.mapJSONCustomScopeCustomerIds(resp_json.get("customScopeCustomerIds")),
+            "custom_scope_request_customer_ids": self.mapJSONCustomScopeRequestCustomerIds(
+                resp_json.get("customScopeRequestCustomerIds")
+            ),
+            "custom_scope_customer_ids": self.mapJSONCustomScopeCustomerIds(
+                resp_json.get("customScopeCustomerIds")
+            ),
             "versions": self.mapJSONVersions(resp_json.get("versions")),
         }

@@ -3,7 +3,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -201,11 +201,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_controller import AppConnectorControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_controller import (
+    AppConnectorControllerService,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
 
 
 def core(module):
@@ -283,7 +288,16 @@ def main():
         application_start_time=dict(type="str", required=False),
         app_connector_group_id=dict(type="str", required=False),
         app_connector_group_name=dict(type="str", required=False),
-        control_channel_status=dict(type="str", required=False, choices=['UNKNOWN', 'ZPN_STATUS_AUTHENTICATED', 'FAILED', 'ZPN_STATUS_DISCONNECTED']),
+        control_channel_status=dict(
+            type="str",
+            required=False,
+            choices=[
+                "UNKNOWN",
+                "ZPN_STATUS_AUTHENTICATED",
+                "FAILED",
+                "ZPN_STATUS_DISCONNECTED",
+            ],
+        ),
         creation_time=dict(type="str", required=False),
         ctrl_broker_name=dict(type="str", required=False),
         current_version=dict(type="str", required=False),
@@ -315,12 +329,14 @@ def main():
         sarge_version=dict(type="str", required=False),
         enrollment_cert=dict(type="str", required=False),
         upgrade_attempt=dict(type="str", required=False),
-        upgrade_status=dict(type="str", required=False, choices=['COMPLETE', 'IN_PROGRESS', 'FAILED', 'UNKNOWN', 'RESTARTING']),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        upgrade_status=dict(
+            type="str",
+            required=False,
+            choices=["COMPLETE", "IN_PROGRESS", "FAILED", "UNKNOWN", "RESTARTING"],
+        ),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

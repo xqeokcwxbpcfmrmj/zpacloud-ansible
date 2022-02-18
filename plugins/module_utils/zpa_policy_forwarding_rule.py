@@ -1,11 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+)
 
 
 class PolicyForwardingRuleService:
@@ -24,7 +27,9 @@ class PolicyForwardingRuleService:
 
     def getByPolicyType(self, policyType):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/policyType/%s" % (self.customer_id, policyType))
+            "/mgmtconfig/v1/admin/customers/%s/policySet/policyType/%s"
+            % (self.customer_id, policyType)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +37,9 @@ class PolicyForwardingRuleService:
 
     def getByID(self, id, policy_set_id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s" % (self.customer_id, policy_set_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s"
+            % (self.customer_id, policy_set_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -40,7 +47,10 @@ class PolicyForwardingRuleService:
 
     def getAllByPolicyType(self, policy_type):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/policySet/rules/policyType/%s" % (self.customer_id, policy_type), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/policySet/rules/policyType/%s"
+            % (self.customer_id, policy_type),
+            data_key_name="list",
+        )
         policy_rules = []
         for policy_rule in list:
             policy_rules.append(self.mapRespJSONToPolicy(policy_rule))
@@ -72,27 +82,31 @@ class PolicyForwardingRuleService:
     def mapOperandsToList(self, operandsJSON):
         ops = []
         for op in operandsJSON:
-            ops.append({
-                "id": op.get("id"),
-                "creation_time": op.get("creationTime"),
-                "modified_by": op.get("modifiedBy"),
-                "object_type": op.get("objectType"),
-                "lhs": op.get("lhs"),
-                "rhs": op.get("rhs"),
-                "name": op.get("name"),
-            })
+            ops.append(
+                {
+                    "id": op.get("id"),
+                    "creation_time": op.get("creationTime"),
+                    "modified_by": op.get("modifiedBy"),
+                    "object_type": op.get("objectType"),
+                    "lhs": op.get("lhs"),
+                    "rhs": op.get("rhs"),
+                    "name": op.get("name"),
+                }
+            )
         return ops
 
     def mapOperandsToListJSON(self, operandsJSON):
         ops = []
         for op in operandsJSON:
-            ops.append({
-                "objectType": op.get("object_type"),
-                "lhs": op.get("lhs"),
-                "rhs": op.get("rhs"),
-                "name": op.get("name"),
-                "idpId": op.get("idp_id"),
-            })
+            ops.append(
+                {
+                    "objectType": op.get("object_type"),
+                    "lhs": op.get("lhs"),
+                    "rhs": op.get("rhs"),
+                    "name": op.get("name"),
+                    "idpId": op.get("idp_id"),
+                }
+            )
         return ops
 
     def mapConditionsToList(self, conditionsJSON):
@@ -101,15 +115,17 @@ class PolicyForwardingRuleService:
             return conds
         for cond in conditionsJSON:
             """"""
-            conds.append({
-                "id": cond.get("id"),
-                "modified_time": cond.get("modifiedTime"),
-                "creation_time": cond.get("creationTime"),
-                "modified_by": cond.get("modifiedBy"),
-                "operator": cond.get("operator"),
-                "negated": cond.get("negated"),
-                "operands": self.mapOperandsToList(cond.get("operands")),
-            })
+            conds.append(
+                {
+                    "id": cond.get("id"),
+                    "modified_time": cond.get("modifiedTime"),
+                    "creation_time": cond.get("creationTime"),
+                    "modified_by": cond.get("modifiedBy"),
+                    "operator": cond.get("operator"),
+                    "negated": cond.get("negated"),
+                    "operands": self.mapOperandsToList(cond.get("operands")),
+                }
+            )
         return conds
 
     def mapConditionsToJSONList(self, conditions):
@@ -118,11 +134,13 @@ class PolicyForwardingRuleService:
             return conds
         for cond in conditions:
             """"""
-            conds.append({
-                "operator": cond.get("operator"),
-                "negated": cond.get("negated"),
-                "operands": self.mapOperandsToListJSON(cond.get("operands")),
-            })
+            conds.append(
+                {
+                    "operator": cond.get("operator"),
+                    "negated": cond.get("negated"),
+                    "operands": self.mapOperandsToListJSON(cond.get("operands")),
+                }
+            )
         return conds
 
     @delete_none
@@ -171,24 +189,38 @@ class PolicyForwardingRuleService:
 
     def customValidate(self, operand, expectedLHS, expectedRHS, getByID):
         if operand.get("lhs", "") == "" or not operand.get("lhs") in expectedLHS:
-            return self.lhsWarn(operand.get("objectType"), expectedLHS, operand.get("lhs"), None)
+            return self.lhsWarn(
+                operand.get("objectType"), expectedLHS, operand.get("lhs"), None
+            )
         if operand.get("rhs", "") == "":
-            return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), None)
+            return self.rhsWarn(
+                operand.get("objectType"), expectedRHS, operand.get("rhs"), None
+            )
         resp = getByID(operand.get("rhs"))
         if resp:
             return True
-        return self.rhsWarn(operand.get("objectType"), expectedRHS, operand.get("rhs"), resp)
+        return self.rhsWarn(
+            operand.get("objectType"), expectedRHS, operand.get("rhs"), resp
+        )
 
     def rhsWarn(self, objType, expected, rhs, err):
-        return "[WARN] when operand object type is %s RHS must be an existing %s, value is \"%s\", %s\n" % (objType, expected, rhs, err)
+        return (
+            '[WARN] when operand object type is %s RHS must be an existing %s, value is "%s", %s\n'
+            % (objType, expected, rhs, err)
+        )
 
     def lhsWarn(self, objType, expected, lhs, err):
-        return "[WARN] when operand object type is %s LHS must be an existing %s value is \"%s\", %s\n" % (objType, expected, lhs, err)
+        return (
+            '[WARN] when operand object type is %s LHS must be an existing %s value is "%s", %s\n'
+            % (objType, expected, lhs, err)
+        )
 
     def reorder(self, rule_id, policy_set_id, order):
         """reorder the Policy rule"""
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s/reorder/%s" % (self.customer_id, policy_set_id, rule_id, order))
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s/reorder/%s"
+            % (self.customer_id, policy_set_id, rule_id, order)
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -196,7 +228,8 @@ class PolicyForwardingRuleService:
 
     def getAppSegmentByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -204,7 +237,10 @@ class PolicyForwardingRuleService:
 
     def getSegmentGroupByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -212,7 +248,9 @@ class PolicyForwardingRuleService:
 
     def getIDPControllerByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/idp/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/idp/%s" % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -220,26 +258,36 @@ class PolicyForwardingRuleService:
 
     def getCloudConnectorGroupByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/cloudConnectorGroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/cloudConnectorGroup/%s"
+            % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
         return True
 
     def validClientType(self, id):
-        if id not in ["zpn_client_type_zapp",
-                      "zpn_client_type_exporter",
-                      "zpn_client_type_ip_anchoring",
-                      "zpn_client_type_browser_isolation",
-                      "zpn_client_type_machine_tunnel",
-                      "zpn_client_type_edge_connector"]:
-            return "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' " + \
-                "or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' when object type is CLIENT_TYPE"
+        if id not in [
+            "zpn_client_type_zapp",
+            "zpn_client_type_exporter",
+            "zpn_client_type_ip_anchoring",
+            "zpn_client_type_browser_isolation",
+            "zpn_client_type_machine_tunnel",
+            "zpn_client_type_edge_connector",
+        ]:
+            return (
+                "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' "
+                + "or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' when object type is CLIENT_TYPE"
+            )
         return True
 
     def getMachineGroupByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/machineGroup/%s"
+            % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -247,7 +295,9 @@ class PolicyForwardingRuleService:
 
     def getByPostureUDID(self, postureUDID):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/posture" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/posture" % (self.customer_id),
+            data_key_name="list",
+        )
         for posture in list:
             if posture.get("postureUdid") == postureUDID:
                 return True
@@ -255,7 +305,9 @@ class PolicyForwardingRuleService:
 
     def getTrustedNetworkByNetID(self, networkID):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/network" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/network" % (self.customer_id),
+            data_key_name="list",
+        )
         for network in list:
             if network.get("networkId") == networkID:
                 return True
@@ -263,7 +315,10 @@ class PolicyForwardingRuleService:
 
     def getSamlAttribute(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/samlAttribute/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/samlAttribute/%s"
+            % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -271,7 +326,10 @@ class PolicyForwardingRuleService:
 
     def getScimAttributeByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/idp/scimattribute/%s" % (self.customer_id, id), fail_safe=True)
+            "/mgmtconfig/v1/admin/customers/%s/idp/scimattribute/%s"
+            % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -279,7 +337,9 @@ class PolicyForwardingRuleService:
 
     def getScimGroupByID(self, id):
         response = self.rest.get(
-            "/userconfig/v1/customers/%s/scimgroup/%s" % (self.customer_id, id), fail_safe=True)
+            "/userconfig/v1/customers/%s/scimgroup/%s" % (self.customer_id, id),
+            fail_safe=True,
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -288,69 +348,158 @@ class PolicyForwardingRuleService:
     def validateOperand(self, operand):
         objType = operand.get("objectType")
         if objType == "APP":
-            return self.customValidate(operand, ["id"], "application segment ID", self.getAppSegmentByID)
+            return self.customValidate(
+                operand, ["id"], "application segment ID", self.getAppSegmentByID
+            )
         elif objType == "APP_GROUP":
-            return self.customValidate(operand, ["id"], "Segment Group ID", self.getSegmentGroupByID)
+            return self.customValidate(
+                operand, ["id"], "Segment Group ID", self.getSegmentGroupByID
+            )
         elif objType == "IDP":
-            return self.customValidate(operand, ["id"], "IDP ID", self.getIDPControllerByID)
+            return self.customValidate(
+                operand, ["id"], "IDP ID", self.getIDPControllerByID
+            )
         elif objType == "EDGE_CONNECTOR_GROUP":
-            return self.customValidate(operand, ["id"], "cloud connector group ID", self.getCloudConnectorGroupByID)
+            return self.customValidate(
+                operand,
+                ["id"],
+                "cloud connector group ID",
+                self.getCloudConnectorGroupByID,
+            )
         elif objType == "CLIENT_TYPE":
-            return self.customValidate(operand, ["id"],
-                                       "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation'",
-                                       self.validClientType)
+            return self.customValidate(
+                operand,
+                ["id"],
+                "'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_browser_isolation'",
+                self.validClientType,
+            )
         elif objType == "MACHINE_GRP":
-            return self.customValidate(operand, ["id"], "machine group ID", self.getMachineGroupByID)
+            return self.customValidate(
+                operand, ["id"], "machine group ID", self.getMachineGroupByID
+            )
         elif objType == "POSTURE":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), None)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid posture profile ID",
+                    operand.get("lhs"),
+                    None,
+                )
             resp = self.getByPostureUDID(operand.get("lhs"))
             if resp is not True:
-                return self.lhsWarn(operand.get("objectType"), "valid posture profile ID", operand.get("lhs"), resp)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid posture profile ID",
+                    operand.get("lhs"),
+                    resp,
+                )
             if not operand.get("rhs") in ["true", "false"]:
-                return self.rhsWarn(operand.get("objectType"), "\"true\"/\"false\"", operand.get("rhs"), None)
+                return self.rhsWarn(
+                    operand.get("objectType"),
+                    '"true"/"false"',
+                    operand.get("rhs"),
+                    None,
+                )
             return True
         elif objType == "TRUSTED_NETWORK":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), None)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid trusted network ID",
+                    operand.get("lhs"),
+                    None,
+                )
             resp = self.getTrustedNetworkByNetID(operand.get("lhs"))
             if resp is not True:
-                return self.lhsWarn(operand.get("objectType"), "valid trusted network ID", operand.get("lhs"), resp)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid trusted network ID",
+                    operand.get("lhs"),
+                    resp,
+                )
             if operand.get("rhs") != "true":
-                return self.rhsWarn(operand.get("objectType"), "\"true\"", operand.get("rhs"), None)
+                return self.rhsWarn(
+                    operand.get("objectType"), '"true"', operand.get("rhs"), None
+                )
             return True
         elif objType == "SAML":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), None)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid SAML Attribute ID",
+                    operand.get("lhs"),
+                    None,
+                )
             resp = self.getSamlAttribute(operand.get("lhs"))
             if resp is not True:
-                return self.lhsWarn(operand.get("objectType"), "valid SAML Attribute ID", operand.get("lhs"), resp)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid SAML Attribute ID",
+                    operand.get("lhs"),
+                    resp,
+                )
             if operand.get("rhs") is None or operand.get("rhs") == "":
-                return self.rhsWarn(operand.get("objectType"), "SAML Attribute Value", operand.get("rhs"), None)
+                return self.rhsWarn(
+                    operand.get("objectType"),
+                    "SAML Attribute Value",
+                    operand.get("rhs"),
+                    None,
+                )
             return True
         elif objType == "SCIM":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), None)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid SCIM Attribute ID",
+                    operand.get("lhs"),
+                    None,
+                )
             resp = self.getScimAttributeByID(operand.get("lhs"))
             if resp is not True:
-                return self.lhsWarn(operand.get("objectType"), "valid SCIM Attribute ID", operand.get("lhs"), resp)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid SCIM Attribute ID",
+                    operand.get("lhs"),
+                    resp,
+                )
             if operand.get("rhs") is None or operand.get("rhs") == "":
-                return self.rhsWarn(operand.get("objectType"), "SCIM Attribute Value", operand.get("rhs"), None)
+                return self.rhsWarn(
+                    operand.get("objectType"),
+                    "SCIM Attribute Value",
+                    operand.get("rhs"),
+                    None,
+                )
             return True
         elif objType == "SCIM_GROUP":
             if operand.get("lhs") is None or operand.get("lhs") == "":
-                return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), None)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid IDP Controller ID",
+                    operand.get("lhs"),
+                    None,
+                )
             resp = self.getIDPControllerByID(operand.get("lhs"))
             if resp is not True:
-                return self.lhsWarn(operand.get("objectType"), "valid IDP Controller ID", operand.get("lhs"), resp)
+                return self.lhsWarn(
+                    operand.get("objectType"),
+                    "valid IDP Controller ID",
+                    operand.get("lhs"),
+                    resp,
+                )
             if operand.get("rhs") is None or operand.get("rhs") == "":
-                return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), None)
+                return self.rhsWarn(
+                    operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), None
+                )
             resp = self.getScimGroupByID(operand.get("rhs"))
             if resp is not True:
-                return self.rhsWarn(operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), resp)
+                return self.rhsWarn(
+                    operand.get("objectType"), "SCIM Group ID", operand.get("rhs"), resp
+                )
             return True
         else:
-            return "[WARN] invalid operand object type %s\n" % (operand.get("objectType"))
+            return "[WARN] invalid operand object type %s\n" % (
+                operand.get("objectType")
+            )
 
     def validateConditions(self, conditions):
         for condition in conditions:
@@ -364,40 +513,62 @@ class PolicyForwardingRuleService:
         """Create new Policy rule"""
         ruleJson = self.mapAppToJSON(policy_rule)
         check = self.validateConditions(
-            [] if ruleJson is None else ruleJson.get("conditions"))
+            [] if ruleJson is None else ruleJson.get("conditions")
+        )
         if check is not True:
             self.module.fail_json(
-                msg="validating policy rule conditions failed: %s" % (check))
+                msg="validating policy rule conditions failed: %s" % (check)
+            )
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule" % (self.customer_id, policy_set_id), data=ruleJson)
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule"
+            % (self.customer_id, policy_set_id),
+            data=ruleJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
         rule = self.getByID(response.json.get("id"), policy_set_id)
-        if policy_rule.get("rule_order") is not None and policy_rule.get("rule_order") != "":
-            return self.reorder(rule.get("id"), policy_set_id, policy_rule.get("rule_order"))
+        if (
+            policy_rule.get("rule_order") is not None
+            and policy_rule.get("rule_order") != ""
+        ):
+            return self.reorder(
+                rule.get("id"), policy_set_id, policy_rule.get("rule_order")
+            )
         return rule
 
     def update(self, policy_rule, policy_set_id):
         """update the Policy rule"""
         ruleJson = self.mapAppToJSON(policy_rule)
         check = self.validateConditions(
-            [] if ruleJson is None else ruleJson.get("conditions"))
+            [] if ruleJson is None else ruleJson.get("conditions")
+        )
         if check is not True:
             self.module.fail_json(
-                msg="validating policy rule conditions failed: %s" % (check))
+                msg="validating policy rule conditions failed: %s" % (check)
+            )
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s" % (self.customer_id, policy_set_id, ruleJson.get("id")), data=ruleJson)
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s"
+            % (self.customer_id, policy_set_id, ruleJson.get("id")),
+            data=ruleJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
         rule = self.getByID(ruleJson.get("id"), policy_set_id)
-        if policy_rule.get("rule_order") is not None and policy_rule.get("rule_order") != "":
-            return self.reorder(rule.get("id"), policy_set_id, policy_rule.get("rule_order"))
+        if (
+            policy_rule.get("rule_order") is not None
+            and policy_rule.get("rule_order") != ""
+        ):
+            return self.reorder(
+                rule.get("id"), policy_set_id, policy_rule.get("rule_order")
+            )
         return rule
 
     def delete(self, id, policy_set_id):
         """delete the Policy rule"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s" % (self.customer_id, policy_set_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/policySet/%s/rule/%s"
+            % (self.customer_id, policy_set_id, id)
+        )
         return response.status_code

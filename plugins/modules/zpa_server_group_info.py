@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -60,11 +60,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import (
+    ServerGroupService,
+)
 
 
 def core(module):
@@ -76,14 +81,14 @@ def core(module):
     if server_group_id is not None:
         server_group = service.getByID(server_group_id)
         if server_group is None:
-            module.fail_json(
-                msg="Failed to retrieve server group ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve server group ID: '%s'" % (id))
         server_groups = [server_group]
     elif server_group_name is not None:
         server_group = service.getByName(server_group_name)
         if server_group is None:
             module.fail_json(
-                msg="Failed to retrieve server group Name: '%s'" % (server_group_name))
+                msg="Failed to retrieve server group Name: '%s'" % (server_group_name)
+            )
         server_groups = [server_group]
     else:
         server_groups = service.getAll()
@@ -96,8 +101,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

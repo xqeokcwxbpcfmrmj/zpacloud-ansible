@@ -1,11 +1,14 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none, camelcaseToSnakeCase
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    camelcaseToSnakeCase,
+    delete_none,
+)
 
 
 class ApplicationSegmentService:
@@ -24,7 +27,8 @@ class ApplicationSegmentService:
 
     def getByID(self, id):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -32,7 +36,10 @@ class ApplicationSegmentService:
 
     def getAll(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/application"
+            % (self.customer_id),
+            data_key_name="list",
+        )
         apps = []
         for app in list:
             apps.append(self.mapRespJSONToApp(app))
@@ -95,10 +102,14 @@ class ApplicationSegmentService:
             "creation_time": resp_json.get("creationTime"),
             "modifiedby": resp_json.get("modifiedBy"),
             "id": resp_json.get("id"),
-            "server_groups": self.mapServerGroupsJSONToList(resp_json.get("serverGroups")),
+            "server_groups": self.mapServerGroupsJSONToList(
+                resp_json.get("serverGroups")
+            ),
             "segment_group_name": resp_json.get("segmentGroupName"),
             "domain_names": resp_json.get("domainNames"),
-            "clientless_apps": self.mapClientlessAppsJSONToList(resp_json.get("clientlessApps"))
+            "clientless_apps": self.mapClientlessAppsJSONToList(
+                resp_json.get("clientlessApps")
+            ),
         }
 
     @delete_none
@@ -136,7 +147,9 @@ class ApplicationSegmentService:
         """Create new application"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/application" % (self.customer_id),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -146,7 +159,10 @@ class ApplicationSegmentService:
         """update the application"""
         appJSON = self.mapAppToJSON(app)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, appJSON.get("id")), data=appJSON)
+            "/mgmtconfig/v1/admin/customers/%s/application/%s"
+            % (self.customer_id, appJSON.get("id")),
+            data=appJSON,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -154,7 +170,9 @@ class ApplicationSegmentService:
 
     def detach_from_segment_group(self, app_id, seg_group_id):
         seg_group = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id))
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, seg_group_id)
+        )
         if seg_group.status_code > 299:
             return None
         data = seg_group.json
@@ -165,10 +183,14 @@ class ApplicationSegmentService:
                 addaptedApps.append(app)
         data["applications"] = addaptedApps
         self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s" % (self.customer_id, seg_group_id), data=data)
+            "/mgmtconfig/v1/admin/customers/%s/segmentGroup/%s"
+            % (self.customer_id, seg_group_id),
+            data=data,
+        )
 
     def delete(self, id):
         """delete the application"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id))
+            "/mgmtconfig/v1/admin/customers/%s/application/%s" % (self.customer_id, id)
+        )
         return response.status_code

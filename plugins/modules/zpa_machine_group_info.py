@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -61,11 +61,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_machine_group import MachineGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_machine_group import (
+    MachineGroupService,
+)
 
 
 def core(module):
@@ -77,14 +82,14 @@ def core(module):
     if machine_group_id is not None:
         machine_group = service.getByID(machine_group_id)
         if machine_group is None:
-            module.fail_json(
-                msg="Failed to retrieve Machine Group ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve Machine Group ID: '%s'" % (id))
         machine_groups = [machine_group]
     elif machine_group_name is not None:
         machine_group = service.getByName(machine_group_name)
         if machine_group is None:
             module.fail_json(
-                msg="Failed to retrieve Machine Group Name: '%s'" % (machine_group_name))
+                msg="Failed to retrieve Machine Group Name: '%s'" % (machine_group_name)
+            )
         machine_groups = [machine_groups]
     else:
         machine_groups = service.getAll()
@@ -97,8 +102,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

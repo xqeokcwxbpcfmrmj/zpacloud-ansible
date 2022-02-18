@@ -60,11 +60,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import IDPControllerService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_idp_controller import (
+    IDPControllerService,
+)
 
 
 def core(module):
@@ -76,14 +81,14 @@ def core(module):
     if idp_id is not None:
         idp_controller = service.getByID(idp_id)
         if idp_controller is None:
-            module.fail_json(
-                msg="Failed to retrieve IDP Controller ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve IDP Controller ID: '%s'" % (id))
         idp_controllers = [idp_controller]
     elif idp_name is not None:
         idp_controller = service.getByName(idp_name)
         if idp_controller is None:
             module.fail_json(
-                msg="Failed to retrieve IDP Controller Name: '%s'" % (idp_name))
+                msg="Failed to retrieve IDP Controller Name: '%s'" % (idp_name)
+            )
         idp_controllers = [idp_controller]
     else:
         idp_controller = service.getAll()
@@ -96,8 +101,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -138,11 +138,16 @@ RETURN = """
 # The newly created app connector group or service edge group provisioning key resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import ProvisioningKeyService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_provisioning_key import (
+    ProvisioningKeyService,
+)
 
 
 def core(module):
@@ -169,13 +174,14 @@ def core(module):
         "usage_count",
         "zcomponent_id",
         "zcomponent_name",
-        "association_type"
+        "association_type",
     ]
     association_type = module.params.get("association_type")
     for param_name in params:
         provisioning_key[param_name] = module.params.get(param_name, None)
     existing_key = service.getByIDOrName(
-        provisioning_key.get("id"), provisioning_key.get("name"), association_type)
+        provisioning_key.get("id"), provisioning_key.get("name"), association_type
+    )
     if existing_key is not None:
         id = existing_key.get("id")
         existing_key.update(provisioning_key)
@@ -187,8 +193,7 @@ def core(module):
             module.exit_json(changed=True, data=existing_key)
         else:
             """Create"""
-            provisioning_key = service.create(
-                provisioning_key, association_type)
+            provisioning_key = service.create(provisioning_key, association_type)
             module.exit_json(changed=False, data=provisioning_key)
     elif state == "absent":
         if existing_key is not None:
@@ -211,20 +216,23 @@ def main():
         modified_by=dict(type="str", required=False),
         modified_time=dict(type="str", required=False),
         name=dict(type="str", required=True),
-        provisioning_key=dict(type="str", required=False, no_log=True,),
+        provisioning_key=dict(
+            type="str",
+            required=False,
+            no_log=True,
+        ),
         enrollment_cert_id=dict(type="str", required=True),
         enrollment_cert_name=dict(type="str", required=False),
         ui_config=dict(type="str", required=False),
         usage_count=dict(type="str", required=False),
         zcomponent_id=dict(type="str", required=True),
         zcomponent_name=dict(type="str", required=False),
-        association_type=dict(type="str", choices=[
-                              "CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        association_type=dict(
+            type="str", choices=["CONNECTOR_GRP", "SERVICE_EDGE_GRP"], required=True
+        ),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

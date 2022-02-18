@@ -163,11 +163,16 @@ RETURN = """
 # The newly created app connector group resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_group import AppConnectorGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_app_connector_group import (
+    AppConnectorGroupService,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
 
 
 def core(module):
@@ -216,8 +221,14 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=False), name=dict(type='str', required=False)), required=False)
+    id_name_spec = dict(
+        type="list",
+        elements="dict",
+        options=dict(
+            id=dict(type="str", required=False), name=dict(type="str", required=False)
+        ),
+        required=False,
+    )
     argument_spec.update(
         connectors=id_name_spec,
         name=dict(type="str", required=True),
@@ -225,8 +236,12 @@ def main():
         city_country=dict(type="str", required=False),
         country_code=dict(type="str", required=False),
         description=dict(type="str", required=False),
-        dns_query_type=dict(type="str", choices=[
-                            'IPV4_IPV6', 'IPV4', 'IPV6'], required=False, default="IPV4_IPV6"),
+        dns_query_type=dict(
+            type="str",
+            choices=["IPV4_IPV6", "IPV4", "IPV6"],
+            required=False,
+            default="IPV4_IPV6",
+        ),
         enabled=dict(type="bool", default=True, required=False),
         latitude=dict(type="str", required=False),
         location=dict(type="str", required=False),
@@ -234,16 +249,14 @@ def main():
         lss_app_connector_group=dict(type="str", required=False),
         upgrade_day=dict(type="str", default="SUNDAY", required=False),
         upgrade_time_in_secs=dict(type="str", default=66600, required=False),
-        override_version_profile=dict(
-            type="bool", default=False, required=False),
-        version_profile_id=dict(type="str", default="0", choices=[
-                                '0', '1', '2'], required=False),
+        override_version_profile=dict(type="bool", default=False, required=False),
+        version_profile_id=dict(
+            type="str", default="0", choices=["0", "1", "2"], required=False
+        ),
         version_profile_name=dict(type="str", required=False),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

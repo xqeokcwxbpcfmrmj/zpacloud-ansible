@@ -1,9 +1,10 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
 from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none
+    ZPAClientHelper,
+    delete_none,
 )
 
 
@@ -26,7 +27,9 @@ class ScimAttributeHeaderService:
         if idp is None or idp.get("id") is None:
             return None
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute/%s" % (self.customer_id, idp.get("id"), attribute_id))
+            "/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute/%s"
+            % (self.customer_id, idp.get("id"), attribute_id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -34,7 +37,9 @@ class ScimAttributeHeaderService:
 
     def getAllIDPControllersRaw(self):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v2/admin/customers/%s/idp" % (self.customer_id), data_key_name="list")
+            base_url="/mgmtconfig/v2/admin/customers/%s/idp" % (self.customer_id),
+            data_key_name="list",
+        )
         return list
 
     def getIDPByName(self, idpName):
@@ -49,7 +54,10 @@ class ScimAttributeHeaderService:
         if idp is None or idp.get("id") is None:
             return []
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute" % (self.customer_id, idp.get("id")), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/idp/%s/scimattribute"
+            % (self.customer_id, idp.get("id")),
+            data_key_name="list",
+        )
         scimAttributes = []
         for scimAttribute in list:
             scimAttributes.append(self.mapRespJSONToApp(scimAttribute))

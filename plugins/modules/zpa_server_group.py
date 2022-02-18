@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -142,11 +142,16 @@ RETURN = """
 # The newly created server group resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import ServerGroupService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_server_group import (
+    ServerGroupService,
+)
 
 
 def core(module):
@@ -169,7 +174,8 @@ def core(module):
     for param_name in params:
         server_group[param_name] = module.params.get(param_name, None)
     existing_server_group = service.getByIDOrName(
-        server_group.get("id"), server_group.get("name"))
+        server_group.get("id"), server_group.get("name")
+    )
     if existing_server_group is not None:
         id = existing_server_group.get("id")
         existing_server_group.update(server_group)
@@ -192,25 +198,30 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=False)
+    id_name_spec = dict(
+        type="list",
+        elements="dict",
+        options=dict(
+            id=dict(type="str", required=True), name=dict(type="str", required=False)
+        ),
+        required=False,
+    )
     argument_spec.update(
-        id=dict(type='str'),
-        ip_anchored=dict(type='bool', required=False),
-        name=dict(type='str', required=True),
-        config_space=dict(type='str', required=False,
-                          default="DEFAULT", choices=["DEFAULT", "SIEM"]),
-        enabled=dict(type='bool', required=False),
-        description=dict(type='str', required=False),
-        dynamic_discovery=dict(type='bool', required=False),
+        id=dict(type="str"),
+        ip_anchored=dict(type="bool", required=False),
+        name=dict(type="str", required=True),
+        config_space=dict(
+            type="str", required=False, default="DEFAULT", choices=["DEFAULT", "SIEM"]
+        ),
+        enabled=dict(type="bool", required=False),
+        description=dict(type="str", required=False),
+        dynamic_discovery=dict(type="bool", required=False),
         servers=id_name_spec,
         applications=id_name_spec,
         app_connector_groups=id_name_spec,
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present"),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

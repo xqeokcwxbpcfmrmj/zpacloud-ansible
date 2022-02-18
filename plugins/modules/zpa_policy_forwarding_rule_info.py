@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -59,11 +59,16 @@ RETURN = """
 """
 
 from re import T
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import PolicyForwardingRuleService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_policy_forwarding_rule import (
+    PolicyForwardingRuleService,
+)
 
 
 def core(module):
@@ -79,15 +84,14 @@ def core(module):
     if policy_rule_id is not None:
         policy_rule = service.getByID(policy_rule_id, policy_set_id)
         if policy_rule is None:
-            module.fail_json(
-                msg="Failed to retrieve policy rule ID: '%s'" % (id))
+            module.fail_json(msg="Failed to retrieve policy rule ID: '%s'" % (id))
         policy_rules = [policy_rule]
     elif policy_rule_name is not None:
-        policy_rule = service.getByNameAndType(
-            policy_rule_name, "BYPASS_POLICY")
+        policy_rule = service.getByNameAndType(policy_rule_name, "BYPASS_POLICY")
         if policy_rule is None:
             module.fail_json(
-                msg="Failed to retrieve policy rule Name: '%s'" % (policy_rule_name))
+                msg="Failed to retrieve policy rule Name: '%s'" % (policy_rule_name)
+            )
         policy_rules = [policy_rule]
     else:
         policy_rules = service.getAllByPolicyType("BYPASS_POLICY")
@@ -100,8 +104,7 @@ def main():
         name=dict(type="str", required=False),
         id=dict(type="str", required=False),
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:

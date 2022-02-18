@@ -1,11 +1,13 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
-    ZPAClientHelper, delete_none
-)
 import re
+
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+    delete_none,
+)
 
 
 class ProvisioningKeyService:
@@ -25,7 +27,9 @@ class ProvisioningKeyService:
 
     def getByID(self, id, association_type):
         response = self.rest.get(
-            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s" % (self.customer_id, association_type, id))
+            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s"
+            % (self.customer_id, association_type, id)
+        )
         status_code = response.status_code
         if status_code != 200:
             return None
@@ -33,7 +37,10 @@ class ProvisioningKeyService:
 
     def getAll(self, association_type):
         list = self.rest.get_paginated_data(
-            base_url="/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey" % (self.customer_id, association_type), data_key_name="list")
+            base_url="/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey"
+            % (self.customer_id, association_type),
+            data_key_name="list",
+        )
         provisioning_keys = []
         for provisioning_key in list:
             provisioning_keys.append(self.mapRespJSONToApp(provisioning_key))
@@ -114,7 +121,10 @@ class ProvisioningKeyService:
         """Create new Provisioning Key"""
         provisioningKeyJson = self.mapAppToJSON(provisioning_key)
         response = self.rest.post(
-            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey" % (self.customer_id, association_type), data=provisioningKeyJson)
+            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey"
+            % (self.customer_id, association_type),
+            data=provisioningKeyJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -124,9 +134,10 @@ class ProvisioningKeyService:
         """update the Provisioning Key"""
         provisioningKeyJson = self.mapAppToJSON(provisioning_key)
         response = self.rest.put(
-            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s" % (
-                self.customer_id, association_type, provisioningKeyJson.get("id")),
-            data=provisioningKeyJson)
+            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s"
+            % (self.customer_id, association_type, provisioningKeyJson.get("id")),
+            data=provisioningKeyJson,
+        )
         status_code = response.status_code
         if status_code > 299:
             return None
@@ -135,5 +146,7 @@ class ProvisioningKeyService:
     def delete(self, id, association_type):
         """delete the Provisioning Key"""
         response = self.rest.delete(
-            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s" % (self.customer_id, association_type, id))
+            "/mgmtconfig/v1/admin/customers/%s/associationType/%s/provisioningKey/%s"
+            % (self.customer_id, association_type, id)
+        )
         return response.status_code

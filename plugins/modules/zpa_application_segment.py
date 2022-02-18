@@ -4,7 +4,7 @@
 # Copyright: (c) 2022, William Guilherme <wguilherme@securitygeek.io>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -221,11 +221,16 @@ RETURN = """
 # The newly created application segment resource record.
 """
 
+from traceback import format_exc
+
 from ansible.module_utils._text import to_native
 from ansible.module_utils.basic import AnsibleModule
-from traceback import format_exc
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import ApplicationSegmentService
-from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import ZPAClientHelper
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_application_segment import (
+    ApplicationSegmentService,
+)
+from ansible_collections.willguibr.zpacloud.plugins.module_utils.zpa_client import (
+    ZPAClientHelper,
+)
 
 
 def core(module):
@@ -275,8 +280,9 @@ def core(module):
     elif state == "absent":
         if existing_app is not None:
             # first detach it from the segment group
-            service.detach_from_segment_group(existing_app.get(
-                "id"), existing_app.get("segment_group_id"))
+            service.detach_from_segment_group(
+                existing_app.get("id"), existing_app.get("segment_group_id")
+            )
             service.delete(existing_app.get("id"))
             module.exit_json(changed=True, data=existing_app)
     module.exit_json(changed=False, data={})
@@ -284,42 +290,62 @@ def core(module):
 
 def main():
     argument_spec = ZPAClientHelper.zpa_argument_spec()
-    port_spec = dict(to=dict(type='str', required=False))
-    port_spec["from"] = dict(type='str', required=False)
-    id_name_spec = dict(type='list', elements='dict', options=dict(id=dict(
-        type='str', required=True), name=dict(type='str', required=False)), required=True)
-    argument_spec.update(
-        tcp_port_range=dict(type='list', elements='dict',
-                            options=port_spec, required=False),
-        enabled=dict(type='bool', required=False),
-        default_idle_timeout=dict(type='str', required=False, default=""),
-        bypass_type=dict(type='str', required=False, default='NEVER', choices=['ALWAYS', 'NEVER', 'ON_NET']),
-        udp_port_range=dict(type='list', elements='dict',
-                            options=port_spec, required=False),
-        config_space=dict(type='str', required=False,
-                          default="DEFAULT", choices=["DEFAULT", "SIEM"]),
-        health_reporting=dict(type='str', required=False,
-                              default="NONE", choices=["NONE", "ON_ACCESS", "CONTINUOUS"]),
-        segment_group_id=dict(type='str', required=True),
-        double_encrypt=dict(type='bool', required=False),
-        health_check_type=dict(type='str'),
-        default_max_age=dict(type='str', required=False, default=""),
-        is_cname_enabled=dict(type='bool', required=False),
-        passive_health_enabled=dict(type='bool', required=False),
-        ip_anchored=dict(type='bool', required=False),
-        name=dict(type='str', required=True),
-        description=dict(type='str', required=False),
-        icmp_access_type=dict(type='str', required=False,
-                              default="NONE", choices=["PING_TRACEROUTING", "PING", "NONE"]),
-        id=dict(type='str'),
-        server_groups=id_name_spec,
-        segment_group_name=dict(type='str', required=False),
-        domain_names=dict(type='list', elements='str', required=True),
-        state=dict(type="str", choices=[
-                   "present", "absent"], default="present")
+    port_spec = dict(to=dict(type="str", required=False))
+    port_spec["from"] = dict(type="str", required=False)
+    id_name_spec = dict(
+        type="list",
+        elements="dict",
+        options=dict(
+            id=dict(type="str", required=True), name=dict(type="str", required=False)
+        ),
+        required=True,
     )
-    module = AnsibleModule(argument_spec=argument_spec,
-                           supports_check_mode=True)
+    argument_spec.update(
+        tcp_port_range=dict(
+            type="list", elements="dict", options=port_spec, required=False
+        ),
+        enabled=dict(type="bool", required=False),
+        default_idle_timeout=dict(type="str", required=False, default=""),
+        bypass_type=dict(
+            type="str",
+            required=False,
+            default="NEVER",
+            choices=["ALWAYS", "NEVER", "ON_NET"],
+        ),
+        udp_port_range=dict(
+            type="list", elements="dict", options=port_spec, required=False
+        ),
+        config_space=dict(
+            type="str", required=False, default="DEFAULT", choices=["DEFAULT", "SIEM"]
+        ),
+        health_reporting=dict(
+            type="str",
+            required=False,
+            default="NONE",
+            choices=["NONE", "ON_ACCESS", "CONTINUOUS"],
+        ),
+        segment_group_id=dict(type="str", required=True),
+        double_encrypt=dict(type="bool", required=False),
+        health_check_type=dict(type="str"),
+        default_max_age=dict(type="str", required=False, default=""),
+        is_cname_enabled=dict(type="bool", required=False),
+        passive_health_enabled=dict(type="bool", required=False),
+        ip_anchored=dict(type="bool", required=False),
+        name=dict(type="str", required=True),
+        description=dict(type="str", required=False),
+        icmp_access_type=dict(
+            type="str",
+            required=False,
+            default="NONE",
+            choices=["PING_TRACEROUTING", "PING", "NONE"],
+        ),
+        id=dict(type="str"),
+        server_groups=id_name_spec,
+        segment_group_name=dict(type="str", required=False),
+        domain_names=dict(type="list", elements="str", required=True),
+        state=dict(type="str", choices=["present", "absent"], default="present"),
+    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     try:
         core(module)
     except Exception as e:
