@@ -1,6 +1,9 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+  pull_request:
 
 jobs:
   test:
@@ -24,14 +27,14 @@ jobs:
         run: |
           pip install pipenv
 
-      - name: Check pipenv cache
-        id: cache-pipenv
-        uses: actions/cache@v2
-        with:
-          path: ~/.local/share/virtualenvs
-          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pipenv-
+      # - name: Check pipenv cache
+      #   id: cache-pipenv
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/.local/share/virtualenvs
+      #     key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pipenv-
 
       - name: Install dependencies
         # if: steps.cache-pipenv.outputs.cache-hit != 'true'
