@@ -77,6 +77,11 @@ jobs:
           GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         shell: bash
 
+      - name: Adjust Permissions
+        run: |
+          chmod +x .github/set-version.sh
+          chmod +x .github/do-release.sh
+
       - name: Create release and publish
         id: release
         uses: cycjimmy/semantic-release-action@v2
