@@ -11,7 +11,7 @@ print_usage() {
     echo "Set the app/add-on version"
     echo ""
     echo "Usage:"
-    echo "  set-version.sh 1.0.1"
+    echo "  set-version.sh <new-version>"
     echo ""
 }
 
