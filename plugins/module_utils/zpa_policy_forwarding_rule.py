@@ -277,8 +277,9 @@ class PolicyForwardingRuleService:
             "zpn_client_type_edge_connector",
         ]:
             return (
-                "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or 'zpn_client_type_ip_anchoring' "
-                + "or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' when object type is CLIENT_TYPE"
+                "RHS values must be 'zpn_client_type_zapp' or 'zpn_client_type_exporter' or + 'zpn_client_type_ip_anchoring' "
+                + "or 'zpn_client_type_browser_isolation' or 'zpn_client_type_machine_tunnel' or 'zpn_client_type_edge_connector' "
+                + "when object type is CLIENT_TYPE"
             )
         return True
 
