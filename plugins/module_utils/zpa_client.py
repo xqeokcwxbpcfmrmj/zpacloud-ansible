@@ -41,7 +41,7 @@ def retry_with_backoff(retries=5, backoff_in_seconds=1):
                 if x == retries:
                     raise Exception("Reached max retries: %s" % (resp.json))
                 else:
-                    sleep = backoff_in_seconds * 2**x + random.uniform(0, 1)
+                    sleep = backoff_in_seconds * 2 ** x + random.uniform(0, 1)
                     args[0].module.log(
                         "\n[INFO] args: %s\nretrying after %d seconds...\n"
                         % (str(args), sleep)

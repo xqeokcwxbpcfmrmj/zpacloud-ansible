@@ -114,7 +114,7 @@ class PolicyForwardingRuleService:
         if conditionsJSON is None:
             return conds
         for cond in conditionsJSON:
-            """"""
+            """ """
             conds.append(
                 {
                     "id": cond.get("id"),
@@ -133,7 +133,7 @@ class PolicyForwardingRuleService:
         if conditions is None:
             return conds
         for cond in conditions:
-            """"""
+            """ """
             conds.append(
                 {
                     "operator": cond.get("operator"),

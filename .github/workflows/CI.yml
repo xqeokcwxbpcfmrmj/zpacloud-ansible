@@ -41,6 +41,10 @@ jobs:
         run: |
           pipenv install --dev
 
+      - name: Fix format
+        run: |
+          pipenv run make format
+
       - name: Check format
         run: |
           pipenv run make check-format

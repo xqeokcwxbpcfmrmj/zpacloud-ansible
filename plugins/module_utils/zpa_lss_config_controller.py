@@ -108,7 +108,7 @@ class LSSConfigControllerService:
         if conditionsJSON is None:
             return None
         for cond in conditionsJSON:
-            """"""
+            """ """
             conds.append(
                 {
                     "id": cond.get("id"),
@@ -127,7 +127,7 @@ class LSSConfigControllerService:
         if conditions is None:
             return None
         for cond in conditions:
-            """"""
+            """ """
             conds.append(
                 {
                     "operator": cond.get("operator"),
