@@ -77,10 +77,10 @@ jobs:
           GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         shell: bash
 
-      # - name: Adjust Permissions
-      #   run: |
-      #     chmod +x .github/set-version.sh
-      #     chmod +x .github/do-release.sh
+      - name: Adjust Permissions
+        run: |
+          chmod +x .github/set-version.sh
+          chmod +x .github/do-release.sh
 
       - uses: actions/setup-node@v2
         with:

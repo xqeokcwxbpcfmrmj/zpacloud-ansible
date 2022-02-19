@@ -37,6 +37,13 @@
           "changelogFile": "CHANGELOG.md"
         }
       ],
+      [
+        "@semantic-release/exec",
+        {
+            "prepareCmd": ".github/set-version.sh ${nextRelease.version}",
+            "publishCmd": ".github/do-release.sh"
+        }
+    ],
     [
         "@semantic-release/git",
         {
