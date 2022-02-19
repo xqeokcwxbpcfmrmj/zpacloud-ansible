@@ -88,9 +88,9 @@ jobs:
         with:
           semantic_version: 17.1.1
           extra_plugins: |
-            conventional-changelog-conventionalcommits@^4.4.0
-            @semantic-release/git@^9.0.0
-            @semantic-release/exec@^5.0.0
+            @semantic-release/changelog
+            @semantic-release/git
+            conventional-changelog-eslint
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

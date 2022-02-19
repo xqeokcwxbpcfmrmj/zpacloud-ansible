@@ -32,6 +32,12 @@
         }
       ],
       [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
           "@semantic-release/exec",
           {
               "prepareCmd": ".github/set-version.sh ${nextRelease.version}",
@@ -59,6 +65,5 @@
               "successComment": ":tada: This ${issue.pull_request ? 'PR is included' : 'issue has been resolved'} in version ${nextRelease.version} :tada:\n\nThe release is available on [Ansible Galaxy](https://galaxy.ansible.com/willguibr/zpacloud) and [GitHub release](https://github.com/willguibr/zpa-ansible/releases)\n\n> Posted by [semantic-release](https://github.com/semantic-release/semantic-release) bot"
           }
       ]
-    ],
-    "preset": "conventionalcommits"
+    ]
   }
