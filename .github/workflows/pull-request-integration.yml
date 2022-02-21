@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
   push:
     branches: [develop, master]
-    
+
 concurrency:
   group: cloud-integration-tests
   cancel-in-progress: false
