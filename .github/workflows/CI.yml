@@ -29,36 +29,22 @@ jobs:
         run: |
           pip install pipenv
 
-      # - name: Check pipenv cache
-      #   id: cache-pipenv
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.local/share/virtualenvs
-      #     key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pipenv-
-
       - name: Install dependencies
         # if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --dev
-
       - name: Fix format
         run: |
           pipenv run make format
-
       - name: Check format
         run: |
           pipenv run make check-format
-
       - name: ansible-test sanity
         run: |
           pipenv run ansible-test sanity --python 3.8
-
       - name: ansible-galaxy collection build
         run: |
           pipenv run make build
-
   release:
     name: release
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -82,19 +68,27 @@ jobs:
           chmod +x .github/set-version.sh
           chmod +x .github/do-release.sh
 
-      - uses: actions/setup-node@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Create release and publish
-        id: release
+      - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
+        id: semantic
         with:
           semantic_version: 18.0.0
           extra_plugins: |
-            conventional-changelog-conventionalcommits@^4.4.0
-            @semantic-release/git@^9.0.0
-            @semantic-release/exec@^5.0.0
+            @semantic-release/changelog
+            @semantic-release/git
+            conventional-changelog-eslint
+            @semantic-release/commit-analyzer@8.0.1
+            @semantic-release/release-notes-generator@9.0.3
+            @semantic-release/changelog@5.0.1
+            @semantic-release/github@7.2.3
+            @semantic-release/git@9.0.0
+          branches: |
+            ['develop']
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -104,7 +98,6 @@ jobs:
           name: collection
           path: |
             *.tar.gz
-
   docs:
     name: docs
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
@@ -133,7 +126,6 @@ jobs:
       - name: Install pipenv
         run: |
           pip install pipenv
-
       # - name: Check pipenv cache
       #   id: cache-pipenv
       #   uses: actions/cache@v2
@@ -147,7 +139,6 @@ jobs:
         # if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --dev
-
       - name: Build the collection
         run:
           ansible-galaxy collection build
@@ -164,7 +155,6 @@ jobs:
       - name: Generate documentation
         run: |
           pipenv run make docs
-
       # This is here for right now because the action to deploy seems to assume
       # (and not have a configuration option to) mirror the actions/checkout@v2
       # the with.path spec.
@@ -174,7 +164,6 @@ jobs:
           mv zpacloud-ansible the_repo
           mv the_repo/ansible_collections/willguibr/zpacloud zpacloud-ansible
           mkdir -p zpacloud-ansible/ansible_collections/willguibr/zpacloud
-
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
