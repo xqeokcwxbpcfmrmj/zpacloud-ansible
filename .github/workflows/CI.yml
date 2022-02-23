@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - develop
   pull_request:
 
 jobs:
@@ -89,7 +88,7 @@ jobs:
             @semantic-release/git@9.0.0
             @semantic-release/exec@^5.0.0
           branches: |
-            ['develop']
+            ['master']
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
