@@ -72,9 +72,9 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Semantic Release
+      - name: Create release and publish
         uses: cycjimmy/semantic-release-action@v2
-        id: semantic
+        id: release
         with:
           semantic_version: 18.0.0
           extra_plugins: |
