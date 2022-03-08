@@ -2,13 +2,28 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main, develop ]
+    paths-ignore:
+    - '.github/**'
+    - 'docs/**'
+    - 'docsrc/**'
+    - 'examples/**'
   pull_request:
+    branches: [ main, develop ]
+    paths-ignore:
+    - '.github/**'
+    - 'docs/**'
+    - 'docsrc/**'
+    - 'examples/**'
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9, '3.10' ]
 
     defaults:
       run:
@@ -19,10 +34,10 @@ jobs:
         with:
           path: ./ansible_collections/willguibr/zpacloud
 
-      - name: Set up Python 3.8.10
-        uses: actions/setup-python@v2.3.2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/checkout@v2
         with:
-          python-version: 3.8.10
+          python-version: ${{ matrix.python-version }}
 
       - name: Install pipenv
         run: |

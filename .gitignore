@@ -109,4 +109,5 @@ zpa_all_together/*
 scripts/
 scripts/*
 ansible_collections/
+ansible_demo/
 tests/integration/integration_config.yml
