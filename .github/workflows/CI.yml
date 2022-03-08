@@ -34,13 +34,8 @@ jobs:
         with:
           path: ./ansible_collections/willguibr/zpacloud
 
-<<<<<<< HEAD
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/checkout@v2
-=======
-      - name: Set up Python 3.8.10
-        uses: actions/setup-python@v3
->>>>>>> 4a04c69e81dee3c584494704322b73456580d6f4
         with:
           python-version: ${{ matrix.python-version }}
 
