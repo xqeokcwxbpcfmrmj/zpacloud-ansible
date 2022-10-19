@@ -1,4 +1,4 @@
-# (Unofficial) Zscaler Private Access (ZPA) Ansible Collection
+# Zscaler Private Access (ZPA) Ansible Collection
 
 ![Version on Galaxy](https://img.shields.io/badge/dynamic/json?style=flat&label=Ansible+Galaxy&prefix=v&url=https://galaxy.ansible.com/api/v2/collections/willguibr/zpacloud/&query=latest_version.version)
 [![sanity](https://github.com/zscaler/zpacloud-ansible/actions/workflows/ansible-test-sanity.yml/badge.svg?branch=master)](https://github.com/zscaler/zpacloud-ansible/actions/workflows/ansible-test-sanity.yml)
