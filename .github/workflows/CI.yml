@@ -88,7 +88,7 @@ jobs:
           node-version: '14'
 
       - name: Create release and publish
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v3
         id: release
         with:
           semantic_version: 18.0.0
